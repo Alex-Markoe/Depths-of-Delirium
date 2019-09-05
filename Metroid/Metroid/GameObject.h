@@ -14,10 +14,11 @@ public:
 	void loadTexture(std::string path, SDL_Renderer* gRenderer);
 	void Draw(SDL_Renderer* gRenderer);
 	void setAnim(int sourceX, int sourceY, int maxFrame);
-
-	SDL_Rect position;
+	
 	SDL_Point velocity;
+	SDL_Rect position;
 	SDL_Rect sourceRect;
+	SDL_Rect hitbox;
 
 protected:
 	SDL_Texture* texture;
@@ -29,5 +30,7 @@ protected:
 
 	int ANIM_SOURCE_X;
 	int ANIM_SOURCE_Y;
+	int HITBOX_OFFSET_LEFT;
+	int HITBOX_OFFSET_TOP;
 };
 

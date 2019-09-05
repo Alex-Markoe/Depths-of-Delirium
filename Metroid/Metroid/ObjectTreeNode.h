@@ -11,9 +11,6 @@ public:
 	void Divide();
 
 	std::vector<GameObject*> items;
-	ObjectTreeNode *quads[4];
+	ObjectTreeNode* quads[4];
 	SDL_Rect dimensions;
-
-private:
-	const int MAX_OBJECTS = 5;
 };
