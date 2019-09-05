@@ -19,11 +19,10 @@ enum PSTATE {
 class Player : public GameObject
 {
 public:
-	Player(SDL_Rect initPosition, SDL_Rect initSource);
+	Player(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY);
 	~Player();
 	void UpdateFrame();
 	void Update();
-	void UpdatePosition();
 	void UpdateState(SDL_Event& e);
 
 private:

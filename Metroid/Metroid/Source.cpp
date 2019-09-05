@@ -22,7 +22,7 @@ SDL_Renderer* gRenderer = NULL;
 
 SDL_Rect source = { 0, 0, 75, 78 };
 SDL_Rect position = { 200, 200, 0, 0 };
-Player player = { position, source };
+Player player = { position, source, 0, 0 };
 
 //Initalization function, handles all required logic for startup
 bool init(){

@@ -1,8 +1,8 @@
 #include "Player.h"
 
 //Constructor
-Player::Player(SDL_Rect initPosition, SDL_Rect initSource) :
-	GameObject(initPosition, initSource){
+Player::Player(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY) :
+	GameObject(initPosition, initSource, hitboxOffsetX, hitboxOffsetY){
 	playerState = Idle;
 	previousState = Idle;
 }
@@ -90,9 +90,4 @@ void Player::Update(){
 
 	//Update the position and previous state
 	previousState = playerState;
-}
-
-void Player::UpdatePosition(){
-	position.x += velocity.x;
-	position.y += velocity.y;
 }

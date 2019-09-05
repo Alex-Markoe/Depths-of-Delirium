@@ -68,35 +68,48 @@ std::vector<GameObject*> ObjectTree::CollisionDetector(GameObject &reference){
 	ObjectTreeNode* current = head;
 	std::vector<GameObject*> collisionItems;
 
-	int x = reference.position.x;
-	int y = reference.position.y;
-	
+	int x = reference.hitbox.x - MAX_COLLISION_DIST_X;
+	int y = reference.hitbox.y - MAX_COLLISION_DIST_Y;
+	int width = reference.hitbox.w + reference.hitbox.x + MAX_COLLISION_DIST_X;
+	int height = reference.hitbox.h + reference.hitbox.y + MAX_COLLISION_DIST_Y;
 
-	while (current->quads[0] != NULL){
+	while (current != NULL){
 
 		if (current->items.size() > 0){
 			for (std::vector<GameObject*>::iterator it = current->items.begin(); it != current->items.end(); ++it) {
 				GameObject* item = *it;
-				if (item->position.x <= reference.position.x + reference.sourceRect.w + MAX_COLLISION_DIST_X &&
-					item->position.x + item->sourceRect.w >= reference.position.x - MAX_COLLISION_DIST_X &&
-					item->position.y <= reference.position.y + reference.sourceRect.h + MAX_COLLISION_DIST_Y &&
-					item->position.y + item->sourceRect.h >= reference.position.y - MAX_COLLISION_DIST_Y) {
+				if (item->position.x >= x && item->position.x + item->sourceRect.w <= width &&
+					item->position.y >= y && item->position.y + item->sourceRect.h <= height) {
 					collisionItems.push_back(item);
 				}
 			}
 		}
 
-		if (reference.position.x <= current->dimensions.w/2 && reference.position.y <= current->dimensions.h/2){
-			current = head->quads[0];
-		}
-		else if (reference.position.x > current->dimensions.w /2 && reference.position.y <= current->dimensions.h / 2) {
-			current = head->quads[1];
-		}
-		else if (reference.position.x <= current->dimensions.w / 2 && reference.position.y > current->dimensions.h / 2) {
-			current = head->quads[2];
-		}
-		else if (reference.position.x > current->dimensions.w / 2 && reference.position.y > current->dimensions.h / 2) {
-			current = head->quads[3];
+		if (current->quads[0] != NULL){
+			if (((x >= current->quads[0]->dimensions.x && x <= current->quads[0]->dimensions.x + current->quads[0]->dimensions.w) 
+				|| (width >= current->quads[0]->dimensions.x && width <= current->quads[0]->dimensions.x + current->quads[0]->dimensions.w)) &&
+				((y >= current->quads[0]->dimensions.y && y <= current->quads[0]->dimensions.y + current->quads[0]->dimensions.h)
+				|| (height >= current->quads[0]->dimensions.y && height <= current->quads[0]->dimensions.y + current->quads[0]->dimensions.h))) {
+				current = head->quads[0];
+			}
+			if (((x >= current->quads[1]->dimensions.x && x <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)
+				|| (width >= current->quads[1]->dimensions.x && width <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)) &&
+				((y >= current->quads[1]->dimensions.y && y <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h)
+					|| (height >= current->quads[1]->dimensions.y && height <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h))) {
+				current = head->quads[1];
+			}
+			if (((x >= current->quads[2]->dimensions.x && x <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)
+				|| (width >= current->quads[2]->dimensions.x && width <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)) &&
+				((y >= current->quads[2]->dimensions.y && y <= current->quads[2]->dimensions.y + current->quads[2]->dimensions.h)
+					|| (height >= current->quads[2]->dimensions.y && height <= current->quads[2]->dimensions.y + current->quads[2]->dimensions.h))) {
+				current = head->quads[2];
+			}
+			if (((x >= current->quads[3]->dimensions.x && x <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)
+				|| (width >= current->quads[3]->dimensions.x && width <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)) &&
+				((y >= current->quads[3]->dimensions.y && y <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h)
+					|| (height >= current->quads[3]->dimensions.y && height <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h))) {
+				current = head->quads[3];
+			}
 		}
 		else{
 			current = NULL;

@@ -1,11 +1,15 @@
 #include "GameObject.h"
 
 //Constructor
-GameObject::GameObject(SDL_Rect initPosition, SDL_Rect initSource){
+GameObject::GameObject(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY){
 	position = initPosition;
 	sourceRect = initSource;
 	position.w = sourceRect.w;
 	position.h = sourceRect.h;
+	HITBOX_OFFSET_X = hitboxOffsetX;
+	HITBOX_OFFSET_Y = hitboxOffsetY;
+
+	hitbox = { position.x + HITBOX_OFFSET_X, position.y + HITBOX_OFFSET_Y, sourceRect.w - HITBOX_OFFSET_X, sourceRect.h };
 
 	velocity.x = 0;
 	velocity.y = 0;
@@ -61,4 +65,11 @@ void GameObject::setAnim(int sourceX, int sourceY, int maxFrame) {
 		sourceRect.x = sourceX;
 		sourceRect.y = sourceY;
 	}
+}
+
+void GameObject::UpdatePosition(){
+	position.x += velocity.x;
+	position.y += velocity.y;
+	hitbox.x += velocity.x + HITBOX_OFFSET_X;
+	hitbox.y += velocity.y + HITBOX_OFFSET_Y;
 }
