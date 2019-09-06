@@ -95,7 +95,7 @@ std::vector<GameObject*> ObjectTree::CollisionDetector(GameObject &reference){
 			if (((x >= current->quads[1]->dimensions.x && x <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)
 				|| (width >= current->quads[1]->dimensions.x && width <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)) &&
 				((y >= current->quads[1]->dimensions.y && y <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h)
-					|| (height >= current->quads[1]->dimensions.y && height <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h))) {
+				|| (height >= current->quads[1]->dimensions.y && height <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h))) {
 				current = head->quads[1];
 			}
 			if (((x >= current->quads[2]->dimensions.x && x <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)
@@ -107,7 +107,7 @@ std::vector<GameObject*> ObjectTree::CollisionDetector(GameObject &reference){
 			if (((x >= current->quads[3]->dimensions.x && x <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)
 				|| (width >= current->quads[3]->dimensions.x && width <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)) &&
 				((y >= current->quads[3]->dimensions.y && y <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h)
-					|| (height >= current->quads[3]->dimensions.y && height <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h))) {
+				|| (height >= current->quads[3]->dimensions.y && height <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h))) {
 				current = head->quads[3];
 			}
 		}
@@ -117,4 +117,25 @@ std::vector<GameObject*> ObjectTree::CollisionDetector(GameObject &reference){
 	}
 
 	return collisionItems;
+}
+
+//Methods to return all the objects in the tree
+std::vector<GameObject*> ObjectTree::AllObjects(){
+	if (head != NULL){
+		AllObjects(head);
+	}
+}
+
+std::vector<GameObject*> ObjectTree::AllObjects(ObjectTreeNode* quad){
+	std::vector<GameObject*> items = std::vector<GameObject*>();
+
+	for (unsigned i = 0; i < quad->items.size(); i++) {
+		items.push_back(quad->items[i]);
+	}
+
+	if (quad->quads[0] != NULL){
+		
+	}
+
+	return items;
 }
