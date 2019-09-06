@@ -8,12 +8,26 @@ class LevelManager{
 public:
 	LevelManager();
 	~LevelManager();
-	void LoadLevel();
+	void Update();
+	void RenderAll();
 	void ClearLevel();
 	void Init();
-	void PlatformCollision(Player player);
 
 private:
 	std::ofstream fileRead;
+	Player* player;
+
+	ObjectTree* platforms;
+	ObjectTree* movingPlatforms;
+	ObjectTree* swingingPlatforms;
+
+	std::string roomName;
+	bool transitioning;
+	int levelWidth;
+	int levelHeight;
+
+	void PlatformCollision();
+	void MovingPlatformUpdate();
+	void SwingingPlatformUpdate();
 };
 

@@ -23,7 +23,7 @@ enum TileOrientation {
 	CenterVertical
 };
 
-enum TileSetting {
+enum Setting {
 	Caverns
 
 };
@@ -31,12 +31,12 @@ enum TileSetting {
 class Tile : GameObject
 {
 public:
-	Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType type, TileOrientation orientation, TileSetting setting);
+	Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType type, TileOrientation orientation, Setting setting);
 	~Tile();
 
 private:
 	TileType type;
 	TileOrientation orientation;
-	TileSetting setting;
+	Setting setting;
 };
 

@@ -2,7 +2,7 @@
 
 
 
-Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType Type, TileOrientation Orientation, TileSetting Setting) :
+Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType Type, TileOrientation Orientation, Setting Setting) :
 	GameObject(initPosition, initSource, hitboxOffsetX, hitboxOFfsetY){
 	int sourceX = 0;
 	int sourceY = 0;
