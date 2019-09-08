@@ -10,7 +10,7 @@ public:
 	~ObjectTree();
 	void Add(GameObject* item);
 	std::vector<GameObject*> AllObjects();
-	std::vector<GameObject*> CollisionDetector(GameObject &reference);
+	void CollisionDetector(GameObject &reference);
 	void Reset(int levelWidth, int levelHeight);
 
 private:
@@ -19,6 +19,9 @@ private:
 	const int MAX_OBJECTS = 5;
 	const int MAX_COLLISION_DIST_X = 30;
 	const int MAX_COLLISION_DIST_Y = 30;
+	const int MAX_DEPTH_X = 16;
+	const int MAX_DEPTH_Y = 20;
+	const int BOUNCE_VELOCITY = 10;
 
 	void Add(GameObject* item, ObjectTreeNode* quad);
 	void Reset(ObjectTreeNode* quad);

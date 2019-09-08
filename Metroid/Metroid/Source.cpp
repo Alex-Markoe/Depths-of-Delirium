@@ -20,6 +20,8 @@ SDL_Window* window = NULL;
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
+SDL_Rect * viewport = new SDL_Rect{ 10, 10, 500, 500};
+
 SDL_Rect source = { 0, 0, 75, 78 };
 SDL_Rect position = { 200, 200, 0, 0 };
 Player player = { position, source, 0, 0 };
@@ -28,6 +30,8 @@ Player player = { position, source, 0, 0 };
 bool init(){
 	//Initialization flag
 	bool success = true;
+
+	
 
 	//Initalize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -62,6 +66,8 @@ bool init(){
 			}
 		}
 	}
+
+	
 
 	return success;
 }
@@ -136,6 +142,6 @@ int main(int argc, char* args[]) {
 
 	//Close SDL and all subsystems
 	close();
-
+	
 	return 0;
 }

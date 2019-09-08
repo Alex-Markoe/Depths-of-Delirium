@@ -46,10 +46,12 @@ void Player::UpdateState(SDL_Event& e){
 		case SDLK_w:
 			playerState = Jump;
 			velocity.x = 0;
+			velocity.y -= 5;
 			break;
 		case SDLK_s:
 			playerState = Duck;
 			velocity.x = 0;
+			velocity.y += 5;
 			break;
 		case SDLK_a:
 			playerState = Run;

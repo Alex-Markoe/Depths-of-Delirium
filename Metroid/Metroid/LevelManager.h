@@ -12,6 +12,7 @@ public:
 	void RenderAll();
 	void ClearLevel();
 	void Init();
+	void SetViewport();
 
 private:
 	std::ofstream fileRead;

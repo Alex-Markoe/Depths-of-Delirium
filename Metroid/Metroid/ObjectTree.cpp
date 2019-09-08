@@ -1,4 +1,5 @@
 #include "ObjectTree.h"
+#include "Tile.h"
 
 ObjectTree::ObjectTree(int levelWidth, int levelHeight){
 	head = new ObjectTreeNode(SDL_Rect{0, 0, levelWidth, levelHeight});
@@ -64,50 +65,110 @@ void ObjectTree::Reset(ObjectTreeNode* quad){
 }
 
 
-std::vector<GameObject*> ObjectTree::CollisionDetector(GameObject &reference){
+void ObjectTree::CollisionDetector(GameObject &reference){
 	ObjectTreeNode* current = head;
-	std::vector<GameObject*> collisionItems;
 
-	int x = reference.hitbox.x - MAX_COLLISION_DIST_X;
-	int y = reference.hitbox.y - MAX_COLLISION_DIST_Y;
-	int width = reference.hitbox.w + reference.hitbox.x + MAX_COLLISION_DIST_X;
-	int height = reference.hitbox.h + reference.hitbox.y + MAX_COLLISION_DIST_Y;
+	int collX = reference.hitbox.x - MAX_COLLISION_DIST_X;
+	int collY = reference.hitbox.y - MAX_COLLISION_DIST_Y;
+	int collW = reference.hitbox.w + reference.hitbox.x + MAX_COLLISION_DIST_X;
+	int collY = reference.hitbox.h + reference.hitbox.y + MAX_COLLISION_DIST_Y;
+
+	int x = reference.hitbox.x;
+	int y = reference.hitbox.y;
+	int width = reference.hitbox.x + reference.hitbox.w;
+	int height = reference.hitbox.y + reference.hitbox.h;
+	int centerX = (reference.hitbox.w / 2) + reference.hitbox.x;
+	int centerY = (reference.hitbox.h / 2) + reference.hitbox.y;
 
 	while (current != NULL){
 
 		if (current->items.size() > 0){
-			for (std::vector<GameObject*>::iterator it = current->items.begin(); it != current->items.end(); ++it) {
-				GameObject* item = *it;
-				if (item->position.x >= x && item->position.x + item->sourceRect.w <= width &&
-					item->position.y >= y && item->position.y + item->sourceRect.h <= height) {
-					collisionItems.push_back(item);
+			for (unsigned i = 0; i < current->items.size(); i++) {
+
+				int depthX = centerX - ((current->items[i]->hitbox.w / 2) + current->items[i]->hitbox.x) + reference.velocity.x;
+				int depthY = centerY - ((current->items[i]->hitbox.h / 2) + current->items[i]->hitbox.y) + reference.velocity.y;
+				
+				//Check the x direction
+				if (depthX <= 0 && depthX > -MAX_DEPTH_X
+					&& ((y > current->items[i]->hitbox.y && y < current->items[i]->hitbox.y + current->items[i]->hitbox.h)
+						|| (height > current->items[i]->hitbox.y && height < current->items[i]->hitbox.y + current->items[i]->hitbox.h))) {
+					Tile * t = (Tile*)current->items[i];
+					switch (t->type) {
+					case Bounce:
+						reference.velocity.x = BOUNCE_VELOCITY;
+						break;
+					default:
+						reference.velocity.x += depthX;
+						break;
+					}
+				}
+				else if (depthX >= 0 && depthX < MAX_DEPTH_X
+					&& ((y > current->items[i]->hitbox.y && y < current->items[i]->hitbox.y + current->items[i]->hitbox.h)
+						|| (height > current->items[i]->hitbox.y && height < current->items[i]->hitbox.y + current->items[i]->hitbox.h))) {
+					Tile * t = (Tile*)current->items[i];
+					switch (t->type) {
+					case Bounce:
+						reference.velocity.x = -BOUNCE_VELOCITY;
+						break;
+					default:
+						reference.velocity.x -= depthX;
+						break;
+					}
+				}
+
+				//Check the y direction
+				if (depthY <= 0 && depthY > -MAX_DEPTH_Y
+					&& ((x > current->items[i]->hitbox.x && x < current->items[i]->hitbox.x + current->items[i]->hitbox.w)
+						|| (width > current->items[i]->hitbox.x && width < current->items[i]->hitbox.x + current->items[i]->hitbox.w))) {
+					Tile * t = (Tile*)current->items[i];
+					switch (t->type) {
+					case Bounce:
+						reference.velocity.y = BOUNCE_VELOCITY;
+						break;
+					default:
+						reference.velocity.y += depthY;
+						break;
+					}
+				}
+				else if (depthY >= 0 && depthY < MAX_DEPTH_Y
+					&& ((x > current->items[i]->hitbox.x && x < current->items[i]->hitbox.x + current->items[i]->hitbox.w)
+						|| (width > current->items[i]->hitbox.x && width < current->items[i]->hitbox.x + current->items[i]->hitbox.w))) {
+					Tile * t = (Tile*)current->items[i];
+					switch (t->type) {
+					case Bounce:
+						reference.velocity.y = -BOUNCE_VELOCITY;
+						break;
+					default:
+						reference.velocity.y += depthY;
+						break;
+					}
 				}
 			}
 		}
 
 		if (current->quads[0] != NULL){
-			if (((x >= current->quads[0]->dimensions.x && x <= current->quads[0]->dimensions.x + current->quads[0]->dimensions.w) 
-				|| (width >= current->quads[0]->dimensions.x && width <= current->quads[0]->dimensions.x + current->quads[0]->dimensions.w)) &&
-				((y >= current->quads[0]->dimensions.y && y <= current->quads[0]->dimensions.y + current->quads[0]->dimensions.h)
-				|| (height >= current->quads[0]->dimensions.y && height <= current->quads[0]->dimensions.y + current->quads[0]->dimensions.h))) {
+			if (((collX >= current->quads[0]->dimensions.x && collX <= current->quads[0]->dimensions.x + current->quads[0]->dimensions.w) 
+				|| (collW >= current->quads[0]->dimensions.x && collW <= current->quads[0]->dimensions.x + current->quads[0]->dimensions.w)) &&
+				((collY >= current->quads[0]->dimensions.y && collY <= current->quads[0]->dimensions.y + current->quads[0]->dimensions.h)
+				|| (collY >= current->quads[0]->dimensions.y && collY <= current->quads[0]->dimensions.y + current->quads[0]->dimensions.h))) {
 				current = head->quads[0];
 			}
-			if (((x >= current->quads[1]->dimensions.x && x <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)
-				|| (width >= current->quads[1]->dimensions.x && width <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)) &&
-				((y >= current->quads[1]->dimensions.y && y <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h)
-				|| (height >= current->quads[1]->dimensions.y && height <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h))) {
+			if (((collX >= current->quads[1]->dimensions.x && collX <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)
+				|| (collW >= current->quads[1]->dimensions.x && collW <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)) &&
+				((collY >= current->quads[1]->dimensions.y && collY <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h)
+				|| (collY >= current->quads[1]->dimensions.y && collY <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h))) {
 				current = head->quads[1];
 			}
-			if (((x >= current->quads[2]->dimensions.x && x <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)
-				|| (width >= current->quads[2]->dimensions.x && width <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)) &&
-				((y >= current->quads[2]->dimensions.y && y <= current->quads[2]->dimensions.y + current->quads[2]->dimensions.h)
-					|| (height >= current->quads[2]->dimensions.y && height <= current->quads[2]->dimensions.y + current->quads[2]->dimensions.h))) {
+			if (((collX >= current->quads[2]->dimensions.x && collX <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)
+				|| (collW >= current->quads[2]->dimensions.x && collW <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)) &&
+				((collY >= current->quads[2]->dimensions.y && collY <= current->quads[2]->dimensions.y + current->quads[2]->dimensions.h)
+					|| (collY >= current->quads[2]->dimensions.y && collY <= current->quads[2]->dimensions.y + current->quads[2]->dimensions.h))) {
 				current = head->quads[2];
 			}
-			if (((x >= current->quads[3]->dimensions.x && x <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)
-				|| (width >= current->quads[3]->dimensions.x && width <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)) &&
-				((y >= current->quads[3]->dimensions.y && y <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h)
-				|| (height >= current->quads[3]->dimensions.y && height <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h))) {
+			if (((collX >= current->quads[3]->dimensions.x && collX <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)
+				|| (collW >= current->quads[3]->dimensions.x && collW <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)) &&
+				((collY >= current->quads[3]->dimensions.y && collY <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h)
+				|| (collY >= current->quads[3]->dimensions.y && collY <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h))) {
 				current = head->quads[3];
 			}
 		}
@@ -115,14 +176,12 @@ std::vector<GameObject*> ObjectTree::CollisionDetector(GameObject &reference){
 			current = NULL;
 		}
 	}
-
-	return collisionItems;
 }
 
 //Methods to return all the objects in the tree
 std::vector<GameObject*> ObjectTree::AllObjects(){
 	if (head != NULL){
-		AllObjects(head);
+		return AllObjects(head);
 	}
 }
 
@@ -134,7 +193,8 @@ std::vector<GameObject*> ObjectTree::AllObjects(ObjectTreeNode* quad){
 	}
 
 	if (quad->quads[0] != NULL){
-		
+		std::vector<GameObject*> moreItems = AllObjects(quad->quads[0]);
+		/*for (unsigned i = 0; i < )*/
 	}
 
 	return items;
