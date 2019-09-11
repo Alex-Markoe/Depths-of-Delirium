@@ -14,35 +14,47 @@ LevelManager::~LevelManager(){
 
 }
 
+//Call all update methods of any objects in the level
 void LevelManager::Update(){
+	//Update all the objects in the level
+	player->Update();
 
+	//Check collisions
+	if (platforms->count != 0){
+		platforms->CollisionDetector(*player);
+	}
+	if (movingPlatforms->count != 0){
+		movingPlatforms->CollisionDetector(*player);
+	}
+	if (swingingPlatforms->count != 0){
+		swingingPlatforms->CollisionDetector(*player);
+	}
+
+	//Change positions
+	player->UpdatePosition();
 }
 
-void LevelManager::RenderAll(){
+//Call any update methods that require user input
+void LevelManager::StateUpdate(SDL_Event e){
+	player->UpdateState(e);
+}
 
+void LevelManager::RenderAll(SDL_Renderer* renderer){
+	player->Draw(renderer);
+
+	if (platforms->count != 0) {
+		platforms->Render(renderer);
+	}
+	if (movingPlatforms->count != 0) {
+		movingPlatforms->Render(renderer);
+	}
+	if (swingingPlatforms->count != 0) {
+		swingingPlatforms->Render(renderer);
+	}
 }
 
 void LevelManager::Init(){
 
-}
-
-void LevelManager::PlatformCollision(){
-	std::vector<GameObject*> plats = platforms->CollisionDetector(*player);
-	std::vector<GameObject*> mPlats = movingPlatforms->CollisionDetector(*player);
-	std::vector<GameObject*> sPlats = swingingPlatforms->CollisionDetector(*player);
-
-	
-
-	if (plats.size() != 0){
-		
-
-		for (unsigned i = 0; i < plats.size(); i++){
-			
-
-			
-			}
-		}
-	}
 }
 
 void LevelManager::MovingPlatformUpdate(){
@@ -50,10 +62,6 @@ void LevelManager::MovingPlatformUpdate(){
 }
 
 void LevelManager::SwingingPlatformUpdate(){
-
-}
-
-void LevelManager::ClearLevel(){
 
 }
 

@@ -12,6 +12,7 @@ ObjectTree::~ObjectTree(){
 //Public version of the add method
 void ObjectTree::Add(GameObject* item){
 	Add(item, head);
+	count++;
 }
 
 //Private version of the add method that uses
@@ -52,6 +53,7 @@ void ObjectTree::Reset(int levelWidth, int levelHeight){
 	Reset(head);
 	delete head;
 	head = new ObjectTreeNode(SDL_Rect{0, 0, levelWidth, levelHeight});
+	count = 0;
 }
 
 void ObjectTree::Reset(ObjectTreeNode* quad){
@@ -171,6 +173,9 @@ void ObjectTree::CollisionDetector(GameObject &reference){
 				|| (collY >= current->quads[3]->dimensions.y && collY <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h))) {
 				current = head->quads[3];
 			}
+			else{
+				current = NULL;
+			}
 		}
 		else{
 			current = NULL;
@@ -183,6 +188,10 @@ std::vector<GameObject*> ObjectTree::AllObjects(){
 	if (head != NULL){
 		return AllObjects(head);
 	}
+	else{
+		std::vector<GameObject*> nothing;
+		return nothing;
+	}
 }
 
 std::vector<GameObject*> ObjectTree::AllObjects(ObjectTreeNode* quad){
@@ -194,8 +203,48 @@ std::vector<GameObject*> ObjectTree::AllObjects(ObjectTreeNode* quad){
 
 	if (quad->quads[0] != NULL){
 		std::vector<GameObject*> moreItems = AllObjects(quad->quads[0]);
-		/*for (unsigned i = 0; i < )*/
-	}
+		if (moreItems.size() > 0)
+			for (unsigned i = 0; i < moreItems.size(); i++){
+				items.push_back(moreItems[i]);
+			}
 
+		std::vector<GameObject*> moreItems = AllObjects(quad->quads[1]);
+		if (moreItems.size() > 0)
+			for (unsigned i = 0; i < moreItems.size(); i++) {
+				items.push_back(moreItems[i]);
+			}
+
+		std::vector<GameObject*> moreItems = AllObjects(quad->quads[2]);
+		if (moreItems.size() > 0)
+			for (unsigned i = 0; i < moreItems.size(); i++) {
+				items.push_back(moreItems[i]);
+			}
+
+		std::vector<GameObject*> moreItems = AllObjects(quad->quads[3]);
+		if (moreItems.size() > 0)
+			for (unsigned i = 0; i < moreItems.size(); i++) {
+				items.push_back(moreItems[i]);
+			}
+	}
+	
 	return items;
+}
+
+void ObjectTree::Render(SDL_Renderer* renderer){
+	if (head != NULL)
+		Render(renderer, head);
+}
+
+void ObjectTree::Render(SDL_Renderer* renderer, ObjectTreeNode* quad) {
+	if (quad->items.size() > 0)
+		for (unsigned i = 0; i < quad->items.size(); i++){
+			quad->items[i]->Draw(renderer);
+		}
+
+	if (quad->quads[0] != NULL){
+		Render(renderer, quad->quads[0]);
+		Render(renderer, quad->quads[0]);
+		Render(renderer, quad->quads[0]);
+		Render(renderer, quad->quads[0]);
+	}
 }

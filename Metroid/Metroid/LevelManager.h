@@ -1,6 +1,7 @@
 #pragma once
 #include "Player.h"
 #include "ObjectTree.h"
+#include "Transitioner.h"
 #include <iostream>
 #include <fstream>
 
@@ -8,15 +9,16 @@ class LevelManager{
 public:
 	LevelManager();
 	~LevelManager();
+	void StateUpdate(SDL_Event e);
 	void Update();
-	void RenderAll();
-	void ClearLevel();
+	void RenderAll(SDL_Renderer* renderer);
 	void Init();
 	void SetViewport();
 
 private:
 	std::ofstream fileRead;
 	Player* player;
+	Transitioner lvlTransition;
 
 	ObjectTree* platforms;
 	ObjectTree* movingPlatforms;
@@ -27,7 +29,6 @@ private:
 	int levelWidth;
 	int levelHeight;
 
-	void PlatformCollision();
 	void MovingPlatformUpdate();
 	void SwingingPlatformUpdate();
 };

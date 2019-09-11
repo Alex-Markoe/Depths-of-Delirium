@@ -9,9 +9,12 @@ public:
 	ObjectTree(int levelWidth, int levelHeight);
 	~ObjectTree();
 	void Add(GameObject* item);
-	std::vector<GameObject*> AllObjects();
 	void CollisionDetector(GameObject &reference);
 	void Reset(int levelWidth, int levelHeight);
+	void Render(SDL_Renderer* renderer);
+
+	std::vector<GameObject*> AllObjects();
+	int count;
 
 private:
 	ObjectTreeNode* head;
@@ -25,6 +28,7 @@ private:
 
 	void Add(GameObject* item, ObjectTreeNode* quad);
 	void Reset(ObjectTreeNode* quad);
+	void Render(SDL_Renderer* renderer, ObjectTreeNode* quad);
 	std::vector<GameObject*> AllObjects(ObjectTreeNode* quad);
 };
 
