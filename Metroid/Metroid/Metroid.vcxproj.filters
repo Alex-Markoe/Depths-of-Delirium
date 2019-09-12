@@ -39,6 +39,12 @@
     <ClCompile Include="Transitioner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MovingTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwingingTile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Transitioner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingTile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwingingTile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

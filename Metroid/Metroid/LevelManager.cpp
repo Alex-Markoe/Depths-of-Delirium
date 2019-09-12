@@ -54,7 +54,7 @@ void LevelManager::RenderAll(SDL_Renderer* renderer){
 }
 
 void LevelManager::Init(){
-
+	
 }
 
 void LevelManager::MovingPlatformUpdate(){

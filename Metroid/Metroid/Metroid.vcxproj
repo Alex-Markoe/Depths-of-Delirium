@@ -124,19 +124,23 @@
   <ItemGroup>
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="LevelManager.cpp" />
+    <ClCompile Include="MovingTile.cpp" />
     <ClCompile Include="ObjectTree.cpp" />
     <ClCompile Include="ObjectTreeNode.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SwingingTile.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Transitioner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="LevelManager.h" />
+    <ClInclude Include="MovingTile.h" />
     <ClInclude Include="ObjectTree.h" />
     <ClInclude Include="ObjectTreeNode.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="SwingingTile.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Transitioner.h" />
   </ItemGroup>
