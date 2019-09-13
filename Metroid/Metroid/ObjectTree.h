@@ -12,6 +12,7 @@ public:
 	void CollisionDetector(GameObject &reference);
 	void Reset(int levelWidth, int levelHeight);
 	void Render(SDL_Renderer* renderer);
+	void UpdatePosition();
 
 	std::vector<GameObject*> AllObjects();
 	int count;
@@ -29,6 +30,7 @@ private:
 	void Add(GameObject* item, ObjectTreeNode* quad);
 	void Reset(ObjectTreeNode* quad);
 	void Render(SDL_Renderer* renderer, ObjectTreeNode* quad);
+	void UpdatePosition(ObjectTreeNode* quad);
 	std::vector<GameObject*> AllObjects(ObjectTreeNode* quad);
 };
 

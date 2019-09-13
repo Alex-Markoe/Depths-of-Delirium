@@ -24,9 +24,15 @@ void LevelManager::Update(){
 		platforms->CollisionDetector(*player);
 	}
 	if (movingPlatforms->count != 0){
+		MovingPlatformUpdate();
+		movingPlatforms->UpdatePosition();
+
 		movingPlatforms->CollisionDetector(*player);
 	}
-	if (swingingPlatforms->count != 0){
+	if (swingingPlatforms->count != 0) {
+		SwingingPlatformUpdate();
+		swingingPlatforms->UpdatePosition();
+
 		swingingPlatforms->CollisionDetector(*player);
 	}
 
@@ -58,7 +64,15 @@ void LevelManager::Init(){
 }
 
 void LevelManager::MovingPlatformUpdate(){
+	std::vector<GameObject*> items = movingPlatforms->AllObjects();
 
+	for (unsigned i = 0; i < items.size(); i++){
+		MovingTile* tile = (MovingTile*)items[i];
+
+		if (tile->position.x > tile->destinationPosition.x || tile->position.y > tile->destinationPosition.y
+			|| tile->position.x < tile->initialPosition.x || tile->position.y < tile->initialPosition.y)
+			tile->velocity = {tile->velocity.x * -1, tile->velocity.y * -1};
+	}
 }
 
 void LevelManager::SwingingPlatformUpdate(){

@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "ObjectTree.h"
 #include "Transitioner.h"
+#include "MovingTile.h"
+#include "SwingingTile.h"
 #include <iostream>
 #include <fstream>
 

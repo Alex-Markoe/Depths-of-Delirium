@@ -28,7 +28,7 @@ enum Setting {
 
 };
 
-class Tile : GameObject
+class Tile : public GameObject
 {
 public:
 	Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType type, TileOrientation orientation, Setting setting);

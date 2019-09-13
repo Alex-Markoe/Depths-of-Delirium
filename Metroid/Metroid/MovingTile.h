@@ -2,7 +2,7 @@
 #include "Tile.h"
 #include <SDL.h>
 
-class MovingTile : Tile
+class MovingTile : public Tile
 {
 public:
 	MovingTile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY, TileType type, TileOrientation orientation, Setting setting, SDL_Rect initPos, SDL_Rect destination);

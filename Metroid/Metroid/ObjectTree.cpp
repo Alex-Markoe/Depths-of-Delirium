@@ -248,3 +248,24 @@ void ObjectTree::Render(SDL_Renderer* renderer, ObjectTreeNode* quad) {
 		Render(renderer, quad->quads[0]);
 	}
 }
+
+void ObjectTree::UpdatePosition(){
+	if (head != NULL){
+		UpdatePosition(head);
+	}
+}
+
+void ObjectTree::UpdatePosition(ObjectTreeNode* quad){
+	if (quad->items.size() > 0){
+		for (unsigned i = 0; i <quad->items.size(); i++){
+			quad->items[i]->UpdatePosition();
+		}
+	}
+
+	if (quad->quads[0] != NULL){
+		UpdatePosition(quad->quads[0]);
+		UpdatePosition(quad->quads[1]);
+		UpdatePosition(quad->quads[2]);
+		UpdatePosition(quad->quads[3]);
+	}
+}
