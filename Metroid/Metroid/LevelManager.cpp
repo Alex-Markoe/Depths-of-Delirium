@@ -76,7 +76,19 @@ void LevelManager::MovingPlatformUpdate(){
 }
 
 void LevelManager::SwingingPlatformUpdate(){
+	std::vector<GameObject*> items = swingingPlatforms->AllObjects();
 
+	for (unsigned i = 0; i < items.size(); i++){
+		SwingingTile* tile = (SwingingTile*)items[i];
+
+		/*float angle = 90.f - atan((tile->pivot.y - (tile->position.y + (tile->position.h / 2))) / (tile->pivot.x - (tile->position.x + (tile->position.w / 2))));
+		float gravity = sin(angle) * GRAVITY;*/
+
+		SDL_Point gravOrigin = {(tile->position.x + (tile->position.w / 2)) - tile->pivot.x, (tile->position.y + (tile->position.h / 2)) - tile->pivot.y};
+		SDL_Point gravDest = {(tile->position.x + (tile->position.w / 2)), (tile->position.y + (tile->position.h / 2)) + GRAVITY};
+		tile->velocity.x += gravDest.x - gravOrigin.x;
+		tile->velocity.y += gravDest.y - gravOrigin.y;
+	}
 }
 
 void LevelManager::SetViewport(){

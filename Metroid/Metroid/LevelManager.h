@@ -28,10 +28,13 @@ private:
 
 	std::string roomName;
 	bool transitioning;
+	float swingTimer;
 	int levelWidth;
 	int levelHeight;
 
 	void MovingPlatformUpdate();
 	void SwingingPlatformUpdate();
+
+	const float GRAVITY = 9.8f;
 };
 

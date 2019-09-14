@@ -8,6 +8,7 @@ SwingingTile::SwingingTile(SDL_Rect initPosition, SDL_Rect initSource, int hitbo
 	pivot = pivotPoint;
 
 	destinationPosition = {pivot.x + (pivot.x - initialPosition.x), initialPosition.y};
+	length = sqrt(pow(pivot.x - initialPosition.x, 2) + pow(pivot.y - initialPosition.y, 2));
 }
 
 

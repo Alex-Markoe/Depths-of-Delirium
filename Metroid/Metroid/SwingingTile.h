@@ -11,5 +11,6 @@ public:
 	SDL_Rect initialPosition;
 	SDL_Rect destinationPosition;
 	SDL_Rect pivot;
+	float length;
 };
 
