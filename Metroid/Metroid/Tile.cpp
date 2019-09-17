@@ -47,6 +47,8 @@ Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hi
 			break;
 		case Move:
 			break;
+		case Transition:
+			break;
 		}
 		break;
 

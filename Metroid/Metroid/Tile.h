@@ -8,7 +8,8 @@ enum TileType {
 	Spike,
 	Swing,
 	Move,
-	Platform
+	Platform,
+	Transition
 };
 
 enum TileOrientation {
