@@ -10,9 +10,7 @@ public:
 	SDL_Point Update();
 
 	std::string roomName;
-	int roomNumber;
-
-private:
 	Setting setting;
+	int roomNumber;
 };
 

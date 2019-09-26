@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <string>
 #include <fstream>
+#include <map>
 #include "Player.h"
+#include "LevelManager.h"
 
 //constants for the window size
 const int WINDOW_WIDTH = 640;
@@ -20,7 +22,9 @@ SDL_Window* window = NULL;
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
-SDL_Rect * viewport = new SDL_Rect{ 10, 10, 500, 500};
+std::map<std::string, std::string> textureFiles;
+
+LevelManager level;
 
 SDL_Rect source = { 0, 0, 75, 78 };
 SDL_Rect position = { 200, 200, 0, 0 };
@@ -30,8 +34,6 @@ Player player = { position, source, 0, 0 };
 bool init(){
 	//Initialization flag
 	bool success = true;
-
-	
 
 	//Initalize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -66,8 +68,6 @@ bool init(){
 			}
 		}
 	}
-
-	
 
 	return success;
 }

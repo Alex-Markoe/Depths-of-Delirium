@@ -6,10 +6,11 @@
 #include "SwingingTile.h"
 #include <iostream>
 #include <fstream>
+#include <map>
 
 class LevelManager{
 public:
-	LevelManager();
+	LevelManager(std::map<std::string, std::string> textures, SDL_Renderer* renderer);
 	~LevelManager();
 	void StateUpdate(SDL_Event e);
 	void Update();
@@ -32,8 +33,12 @@ private:
 	uint32_t levelWidth;
 	uint32_t levelHeight;
 
+	std::map<std::string, std::string> textureFiles;
+	SDL_Renderer* gRenderer;
+
 	void MovingPlatformUpdate();
 	void SwingingPlatformUpdate();
+	void AddTile(TileType type, TileOrientation orientation, SDL_Point pivotPos, int locX, int locY);
 
 	const float GRAVITY = 9.81f;
 	const int TILE_SIZE = 30;
