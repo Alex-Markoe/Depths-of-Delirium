@@ -103,7 +103,7 @@ void LevelManager::Init(){
 				//Determine what the tile should look like
 				if(i == 0){ //First row of tiles
 					if (j >= 1){
-						if (tile == 'B'){
+						if (tile == 'B'){ //Background tile
 							if (prevTile == '.' && *nextTile == '.'){
 								type = Platform;
 								orientation = Middle;
@@ -118,26 +118,46 @@ void LevelManager::Init(){
 							}
 						}
 
-						AddTile(type, orientation, pivotPos, j, i); //Add the tile
+						else if (tile == 'F') { //Regular tile
+
+						}
+
+						else if (tile == 'R') { //Moving tile
+
+						}
+
+						else if (tile == 'G') { //Swinging Tile
+
+						}
+
+						if (type != Background)
+							AddTile(type, orientation, pivotPos, j, i); //Add the tile
 					}
 
 					if (j == levelWidth - 1){ //Special logic if it's the last tile
-						if (prevTile == '.'){
-							type = Platform;
-							orientation = Middle;
-						}
-						else{
+						if (*nextTile == 'B') {
 							type = Platform;
 							orientation = Middle;
 						}
 
-						AddTile(type, orientation, pivotPos, j, i); //Add the tile
+						else if (*nextTile == 'F') {
+							type = Platform;
+							orientation = Middle;
+						}
+
+						else {
+							type = Platform;
+							orientation = Middle;
+						}
+
+						if (type != Background)
+							AddTile(type, orientation, pivotPos, j, i); //Add the tile
 					}
 				}
 
 				else{ //All subsequent rows
 					if (j >= 1) {
-						if (tile == 'B'){
+						if (tile == 'B'){ //Background tile
 							if (prevTile == '.' && *nextTile == '.') {
 								if (prevTiles[j] == 'B'){
 									type = Platform;
@@ -170,23 +190,26 @@ void LevelManager::Init(){
 							}
 						}
 
-						AddTile(type, orientation, pivotPos, j, i); //Add the tile
+						else if (tile == 'F'){ //Regular tile
+							
+						}
+
+						else if (tile == 'R'){ //Moving tile
+						
+						}
+
+						else if (tile == 'G') { //Swinging Tile
+
+						}
+
+						if (type != Background)
+							AddTile(type, orientation, pivotPos, j, i); //Add the tile
 					}
 
 					
 
 					if (j == levelWidth - 1) { //Special logic if it's the last tile
-						if (prevTile == '.') {
-							if (prevTiles[j] == 'B') {
-								type = Platform;
-								orientation = Middle;
-							}
-							else {
-								type = Platform;
-								orientation = Middle;
-							}
-						}
-						else {
+						if (*nextTile == 'B'){
 							if (prevTiles[j] == 'B') {
 								type = Platform;
 								orientation = Middle;
@@ -197,12 +220,25 @@ void LevelManager::Init(){
 							}
 						}
 
-						AddTile(type, orientation, pivotPos, j, i); //Add the tile
+						else if (*nextTile == 'F'){
+							if (prevTiles[j] == 'B') {
+								type = Platform;
+								orientation = Middle;
+							}
+							else {
+								type = Platform;
+								orientation = Middle;
+							}
+						}
+
+						else {
+						
+						}
+						
+						if (type != Background)
+							AddTile(type, orientation, pivotPos, j, i); //Add the tile
 					}
 				}
-
-				//Add the new object
-				
 
 				//Update the tiles
 				tile = *nextTile;

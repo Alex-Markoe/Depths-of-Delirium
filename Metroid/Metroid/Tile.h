@@ -9,7 +9,8 @@ enum TileType {
 	Swing,
 	Move,
 	Platform,
-	Transition
+	Transition,
+	Background
 };
 
 enum TileOrientation {
