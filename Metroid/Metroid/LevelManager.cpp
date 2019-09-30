@@ -85,18 +85,18 @@ void LevelManager::Init(){
 
 		char tile = '.';
 		char prevTile = '.';
-		char * nextTile;
+		char * nextTile = NULL;
 		char * prevTiles = new char[levelWidth];
 
 		TileType type = Platform;
 		TileOrientation orientation = Middle;
-		SDL_Point pivotPos;
+		SDL_Point pivotPos = SDL_Point{0,0};
 
-		for (int i = 0; i < levelHeight; i++){
+		for (unsigned i = 0; i < levelHeight; i++){
 			char * currTiles = new char[levelWidth];
 
 			//Loop through each element in the row
-			for (int j = 0; j < levelWidth; j++){
+			for (unsigned j = 0; j < levelWidth; j++){
 				fileRead.read(nextTile, 1);
 				currTiles[j] = *nextTile;
 
@@ -248,7 +248,7 @@ void LevelManager::Init(){
 			//get a list of the previous tiles for tile initialization
 			delete[] prevTiles;
 			prevTiles = new char[levelWidth];
-			for (int k = 0; k < levelWidth; k++){
+			for (unsigned k = 0; k < levelWidth; k++){
 				prevTiles[k] = currTiles[k];
 			}
 			delete[] currTiles;

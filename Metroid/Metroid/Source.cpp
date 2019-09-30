@@ -24,7 +24,7 @@ SDL_Renderer* gRenderer = NULL;
 
 std::map<std::string, std::string> textureFiles;
 
-LevelManager level;
+//LevelManager level;
 
 SDL_Rect source = { 0, 0, 75, 78 };
 SDL_Rect position = { 200, 200, 0, 0 };

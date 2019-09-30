@@ -73,7 +73,7 @@ void ObjectTree::CollisionDetector(GameObject &reference){
 	int collX = reference.hitbox.x - MAX_COLLISION_DIST_X;
 	int collY = reference.hitbox.y - MAX_COLLISION_DIST_Y;
 	int collW = reference.hitbox.w + reference.hitbox.x + MAX_COLLISION_DIST_X;
-	int collY = reference.hitbox.h + reference.hitbox.y + MAX_COLLISION_DIST_Y;
+	int collH = reference.hitbox.h + reference.hitbox.y + MAX_COLLISION_DIST_Y;
 
 	int x = reference.hitbox.x;
 	int y = reference.hitbox.y;
@@ -208,19 +208,19 @@ std::vector<GameObject*> ObjectTree::AllObjects(ObjectTreeNode* quad){
 				items.push_back(moreItems[i]);
 			}
 
-		std::vector<GameObject*> moreItems = AllObjects(quad->quads[1]);
+		moreItems = AllObjects(quad->quads[1]);
 		if (moreItems.size() > 0)
 			for (unsigned i = 0; i < moreItems.size(); i++) {
 				items.push_back(moreItems[i]);
 			}
 
-		std::vector<GameObject*> moreItems = AllObjects(quad->quads[2]);
+		moreItems = AllObjects(quad->quads[2]);
 		if (moreItems.size() > 0)
 			for (unsigned i = 0; i < moreItems.size(); i++) {
 				items.push_back(moreItems[i]);
 			}
 
-		std::vector<GameObject*> moreItems = AllObjects(quad->quads[3]);
+		moreItems = AllObjects(quad->quads[3]);
 		if (moreItems.size() > 0)
 			for (unsigned i = 0; i < moreItems.size(); i++) {
 				items.push_back(moreItems[i]);

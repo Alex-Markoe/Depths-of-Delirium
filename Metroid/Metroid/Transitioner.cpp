@@ -1,7 +1,7 @@
 #include "Transitioner.h"
 
 Transitioner::Transitioner(){
-	roomName = "";
+	roomName = "test.level";
 	setting = Caverns;
 	roomNumber = 1;
 }
@@ -20,9 +20,9 @@ SDL_Point Transitioner::Update(){
 	case Caverns: //Transitions for caverns
 		switch (roomNumber){
 		case 1:
-			roomName = "";
-			x = 0;
-			y = 0;
+			roomName = "test.level";
+			x = 50;
+			y = 50;
 			break;
 		case 2:
 			roomName = "";
