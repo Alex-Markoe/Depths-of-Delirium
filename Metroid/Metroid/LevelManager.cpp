@@ -100,120 +100,76 @@ void LevelManager::Init(){
 			for (unsigned j = 0; j < levelWidth; j++){
 				fileRead.read(nextTile, sizeof(char));
 				currTiles[j] = *nextTile;
+				if (j == 0)
+					tile = nextTile[0];
 
 				//Determine what the tile should look like
 				if(i == 0){ //First row of tiles
-					if (j == levelWidth - 1) { //Special logic if it's the last tile
-						if (*nextTile == 'B') {
-							type = Background;
-						}
 
-						else if (*nextTile == 'F') {
-							type = Platform;
-							orientation = Middle;
-						}
-
-						else {
-							type = Platform;
-							orientation = Middle;
-						}
-
-						if (type != Background)
-							AddTile(type, orientation, pivotPos, j, i); //Add the tile
+					if (tile == 'B'){ //Background tile
+						type = Background;
 					}
 
-					if (j >= 1){
-						if (tile == 'B'){ //Background tile
-							type = Background;
-						}
+					else if (tile == 'F') { //Regular tile
+						type = Platform;
+						if (prevTile == '.' && *nextTile == '.')
+							orientation = Middle;
+						else if (prevTile == '.' && *nextTile == '.')
+							orientation = Middle;
+						else
+							orientation = Middle;
+					}
 
-						else if (tile == 'F') { //Regular tile
-							type = Platform;
-							if (prevTile == '.' && *nextTile == '.')
-								orientation = Middle;
-							else if (prevTile == '.' && *nextTile == '.')
+					else if (tile == 'R') { //Moving tile
+						type = Move;
+					}
+
+					else if (tile == 'G') { //Swinging Tile
+						type = Swing;
+					}
+
+					if (type != Background)
+						AddTile(type, orientation, pivotPos, j, i); //Add the tile
+				}
+
+				else{ //All subsequent rows
+
+					if (tile == 'B'){ //Background tile
+						type = Background;
+					}
+
+					else if (tile == 'F'){ //Regular tile
+						type = Platform;
+						if (prevTile == '.' && *nextTile == '.') {
+							if (prevTiles[j] == 'B')
 								orientation = Middle;
 							else
 								orientation = Middle;
 						}
-
-						else if (tile == 'R') { //Moving tile
-							type = Move;
-						}
-
-						else if (tile == 'G') { //Swinging Tile
-							type = Swing;
-						}
-
-						if (type != Background)
-							AddTile(type, orientation, pivotPos, j, i); //Add the tile
-					}
-				}
-
-				else{ //All subsequent rows
-					if (j == levelWidth - 1) { //Special logic if it's the last tile
-						if (*nextTile == 'B') {
-							type = Background;
-						}
-
-						else if (*nextTile == 'F') {
-							if (prevTiles[j] == 'B') {
-								type = Platform;
+						else if (prevTile == '.' && *nextTile == '.') {
+							if (prevTiles[j] == 'B')
 								orientation = Middle;
-							}
-							else {
-								type = Platform;
+							else
 								orientation = Middle;
-							}
 						}
-
 						else {
-							type = Platform;
-							orientation = Middle;
+							if (prevTiles[j] == 'B')
+								orientation = Middle;
+							else
+								orientation = Middle;
 						}
-
-						if (type != Background)
-							AddTile(type, orientation, pivotPos, j, i); //Add the tile
 					}
 
-					if (j >= 1) {
-						if (tile == 'B'){ //Background tile
-							type = Background;
-						}
-
-						else if (tile == 'F'){ //Regular tile
-							type = Platform;
-							if (prevTile == '.' && *nextTile == '.') {
-								if (prevTiles[j] == 'B')
-									orientation = Middle;
-								else
-									orientation = Middle;
-							}
-							else if (prevTile == '.' && *nextTile == '.') {
-								if (prevTiles[j] == 'B')
-									orientation = Middle;
-								else
-									orientation = Middle;
-							}
-							else {
-								if (prevTiles[j] == 'B')
-									orientation = Middle;
-								else
-									orientation = Middle;
-							}
-						}
-
-						else if (tile == 'R'){ //Moving tile
-							type = Move;
-						}
-
-						else if (tile == 'G') { //Swinging Tile
-							type = Swing;
-						}
-
-						if (type != Background)
-							AddTile(type, orientation, pivotPos, j, i); //Add the tile
+					else if (tile == 'R'){ //Moving tile
+						type = Move;
 					}
+
+					else if (tile == 'G') { //Swinging Tile
+						type = Swing;
+					}
+
+					if (type != Background)
+						AddTile(type, orientation, pivotPos, j, i); //Add the tile
 				}
 
 				//Update the tiles
