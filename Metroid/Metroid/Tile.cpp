@@ -51,9 +51,10 @@ Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hi
 			break;
 		}
 		break;
-
-
 	}
+
+	sourceRect.x = sourceX;
+	sourceRect.y = sourceY;
 }
 
 

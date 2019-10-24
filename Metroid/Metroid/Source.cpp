@@ -24,11 +24,11 @@ SDL_Renderer* gRenderer = NULL;
 
 std::map<std::string, std::string> textureFiles;
 
-//LevelManager level;
+LevelManager* level;
 
-SDL_Rect source = { 0, 0, 75, 78 };
-SDL_Rect position = { 200, 200, 0, 0 };
-Player player = { position, source, 0, 0 };
+//SDL_Rect source = { 0, 0, 75, 78 };
+//SDL_Rect position = { 200, 200, 0, 0 };
+//Player player = { position, source, 0, 0 };
 
 //Initalization function, handles all required logic for startup
 bool init(){
@@ -81,7 +81,9 @@ bool loadMedia() {
 	textureFiles["TileSheet"] = "Assets/TileSpriteSheet.png";
 
 	//Load in all assets
-	player.loadTexture("Assets/WizardSpriteSheet.png", gRenderer);
+	/*player.loadTexture("Assets/WizardSpriteSheet.png", gRenderer);*/
+	level = new LevelManager(textureFiles, gRenderer);
+	level->Init();
 
 	return success;
 }
@@ -125,17 +127,20 @@ int main(int argc, char* args[]) {
 					}
 
 					//Call all necessary update methods
-					player.UpdateState(e);
+					/*player.UpdateState(e);*/
+					level->StateUpdate(e);
 				}
 				//Update all necessary position values
-				player.Update();
-				player.UpdatePosition();
+				/*player.Update();
+				player.UpdatePosition();*/
+				level->Update();
 
 				//Clear the screen
 				SDL_RenderClear(gRenderer);
 				
 				//Call any draw methods for any gameobjects
-				player.Draw(gRenderer);
+				/*player.Draw(gRenderer);*/
+				level->RenderAll(gRenderer);
 
 				//Upate the screen
 				SDL_RenderPresent(gRenderer);

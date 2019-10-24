@@ -21,7 +21,7 @@ public:
 
 private:
 	Player* player;
-	Transitioner lvlTransition;
+	Transitioner* lvlTransition;
 
 	ObjectTree* platforms;
 	ObjectTree* movingPlatforms;

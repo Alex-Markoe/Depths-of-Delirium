@@ -40,5 +40,6 @@ public:
 private:
 	TileOrientation orientation;
 	Setting setting;
+	const int TILE_SIZE = 30;
 };
 
