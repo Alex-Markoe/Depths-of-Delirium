@@ -45,7 +45,7 @@ void Player::UpdateState(SDL_Event& e){
 		switch(e.key.keysym.sym){
 		case SDLK_w:
 			playerState = Jump;
-			velocity.x = 0;
+			/*velocity.x = 0;*/
 			velocity.y -= 5;
 			break;
 		case SDLK_s:
@@ -89,6 +89,14 @@ void Player::Update(){
 	//Call the other update methods
 	UpdateAnimation();
 	UpdateFrame();
+
+	if (gravity < TERMINAL_VELOCITY)
+		gravity++;
+
+	velocity.y += gravity;
+
+	if (gravity > 5)
+		gravity = gravity;
 
 	//Update the position and previous state
 	previousState = playerState;

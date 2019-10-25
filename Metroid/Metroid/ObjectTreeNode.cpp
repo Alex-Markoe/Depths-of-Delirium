@@ -46,6 +46,6 @@ void ObjectTreeNode::Divide(){
 	}
 
 	for (unsigned i = 0; i < toRemove.size(); i++){
-		items.erase(items.begin() + toRemove[i] - 1);
+		items.erase(items.begin() + toRemove[toRemove.size() - 1 - i]);
 	}
 }

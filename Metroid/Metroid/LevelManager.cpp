@@ -83,6 +83,9 @@ void LevelManager::Init(){
 	if (fileRead.is_open()){
 		fileRead.read(reinterpret_cast<char*>(&levelHeight), sizeof(levelHeight));
 		fileRead.read(reinterpret_cast<char*>(&levelWidth), sizeof(levelWidth));
+		platforms->Reset(levelWidth * TILE_SIZE, levelHeight * TILE_SIZE);
+		movingPlatforms->Reset(levelWidth * TILE_SIZE, levelHeight * TILE_SIZE);
+		swingingPlatforms->Reset(levelWidth * TILE_SIZE, levelHeight * TILE_SIZE);
 
 		char tile = '.';
 		char prevTile = '.';
@@ -98,10 +101,15 @@ void LevelManager::Init(){
 
 			//Loop through each element in the row
 			for (unsigned j = 0; j < levelWidth; j++){
-				fileRead.read(nextTile, sizeof(char));
-				currTiles[j] = *nextTile;
-				if (j == 0)
+				if (j < levelWidth - 1)
+					fileRead.read(nextTile, sizeof(char));
+				else
 					tile = nextTile[0];
+				if (j == 0) {
+					tile = nextTile[0];
+					fileRead.read(nextTile, sizeof(char));
+				}
+				currTiles[j] = tile;
 
 				//Determine what the tile should look like
 				if(i == 0){ //First row of tiles

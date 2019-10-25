@@ -28,5 +28,7 @@ public:
 private:
 	PSTATE playerState;
 	PSTATE previousState;
+
+	const float TERMINAL_VELOCITY = 6.f;
 };
 

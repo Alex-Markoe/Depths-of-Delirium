@@ -70,6 +70,6 @@ void GameObject::setAnim(int sourceX, int sourceY, int maxFrame) {
 void GameObject::UpdatePosition(){
 	position.x += velocity.x;
 	position.y += velocity.y;
-	hitbox.x += velocity.x + HITBOX_OFFSET_X;
-	hitbox.y += velocity.y + HITBOX_OFFSET_Y;
+	hitbox.x = position.x + HITBOX_OFFSET_X;
+	hitbox.y = position.y + HITBOX_OFFSET_Y;
 }

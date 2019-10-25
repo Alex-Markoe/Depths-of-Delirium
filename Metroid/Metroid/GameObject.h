@@ -20,6 +20,7 @@ public:
 	SDL_Rect position;
 	SDL_Rect sourceRect;
 	SDL_Rect hitbox;
+	float gravity;
 
 protected:
 	SDL_Texture* texture;

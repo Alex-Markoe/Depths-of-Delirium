@@ -1,6 +1,7 @@
 #include "ObjectTree.h"
 #include "Tile.h"
 
+//Constructor
 ObjectTree::ObjectTree(int levelWidth, int levelHeight){
 	head = new ObjectTreeNode(SDL_Rect{0, 0, levelWidth, levelHeight});
 }
@@ -26,19 +27,19 @@ void ObjectTree::Add(GameObject* item, ObjectTreeNode* quad){
 		}
 	}
 	else{
-		if (item->position.x >= quad->quads[0]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[0]->dimensions.w + quad->quads[0]->dimensions.x &&
-			item->position.y >= quad->quads[0]->dimensions.y && item->position.y + item->sourceRect.h <= quad->quads[0]->dimensions.h + quad->quads[0]->dimensions.y){
+		if (item->position.x >= quad->quads[0]->dimensions.x && item->position.x + item->sourceRect.w < quad->quads[0]->dimensions.w + quad->quads[0]->dimensions.x &&
+			item->position.y >= quad->quads[0]->dimensions.y && item->position.y + item->sourceRect.h < quad->quads[0]->dimensions.h + quad->quads[0]->dimensions.y){
 			Add(item, quad->quads[0]);
 		}
-		if (item->position.x >= quad->quads[1]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[1]->dimensions.w + quad->quads[1]->dimensions.x &&
-			item->position.y >= quad->quads[1]->dimensions.y && item->position.y + item->sourceRect.h <= quad->quads[1]->dimensions.h + quad->quads[1]->dimensions.y){
+		else if (item->position.x >= quad->quads[1]->dimensions.x && item->position.x + item->sourceRect.w < quad->quads[1]->dimensions.w + quad->quads[1]->dimensions.x &&
+			item->position.y >= quad->quads[1]->dimensions.y && item->position.y + item->sourceRect.h < quad->quads[1]->dimensions.h + quad->quads[1]->dimensions.y){
 			Add(item, quad->quads[1]);
 		}
-		if (item->position.x >= quad->quads[2]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[2]->dimensions.w + quad->quads[2]->dimensions.x &&
+		else if (item->position.x >= quad->quads[2]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[2]->dimensions.w + quad->quads[2]->dimensions.x &&
 			item->position.y >= quad->quads[2]->dimensions.y && item->position.y + item->sourceRect.h <= quad->quads[2]->dimensions.h + quad->quads[2]->dimensions.y){
 			Add(item, quad->quads[2]);
 		}
-		if (item->position.x >= quad->quads[3]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[3]->dimensions.w + quad->quads[3]->dimensions.x &&
+		else if (item->position.x >= quad->quads[3]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[3]->dimensions.w + quad->quads[3]->dimensions.x &&
 			item->position.y >= quad->quads[3]->dimensions.y && item->position.y + item->sourceRect.h <= quad->quads[3]->dimensions.h + quad->quads[3]->dimensions.y){
 			Add(item, quad->quads[3]);
 		}
@@ -51,11 +52,11 @@ void ObjectTree::Add(GameObject* item, ObjectTreeNode* quad){
 //Remove all nodes from the tree
 void ObjectTree::Reset(int levelWidth, int levelHeight){
 	Reset(head);
-	delete head;
 	head = new ObjectTreeNode(SDL_Rect{0, 0, levelWidth, levelHeight});
 	count = 0;
 }
 
+//Remove all nodes
 void ObjectTree::Reset(ObjectTreeNode* quad){
 	if (quad->quads[0] != NULL){
 		Reset(quad->quads[0]);
@@ -66,10 +67,7 @@ void ObjectTree::Reset(ObjectTreeNode* quad){
 	delete quad;
 }
 
-
-void ObjectTree::CollisionDetector(GameObject &reference){
-	ObjectTreeNode* current = head;
-
+void ObjectTree::CollisionDetector(GameObject &reference) {
 	int collX = reference.hitbox.x - MAX_COLLISION_DIST_X;
 	int collY = reference.hitbox.y - MAX_COLLISION_DIST_Y;
 	int collW = reference.hitbox.w + reference.hitbox.x + MAX_COLLISION_DIST_X;
@@ -79,106 +77,104 @@ void ObjectTree::CollisionDetector(GameObject &reference){
 	int y = reference.hitbox.y;
 	int width = reference.hitbox.x + reference.hitbox.w;
 	int height = reference.hitbox.y + reference.hitbox.h;
-	int centerX = (reference.hitbox.w / 2) + reference.hitbox.x;
-	int centerY = (reference.hitbox.h / 2) + reference.hitbox.y;
+	CollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Rect{ x, y, width, height });
+}
 
-	while (current != NULL){
+//determine if the referenced object is colliding with any objects in its relevant quads
+void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Rect pHPos){
+	if (quad->items.size() > 0){
+		for (unsigned i = 0; i < quad->items.size(); i++) {
 
-		if (current->items.size() > 0){
-			for (unsigned i = 0; i < current->items.size(); i++) {
+			int depthXLeft = pHPos.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + reference.velocity.x;
+			int depthXRight = pHPos.w - quad->items[i]->hitbox.x + reference.velocity.x;
+			int depthYTop = pHPos.y - (quad->items[i]->hitbox.h + quad->items[i]->hitbox.y) + reference.velocity.y;
+			int depthYBottom = pHPos.h - quad->items[i]->hitbox.y + reference.velocity.y;
 
-				int depthX = centerX - ((current->items[i]->hitbox.w / 2) + current->items[i]->hitbox.x) + reference.velocity.x;
-				int depthY = centerY - ((current->items[i]->hitbox.h / 2) + current->items[i]->hitbox.y) + reference.velocity.y;
-				
-				//Check the x direction
-				if (depthX <= 0 && depthX > -MAX_DEPTH_X
-					&& ((y > current->items[i]->hitbox.y && y < current->items[i]->hitbox.y + current->items[i]->hitbox.h)
-						|| (height > current->items[i]->hitbox.y && height < current->items[i]->hitbox.y + current->items[i]->hitbox.h))) {
-					Tile * t = (Tile*)current->items[i];
-					switch (t->type) {
-					case Bounce:
-						reference.velocity.x = BOUNCE_VELOCITY;
-						break;
-					default:
-						reference.velocity.x += depthX;
-						break;
-					}
+			//Check the x direction | left check
+			if (depthXLeft <= 0 && depthXLeft > -MAX_DEPTH_X
+				&& ((pHPos.y > quad->items[i]->hitbox.y && pHPos.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)
+				|| (pHPos.h > quad->items[i]->hitbox.y && pHPos.h < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h))) {
+				Tile * t = (Tile*)quad->items[i];
+				switch (t->type) {
+				case Bounce:
+					reference.velocity.x = BOUNCE_VELOCITY;
+					break;
+				default:
+					reference.velocity.x -= depthXLeft;
+					break;
 				}
-				else if (depthX >= 0 && depthX < MAX_DEPTH_X
-					&& ((y > current->items[i]->hitbox.y && y < current->items[i]->hitbox.y + current->items[i]->hitbox.h)
-						|| (height > current->items[i]->hitbox.y && height < current->items[i]->hitbox.y + current->items[i]->hitbox.h))) {
-					Tile * t = (Tile*)current->items[i];
-					switch (t->type) {
-					case Bounce:
-						reference.velocity.x = -BOUNCE_VELOCITY;
-						break;
-					default:
-						reference.velocity.x -= depthX;
-						break;
-					}
+			}
+			//right check
+			else if (depthXRight >= 0 && depthXRight < MAX_DEPTH_X
+				&& ((pHPos.y > quad->items[i]->hitbox.y && pHPos.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)
+				|| (pHPos.h > quad->items[i]->hitbox.y && pHPos.h < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h))) {
+				Tile * t = (Tile*)quad->items[i];
+				switch (t->type) {
+				case Bounce:
+					reference.velocity.x = -BOUNCE_VELOCITY;
+					break;
+				default:
+					reference.velocity.x -= depthXRight;
+					break;
 				}
+			}
 
-				//Check the y direction
-				if (depthY <= 0 && depthY > -MAX_DEPTH_Y
-					&& ((x > current->items[i]->hitbox.x && x < current->items[i]->hitbox.x + current->items[i]->hitbox.w)
-						|| (width > current->items[i]->hitbox.x && width < current->items[i]->hitbox.x + current->items[i]->hitbox.w))) {
-					Tile * t = (Tile*)current->items[i];
-					switch (t->type) {
-					case Bounce:
-						reference.velocity.y = BOUNCE_VELOCITY;
-						break;
-					default:
-						reference.velocity.y += depthY;
-						break;
-					}
+			//Check the y direction | descending
+			if (depthYBottom >= 0 && depthYBottom < MAX_DEPTH_Y
+				&& ((pHPos.x >= quad->items[i]->hitbox.x && pHPos.x <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
+				|| (pHPos.w >= quad->items[i]->hitbox.x && pHPos.w <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w))) {
+				Tile * t = (Tile*)quad->items[i];
+				switch (t->type) {
+				case Bounce:
+					reference.velocity.y = BOUNCE_VELOCITY;
+					break;
+				default:
+					reference.velocity.y -= depthYBottom;
+					reference.gravity = 0;
+					break;
 				}
-				else if (depthY >= 0 && depthY < MAX_DEPTH_Y
-					&& ((x > current->items[i]->hitbox.x && x < current->items[i]->hitbox.x + current->items[i]->hitbox.w)
-						|| (width > current->items[i]->hitbox.x && width < current->items[i]->hitbox.x + current->items[i]->hitbox.w))) {
-					Tile * t = (Tile*)current->items[i];
-					switch (t->type) {
-					case Bounce:
-						reference.velocity.y = -BOUNCE_VELOCITY;
-						break;
-					default:
-						reference.velocity.y += depthY;
-						break;
-					}
+			}
+			//ascending
+			else if (depthYTop <= 0 && depthYTop > -MAX_DEPTH_Y
+				&& ((pHPos.x >= quad->items[i]->hitbox.x && pHPos.x <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
+				|| (pHPos.w >= quad->items[i]->hitbox.x && pHPos.w <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w))) {
+				Tile * t = (Tile*)quad->items[i];
+				switch (t->type) {
+				case Bounce:
+					reference.velocity.y = -BOUNCE_VELOCITY;
+					break;
+				default:
+					reference.velocity.y += depthYTop;
+					break;
 				}
 			}
 		}
+	}
 
-		if (current->quads[0] != NULL){
-			if (((collX >= current->quads[0]->dimensions.x && collX <= current->quads[0]->dimensions.x + current->quads[0]->dimensions.w) 
-				|| (collW >= current->quads[0]->dimensions.x && collW <= current->quads[0]->dimensions.x + current->quads[0]->dimensions.w)) &&
-				((collY >= current->quads[0]->dimensions.y && collY <= current->quads[0]->dimensions.y + current->quads[0]->dimensions.h)
-				|| (collY >= current->quads[0]->dimensions.y && collY <= current->quads[0]->dimensions.y + current->quads[0]->dimensions.h))) {
-				current = head->quads[0];
-			}
-			if (((collX >= current->quads[1]->dimensions.x && collX <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)
-				|| (collW >= current->quads[1]->dimensions.x && collW <= current->quads[1]->dimensions.x + current->quads[1]->dimensions.w)) &&
-				((collY >= current->quads[1]->dimensions.y && collY <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h)
-				|| (collY >= current->quads[1]->dimensions.y && collY <= current->quads[1]->dimensions.y + current->quads[1]->dimensions.h))) {
-				current = head->quads[1];
-			}
-			if (((collX >= current->quads[2]->dimensions.x && collX <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)
-				|| (collW >= current->quads[2]->dimensions.x && collW <= current->quads[2]->dimensions.x + current->quads[2]->dimensions.w)) &&
-				((collY >= current->quads[2]->dimensions.y && collY <= current->quads[2]->dimensions.y + current->quads[2]->dimensions.h)
-					|| (collY >= current->quads[2]->dimensions.y && collY <= current->quads[2]->dimensions.y + current->quads[2]->dimensions.h))) {
-				current = head->quads[2];
-			}
-			if (((collX >= current->quads[3]->dimensions.x && collX <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)
-				|| (collW >= current->quads[3]->dimensions.x && collW <= current->quads[3]->dimensions.x + current->quads[3]->dimensions.w)) &&
-				((collY >= current->quads[3]->dimensions.y && collY <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h)
-				|| (collY >= current->quads[3]->dimensions.y && collY <= current->quads[3]->dimensions.y + current->quads[3]->dimensions.h))) {
-				current = head->quads[3];
-			}
-			else{
-				current = NULL;
-			}
+	if (quad->quads[0] != NULL){
+		if (((coll.x >= quad->quads[0]->dimensions.x && coll.x <= quad->quads[0]->dimensions.x + quad->quads[0]->dimensions.w) 
+			|| (coll.w >= quad->quads[0]->dimensions.x && coll.w <= quad->quads[0]->dimensions.x + quad->quads[0]->dimensions.w)) &&
+			((coll.y >= quad->quads[0]->dimensions.y && coll.y <= quad->quads[0]->dimensions.y + quad->quads[0]->dimensions.h)
+			|| (coll.h >= quad->quads[0]->dimensions.y && coll.h <= quad->quads[0]->dimensions.y + quad->quads[0]->dimensions.h))) {
+			CollisionDetector(reference, quad->quads[0], coll, pHPos);
 		}
-		else{
-			current = NULL;
+		if (((coll.x >= quad->quads[1]->dimensions.x && coll.x <= quad->quads[1]->dimensions.x + quad->quads[1]->dimensions.w)
+			|| (coll.w >= quad->quads[1]->dimensions.x && coll.w <= quad->quads[1]->dimensions.x + quad->quads[1]->dimensions.w)) &&
+			((coll.y >= quad->quads[1]->dimensions.y && coll.y <= quad->quads[1]->dimensions.y + quad->quads[1]->dimensions.h)
+			|| (coll.h >= quad->quads[1]->dimensions.y && coll.h <= quad->quads[1]->dimensions.y + quad->quads[1]->dimensions.h))) {
+			CollisionDetector(reference, quad->quads[1], coll, pHPos);
+		}
+		if (((coll.x >= quad->quads[2]->dimensions.x && coll.x <= quad->quads[2]->dimensions.x + quad->quads[2]->dimensions.w)
+			|| (coll.w >= quad->quads[2]->dimensions.x && coll.w <= quad->quads[2]->dimensions.x + quad->quads[2]->dimensions.w)) &&
+			((coll.y >= quad->quads[2]->dimensions.y && coll.y <= quad->quads[2]->dimensions.y + quad->quads[2]->dimensions.h)
+			|| (coll.h >= quad->quads[2]->dimensions.y && coll.h <= quad->quads[2]->dimensions.y + quad->quads[2]->dimensions.h))) {
+			CollisionDetector(reference, quad->quads[2], coll, pHPos);
+		}
+		if (((coll.x >= quad->quads[3]->dimensions.x && coll.x <= quad->quads[3]->dimensions.x + quad->quads[3]->dimensions.w)
+			|| (coll.w >= quad->quads[3]->dimensions.x && coll.w <= quad->quads[3]->dimensions.x + quad->quads[3]->dimensions.w)) &&
+			((coll.y >= quad->quads[3]->dimensions.y && coll.y <= quad->quads[3]->dimensions.y + quad->quads[3]->dimensions.h)
+			|| (coll.h >= quad->quads[3]->dimensions.y && coll.h <= quad->quads[3]->dimensions.y + quad->quads[3]->dimensions.h))) {
+			CollisionDetector(reference, quad->quads[3], coll, pHPos);
 		}
 	}
 }
@@ -194,6 +190,7 @@ std::vector<GameObject*> ObjectTree::AllObjects(){
 	}
 }
 
+//Get all objects in the tree
 std::vector<GameObject*> ObjectTree::AllObjects(ObjectTreeNode* quad){
 	std::vector<GameObject*> items = std::vector<GameObject*>();
 
@@ -230,11 +227,14 @@ std::vector<GameObject*> ObjectTree::AllObjects(ObjectTreeNode* quad){
 	return items;
 }
 
+//public version of the render method
 void ObjectTree::Render(SDL_Renderer* renderer){
 	if (head != NULL)
 		Render(renderer, head);
 }
 
+//loop through all the objects in the tree and call their respective render
+//methods
 void ObjectTree::Render(SDL_Renderer* renderer, ObjectTreeNode* quad) {
 	if (quad->items.size() > 0)
 		for (unsigned i = 0; i < quad->items.size(); i++){
@@ -243,18 +243,21 @@ void ObjectTree::Render(SDL_Renderer* renderer, ObjectTreeNode* quad) {
 
 	if (quad->quads[0] != NULL){
 		Render(renderer, quad->quads[0]);
-		Render(renderer, quad->quads[0]);
-		Render(renderer, quad->quads[0]);
-		Render(renderer, quad->quads[0]);
+		Render(renderer, quad->quads[1]);
+		Render(renderer, quad->quads[2]);
+		Render(renderer, quad->quads[3]);
 	}
 }
 
+//public version of position update method
 void ObjectTree::UpdatePosition(){
 	if (head != NULL){
 		UpdatePosition(head);
 	}
 }
 
+//loop through the tree and call all the Update position methods
+//for each object | specialized for moving/swinging platforms
 void ObjectTree::UpdatePosition(ObjectTreeNode* quad){
 	if (quad->items.size() > 0){
 		for (unsigned i = 0; i <quad->items.size(); i++){
@@ -268,4 +271,8 @@ void ObjectTree::UpdatePosition(ObjectTreeNode* quad){
 		UpdatePosition(quad->quads[2]);
 		UpdatePosition(quad->quads[3]);
 	}
+}
+
+void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item) {
+
 }

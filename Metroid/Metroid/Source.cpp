@@ -127,19 +127,15 @@ int main(int argc, char* args[]) {
 					}
 
 					//Call all necessary update methods
-					/*player.UpdateState(e);*/
 					level->StateUpdate(e);
 				}
 				//Update all necessary position values
-				/*player.Update();
-				player.UpdatePosition();*/
 				level->Update();
 
 				//Clear the screen
 				SDL_RenderClear(gRenderer);
 				
 				//Call any draw methods for any gameobjects
-				/*player.Draw(gRenderer);*/
 				level->RenderAll(gRenderer);
 
 				//Upate the screen
