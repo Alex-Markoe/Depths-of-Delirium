@@ -27,12 +27,12 @@ void ObjectTree::Add(GameObject* item, ObjectTreeNode* quad){
 		}
 	}
 	else{
-		if (item->position.x >= quad->quads[0]->dimensions.x && item->position.x + item->sourceRect.w < quad->quads[0]->dimensions.w + quad->quads[0]->dimensions.x &&
-			item->position.y >= quad->quads[0]->dimensions.y && item->position.y + item->sourceRect.h < quad->quads[0]->dimensions.h + quad->quads[0]->dimensions.y){
+		if (item->position.x >= quad->quads[0]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[0]->dimensions.w + quad->quads[0]->dimensions.x &&
+			item->position.y >= quad->quads[0]->dimensions.y && item->position.y + item->sourceRect.h <= quad->quads[0]->dimensions.h + quad->quads[0]->dimensions.y){
 			Add(item, quad->quads[0]);
 		}
-		else if (item->position.x >= quad->quads[1]->dimensions.x && item->position.x + item->sourceRect.w < quad->quads[1]->dimensions.w + quad->quads[1]->dimensions.x &&
-			item->position.y >= quad->quads[1]->dimensions.y && item->position.y + item->sourceRect.h < quad->quads[1]->dimensions.h + quad->quads[1]->dimensions.y){
+		else if (item->position.x >= quad->quads[1]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[1]->dimensions.w + quad->quads[1]->dimensions.x &&
+			item->position.y >= quad->quads[1]->dimensions.y && item->position.y + item->sourceRect.h <= quad->quads[1]->dimensions.h + quad->quads[1]->dimensions.y){
 			Add(item, quad->quads[1]);
 		}
 		else if (item->position.x >= quad->quads[2]->dimensions.x && item->position.x + item->sourceRect.w <= quad->quads[2]->dimensions.w + quad->quads[2]->dimensions.x &&

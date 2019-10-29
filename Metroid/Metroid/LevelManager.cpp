@@ -196,6 +196,7 @@ void LevelManager::Init(){
 			char tile = '.';
 			char prevTile = '.';
 		}
+		delete[] prevTiles;
 	}
 }
 

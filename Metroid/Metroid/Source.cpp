@@ -8,8 +8,8 @@
 #include "LevelManager.h"
 
 //constants for the window size
-const int WINDOW_WIDTH = 640;
-const int WINDOW_HEIGHT = 480;
+const int WINDOW_WIDTH = 1920;
+const int WINDOW_HEIGHT = 1080;
 
 //Three functions used for the main parts of the game loop
 bool init();
@@ -25,10 +25,19 @@ SDL_Renderer* gRenderer = NULL;
 std::map<std::string, std::string> textureFiles;
 
 LevelManager* level;
+SDL_Rect display;
 
-//SDL_Rect source = { 0, 0, 75, 78 };
-//SDL_Rect position = { 200, 200, 0, 0 };
-//Player player = { position, source, 0, 0 };
+//function to get the display bounds and set the resolution
+bool SetDisplay (){
+	bool success = true;
+	if (SDL_GetDisplayBounds(0, &display) != 0) {
+		success = false;
+	}
+	window = SDL_CreateWindow("Cool Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, display.w, display.h, SDL_WINDOW_SHOWN);
+	if (window == NULL) 
+		success = false;
+	return success;
+}
 
 //Initalization function, handles all required logic for startup
 bool init(){
@@ -43,8 +52,7 @@ bool init(){
 	else
 	{
 		//Create the program window
-		window = SDL_CreateWindow("Cool Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-		if (window == NULL) {
+		if (!SetDisplay()) {
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			success = false;
 		}
