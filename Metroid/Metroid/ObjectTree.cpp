@@ -82,72 +82,29 @@ void ObjectTree::CollisionDetector(GameObject &reference) {
 
 //determine if the referenced object is colliding with any objects in its relevant quads
 void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Rect pHPos){
-	if (quad->items.size() > 0){
-		for (unsigned i = 0; i < quad->items.size(); i++) {
+	for (unsigned i = 0; i < quad->items.size(); i++) {
 
-			int depthXLeft = pHPos.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + reference.velocity.x;
-			int depthXRight = pHPos.w - quad->items[i]->hitbox.x + reference.velocity.x;
-			int depthYTop = pHPos.y - (quad->items[i]->hitbox.h + quad->items[i]->hitbox.y) + reference.velocity.y;
-			int depthYBottom = pHPos.h - quad->items[i]->hitbox.y + reference.velocity.y;
+		int depthXLeft = pHPos.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + reference.acceleration.x + reference.velocity.x;
+		int depthXRight = pHPos.w - quad->items[i]->hitbox.x + reference.acceleration.x + reference.velocity.x;
+		int depthYTop = pHPos.y - (quad->items[i]->hitbox.h + quad->items[i]->hitbox.y) + reference.acceleration.y + reference.velocity.y;
+		int depthYBottom = pHPos.h - quad->items[i]->hitbox.y + reference.acceleration.y + reference.velocity.y;
 
-			//Check the x direction | left check
-			if (depthXLeft <= 0 && depthXLeft > -MAX_DEPTH_X
-				&& ((pHPos.y > quad->items[i]->hitbox.y && pHPos.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)
-				|| (pHPos.h > quad->items[i]->hitbox.y && pHPos.h < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h))) {
-				Tile * t = (Tile*)quad->items[i];
-				switch (t->type) {
-				case Bounce:
-					reference.velocity.x = BOUNCE_VELOCITY;
-					break;
-				default:
-					reference.velocity.x -= depthXLeft;
-					break;
-				}
-			}
-			//right check
-			else if (depthXRight >= 0 && depthXRight < MAX_DEPTH_X
-				&& ((pHPos.y > quad->items[i]->hitbox.y && pHPos.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)
-				|| (pHPos.h > quad->items[i]->hitbox.y && pHPos.h < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h))) {
-				Tile * t = (Tile*)quad->items[i];
-				switch (t->type) {
-				case Bounce:
-					reference.velocity.x = -BOUNCE_VELOCITY;
-					break;
-				default:
-					reference.velocity.x -= depthXRight;
-					break;
-				}
-			}
+		//Check the x direction
+		if ((pHPos.y > quad->items[i]->hitbox.y && pHPos.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)
+			|| (pHPos.h > quad->items[i]->hitbox.y && pHPos.h < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)) {
+			if (depthXLeft <= 0 && depthXLeft > -MAX_DEPTH_X) //left
+				CollisionHandler(reference, quad->items[i], true, depthXLeft);
+			else if (depthXRight >= 0 && depthXRight < MAX_DEPTH_X) //right
+				CollisionHandler(reference, quad->items[i], true, depthXRight);
+		}
 
-			//Check the y direction | descending
-			if (depthYBottom >= 0 && depthYBottom < MAX_DEPTH_Y
-				&& ((pHPos.x >= quad->items[i]->hitbox.x && pHPos.x <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
-				|| (pHPos.w >= quad->items[i]->hitbox.x && pHPos.w <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w))) {
-				Tile * t = (Tile*)quad->items[i];
-				switch (t->type) {
-				case Bounce:
-					reference.velocity.y = BOUNCE_VELOCITY;
-					break;
-				default:
-					reference.velocity.y -= depthYBottom;
-					reference.gravity = 0;
-					break;
-				}
-			}
-			//ascending
-			else if (depthYTop <= 0 && depthYTop > -MAX_DEPTH_Y
-				&& ((pHPos.x >= quad->items[i]->hitbox.x && pHPos.x <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
-				|| (pHPos.w >= quad->items[i]->hitbox.x && pHPos.w <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w))) {
-				Tile * t = (Tile*)quad->items[i];
-				switch (t->type) {
-				case Bounce:
-					reference.velocity.y = -BOUNCE_VELOCITY;
-					break;
-				default:
-					reference.velocity.y += depthYTop;
-					break;
-				}
-			}
+		//Check the y direction
+		if ((pHPos.x >= quad->items[i]->hitbox.x && pHPos.x <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
+			|| (pHPos.w >= quad->items[i]->hitbox.x && pHPos.w <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)) {
+			if (depthYBottom >= 0 && depthYBottom < MAX_DEPTH_Y) //descending
+				CollisionHandler(reference, quad->items[i], false, depthYBottom);
+			else if (depthYTop <= 0 && depthYTop > -MAX_DEPTH_Y) //ascending
+				CollisionHandler(reference, quad->items[i], false, depthYTop);
 		}
 	}
 
@@ -273,6 +230,23 @@ void ObjectTree::UpdatePosition(ObjectTreeNode* quad){
 	}
 }
 
-void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item) {
+void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item, bool dimension, int depth) {
+	Tile * t = (Tile*)item;
+	std::string name = typeid(reference).name();
+	if (name == "class Player") {
+		int force = 0;
+		switch (t->type) {
+		case Bounce:
+			force = BOUNCE_VELOCITY * (depth / abs(depth));
+			break;
+		default:
+			force = -depth;
+			break;
+		}
 
+		if (dimension) //x dimension
+			reference.ApplyForce(SDL_Point{ force, 0 });
+		else //y dimension
+			reference.ApplyForce(SDL_Point{ 0, force });
+	}
 }

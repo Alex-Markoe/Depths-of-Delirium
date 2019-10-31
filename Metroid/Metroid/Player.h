@@ -29,6 +29,7 @@ private:
 	PSTATE playerState;
 	PSTATE previousState;
 
-	const float TERMINAL_VELOCITY = 6.f;
+	float gravTimer;
+	const int TERMINAL_VELOCITY = 1;
 };
 

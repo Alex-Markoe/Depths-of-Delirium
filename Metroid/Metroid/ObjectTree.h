@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjectTreeNode.h"
+#include "Player.h"
 #include <string>
 #include <fstream>
 #include <vector>
@@ -32,7 +33,7 @@ private:
 	void Render(SDL_Renderer* renderer, ObjectTreeNode* quad);
 	void UpdatePosition(ObjectTreeNode* quad);
 	void CollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Rect pHPos);
-	void CollisionHandler(GameObject& reference, GameObject* item);
+	void CollisionHandler(GameObject& reference, GameObject* item, bool dimension, int depth);
 	std::vector<GameObject*> AllObjects(ObjectTreeNode* quad);
 };
 

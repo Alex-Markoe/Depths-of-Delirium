@@ -46,25 +46,24 @@ void Player::UpdateState(SDL_Event& e){
 		case SDLK_w:
 			playerState = Jump;
 			/*velocity.x = 0;*/
-			velocity.y -= 5;
+			if (previousState != playerState)
+				ApplyForce(SDL_Point{ 0, -15 });
 			break;
 		case SDLK_s:
 			playerState = Duck;
-			velocity.x = 0;
 			break;
 		case SDLK_a:
 			playerState = Run;
-			flipType = SDL_FLIP_HORIZONTAL;
-			velocity.x -= 6;
+			if (previousState != playerState)
+				ApplyForce(SDL_Point{ -7, 0 });
 			break;
 		case SDLK_d:
 			playerState = Run;
-			flipType = SDL_FLIP_NONE;
-			velocity.x += 6;
+			if (previousState != playerState)
+				ApplyForce(SDL_Point{ 7, 0 });
 			break;
 		case SDLK_SPACE:
 			playerState = Force;
-			velocity.x = 0;
 			break;
 		}
 	}
@@ -89,14 +88,7 @@ void Player::Update(){
 	UpdateAnimation();
 	UpdateFrame();
 
-	if (gravity < TERMINAL_VELOCITY)
-		gravity++;
-
-	velocity.y += gravity;
-
-	if (gravity > 5)
-		gravity = gravity;
-
+	ApplyForce(SDL_Point{ 0, TERMINAL_VELOCITY });
 	//Update the position and previous state
 	previousState = playerState;
 }

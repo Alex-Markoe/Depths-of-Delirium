@@ -55,6 +55,12 @@ void GameObject::Draw(SDL_Renderer* gRenderer){
 	SDL_RenderCopyEx(gRenderer, texture, &sourceRect, &position, 0, NULL, flipType);
 }
 
+//Apply a force to the object
+void GameObject::ApplyForce(SDL_Point force) {
+	acceleration.x += force.x;
+	acceleration.y += force.y;
+}
+
 //Funtion to set the source rectangle in the case of changing states
 void GameObject::setAnim(int sourceX, int sourceY, int maxFrame) {
 	ANIM_SOURCE_X = sourceX;
@@ -68,8 +74,20 @@ void GameObject::setAnim(int sourceX, int sourceY, int maxFrame) {
 }
 
 void GameObject::UpdatePosition(){
+	velocity.x += acceleration.x;
+	velocity.y += acceleration.y;
+	
 	position.x += velocity.x;
 	position.y += velocity.y;
+
 	hitbox.x = position.x + HITBOX_OFFSET_X;
 	hitbox.y = position.y + HITBOX_OFFSET_Y;
+
+	if (velocity.x < 0)
+		flipType = SDL_FLIP_HORIZONTAL;
+	else if (velocity.x > 0)
+		flipType = SDL_FLIP_NONE;
+
+	acceleration.x = 0;
+	acceleration.y = 0;
 }

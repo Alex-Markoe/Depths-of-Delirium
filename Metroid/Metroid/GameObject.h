@@ -13,14 +13,15 @@ public:
 	void UpdateAnimation();
 	void loadTexture(std::string path, SDL_Renderer* gRenderer);
 	void Draw(SDL_Renderer* gRenderer);
-	void setAnim(int sourceX, int sourceY, int maxFrame);
+	virtual void setAnim(int sourceX, int sourceY, int maxFrame);
+	void ApplyForce(SDL_Point force);
 	void UpdatePosition();
 
+	SDL_Point acceleration;
 	SDL_Point velocity;
 	SDL_Rect position;
 	SDL_Rect sourceRect;
 	SDL_Rect hitbox;
-	float gravity;
 
 protected:
 	SDL_Texture* texture;
