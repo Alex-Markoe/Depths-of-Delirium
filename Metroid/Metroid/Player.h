@@ -12,7 +12,8 @@ enum PSTATE {
 	Idle,
 	Attack,
 	Force,
-	Run,
+	RunLeft,
+	RunRight,
 	Duck,
 };
 
@@ -28,7 +29,9 @@ public:
 private:
 	PSTATE playerState;
 	PSTATE previousState;
+	const Uint8 *state;
 
+	bool inAir;
 	float gravTimer;
 	const int TERMINAL_VELOCITY = 1;
 };

@@ -5,6 +5,9 @@ Player::Player(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, in
 	GameObject(initPosition, initSource, hitboxOffsetX, hitboxOffsetY){
 	playerState = Idle;
 	previousState = Idle;
+	state = SDL_GetKeyboardState(NULL);
+	MAX_VELOCITY_Y = 10;
+	MAX_VELOCITY_X = 8;
 }
 
 //Destructor
@@ -18,7 +21,8 @@ void Player::UpdateFrame(){
 	case Idle:
 		setAnim(0, 0, 0);
 		break;
-	case Run:
+	case RunLeft:
+	case RunRight:
 		setAnim(75, 0, 3);
 		break;
 	case Attack:
@@ -41,36 +45,44 @@ void Player::UpdateFrame(){
 
 //Update the player's state then call all other update methods
 void Player::UpdateState(SDL_Event& e){
-	if (e.type == SDL_KEYDOWN && e.key.repeat == 0){
-		switch(e.key.keysym.sym){
-		case SDLK_w:
-			playerState = Jump;
-			/*velocity.x = 0;*/
-			if (previousState != playerState)
-				ApplyForce(SDL_Point{ 0, -15 });
-			break;
-		case SDLK_s:
-			playerState = Duck;
-			break;
-		case SDLK_a:
-			playerState = Run;
-			if (previousState != playerState)
-				ApplyForce(SDL_Point{ -7, 0 });
-			break;
-		case SDLK_d:
-			playerState = Run;
-			if (previousState != playerState)
-				ApplyForce(SDL_Point{ 7, 0 });
-			break;
-		case SDLK_SPACE:
-			playerState = Force;
-			break;
-		}
+	bool moving = false;
+
+	if (velocity.y != 0)
+		inAir = true;
+	else
+		inAir = false;
+
+	if (state[SDL_SCANCODE_D]) { //Running right
+		playerState = RunRight; 
+		ApplyForce(SDL_Point{ 7, 0 });
+		moving = true; 
 	}
-	if (e.type == SDL_KEYUP && e.key.repeat == 0) {
+	else if (state[SDL_SCANCODE_A]) { //Running left
+		playerState = RunLeft;
+		ApplyForce(SDL_Point{ -7, 0 });
+		moving = true;
+	}
+	if (state[SDL_SCANCODE_SPACE]) { //Using the force push
+		playerState = Force;
+		moving = true;
+	}
+	if (state[SDL_SCANCODE_W] && !inAir) { //Jumping
+		playerState = Jump;
+		ApplyForce(SDL_Point{ 0, -10 });
+		moving = true;
+	}
+	if (state[SDL_SCANCODE_S] && !inAir) { //Ducking
+		playerState = Duck;
+		velocity.x = 0;
+		moving = true;
+	}
+	if (inAir) {
+		playerState = Jump;
+		moving = true;
+	}
+	if (!moving) {
 		playerState = Idle;
 		velocity.x = 0;
-		velocity.y = 0;
 	}
 }
 
@@ -88,7 +100,9 @@ void Player::Update(){
 	UpdateAnimation();
 	UpdateFrame();
 
+	//Apply gravity
 	ApplyForce(SDL_Point{ 0, TERMINAL_VELOCITY });
+
 	//Update the position and previous state
 	previousState = playerState;
 }

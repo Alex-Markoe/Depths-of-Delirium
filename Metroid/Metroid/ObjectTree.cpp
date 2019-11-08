@@ -77,11 +77,14 @@ void ObjectTree::CollisionDetector(GameObject &reference) {
 	int y = reference.hitbox.y;
 	int width = reference.hitbox.x + reference.hitbox.w;
 	int height = reference.hitbox.y + reference.hitbox.h;
-	CollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Rect{ x, y, width, height });
+
+	if (head != NULL)
+		CollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Rect{ x, y, width, height });
 }
 
 //determine if the referenced object is colliding with any objects in its relevant quads
 void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Rect pHPos){
+	//Loop through each object in the quad
 	for (unsigned i = 0; i < quad->items.size(); i++) {
 
 		int depthXLeft = pHPos.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + reference.acceleration.x + reference.velocity.x;
@@ -108,6 +111,7 @@ void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, 
 		}
 	}
 
+	//Check the next quadrant
 	if (quad->quads[0] != NULL){
 		if (((coll.x >= quad->quads[0]->dimensions.x && coll.x <= quad->quads[0]->dimensions.x + quad->quads[0]->dimensions.w) 
 			|| (coll.w >= quad->quads[0]->dimensions.x && coll.w <= quad->quads[0]->dimensions.x + quad->quads[0]->dimensions.w)) &&

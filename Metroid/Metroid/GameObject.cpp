@@ -77,6 +77,11 @@ void GameObject::UpdatePosition(){
 	velocity.x += acceleration.x;
 	velocity.y += acceleration.y;
 	
+	if (velocity.y > MAX_VELOCITY_Y)
+		velocity.y = MAX_VELOCITY_Y;
+	if (abs(velocity.x) > MAX_VELOCITY_X)
+		velocity.x = MAX_VELOCITY_X * (velocity.x / abs(velocity.x));
+
 	position.x += velocity.x;
 	position.y += velocity.y;
 

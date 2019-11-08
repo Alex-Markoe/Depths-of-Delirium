@@ -29,6 +29,8 @@ protected:
 
 	int frame;
 	int MAX_FRAME;
+	int MAX_VELOCITY_Y;
+	int MAX_VELOCITY_X;
 	bool stateChange;
 
 	int ANIM_SOURCE_X;
