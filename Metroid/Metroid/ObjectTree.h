@@ -1,6 +1,7 @@
 #pragma once
 #include "ObjectTreeNode.h"
 #include "Player.h"
+#include "Tile.h"
 #include <string>
 #include <fstream>
 #include <vector>

@@ -12,7 +12,6 @@ class LevelManager{
 public:
 	LevelManager(std::map<std::string, std::string> textures, SDL_Renderer* renderer);
 	~LevelManager();
-	void StateUpdate(SDL_Event e);
 	void Update();
 	void RenderAll(SDL_Renderer* renderer);
 	void Init();

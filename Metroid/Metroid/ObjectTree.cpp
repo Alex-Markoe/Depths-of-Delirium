@@ -1,5 +1,4 @@
 #include "ObjectTree.h"
-#include "Tile.h"
 
 //Constructor
 ObjectTree::ObjectTree(int levelWidth, int levelHeight){
@@ -240,12 +239,12 @@ void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item, bool 
 	if (name == "class Player") {
 		int force = 0;
 		switch (t->type) {
-		case Bounce:
-			force = BOUNCE_VELOCITY * (depth / abs(depth));
-			break;
-		default:
-			force = -depth;
-			break;
+			case Bounce:
+				force = BOUNCE_VELOCITY * (depth / abs(depth));
+				break;
+			default:
+				force = -depth;
+				break;
 		}
 
 		if (dimension) //x dimension

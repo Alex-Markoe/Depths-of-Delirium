@@ -44,22 +44,17 @@ void Player::UpdateFrame(){
 }
 
 //Update the player's state then call all other update methods
-void Player::UpdateState(SDL_Event& e){
-	bool moving = false;
-
-	if (velocity.y != 0)
-		inAir = true;
-	else
-		inAir = false;
+void Player::UpdateState(){
+	moving = false;
 
 	if (state[SDL_SCANCODE_D]) { //Running right
 		playerState = RunRight; 
-		ApplyForce(SDL_Point{ 7, 0 });
+		ApplyForce(SDL_Point{ 7 - velocity.x, 0 });
 		moving = true; 
 	}
 	else if (state[SDL_SCANCODE_A]) { //Running left
 		playerState = RunLeft;
-		ApplyForce(SDL_Point{ -7, 0 });
+		ApplyForce(SDL_Point{ -7 - velocity.x, 0 });
 		moving = true;
 	}
 	if (state[SDL_SCANCODE_SPACE]) { //Using the force push
@@ -67,19 +62,26 @@ void Player::UpdateState(SDL_Event& e){
 		moving = true;
 	}
 	if (state[SDL_SCANCODE_W] && !inAir) { //Jumping
-		playerState = Jump;
 		ApplyForce(SDL_Point{ 0, -10 });
 		moving = true;
 	}
 	if (state[SDL_SCANCODE_S] && !inAir) { //Ducking
 		playerState = Duck;
+		acceleration.x = 0;
 		velocity.x = 0;
 		moving = true;
 	}
-	if (inAir) {
+
+	//Check to see if the player is in the air
+	if (velocity.y != 0 || p_vel_Y != 0) {
 		playerState = Jump;
+		inAir = true;
 		moving = true;
 	}
+	else
+		inAir = false;
+
+	//Determine whether or not the player is currently idle
 	if (!moving) {
 		playerState = Idle;
 		velocity.x = 0;
@@ -87,22 +89,23 @@ void Player::UpdateState(SDL_Event& e){
 }
 
 void Player::Update(){
-	//Check if the state has changed and reset the frame if so
+	//Call the other update methods
+	UpdateState();
 	if (previousState != playerState) {
 		frame = 0;
 		stateChange = true;
 	}
-	else{
+	else {
 		stateChange = false;
 	}
 
-	//Call the other update methods
-	UpdateAnimation();
 	UpdateFrame();
+	UpdateAnimation();
 
 	//Apply gravity
 	ApplyForce(SDL_Point{ 0, TERMINAL_VELOCITY });
 
 	//Update the position and previous state
+	p_vel_Y = velocity.y;
 	previousState = playerState;
 }

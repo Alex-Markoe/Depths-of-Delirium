@@ -133,9 +133,6 @@ int main(int argc, char* args[]) {
 					if (e.type == SDL_QUIT){ 
 						quit = true; 
 					}
-
-					//Call all necessary update methods
-					level->StateUpdate(e);
 				}
 				//Update all necessary position values
 				level->Update();

@@ -24,14 +24,16 @@ public:
 	~Player();
 	void UpdateFrame();
 	void Update();
-	void UpdateState(SDL_Event& e);
+	void UpdateState();
 
 private:
 	PSTATE playerState;
 	PSTATE previousState;
 	const Uint8 *state;
+	int p_vel_Y;
 
 	bool inAir;
+	bool moving;
 	float gravTimer;
 	const int TERMINAL_VELOCITY = 1;
 };

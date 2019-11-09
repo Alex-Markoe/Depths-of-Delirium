@@ -56,11 +56,6 @@ void LevelManager::Update(){
 	}
 }
 
-//Call any update methods that require user input
-void LevelManager::StateUpdate(SDL_Event e){
-	player->UpdateState(e);
-}
-
 //Render all relevant objects
 void LevelManager::RenderAll(SDL_Renderer* renderer){
 	player->Draw(renderer);

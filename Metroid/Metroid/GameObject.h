@@ -13,9 +13,9 @@ public:
 	void UpdateAnimation();
 	void loadTexture(std::string path, SDL_Renderer* gRenderer);
 	void Draw(SDL_Renderer* gRenderer);
-	virtual void setAnim(int sourceX, int sourceY, int maxFrame);
 	void ApplyForce(SDL_Point force);
 	void UpdatePosition();
+	virtual void setAnim(int sourceX, int sourceY, int maxFrame);
 
 	SDL_Point acceleration;
 	SDL_Point velocity;
@@ -29,13 +29,14 @@ protected:
 
 	int frame;
 	int MAX_FRAME;
-	int MAX_VELOCITY_Y;
-	int MAX_VELOCITY_X;
 	bool stateChange;
 
 	int ANIM_SOURCE_X;
 	int ANIM_SOURCE_Y;
 	int HITBOX_OFFSET_X;
 	int HITBOX_OFFSET_Y;
+
+	int MAX_VELOCITY_Y;
+	int MAX_VELOCITY_X;
 };
 
