@@ -49,12 +49,12 @@ void Player::UpdateState(){
 
 	if (state[SDL_SCANCODE_D]) { //Running right
 		playerState = RunRight; 
-		ApplyForce(SDL_Point{ 7 - velocity.x, 0 });
+		ApplyForce(SDL_Point{ 8 - velocity.x, 0 });
 		moving = true; 
 	}
 	else if (state[SDL_SCANCODE_A]) { //Running left
 		playerState = RunLeft;
-		ApplyForce(SDL_Point{ -7 - velocity.x, 0 });
+		ApplyForce(SDL_Point{ -8 - velocity.x, 0 });
 		moving = true;
 	}
 	if (state[SDL_SCANCODE_SPACE]) { //Using the force push

@@ -92,8 +92,8 @@ void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, 
 		int depthYBottom = pHPos.h - quad->items[i]->hitbox.y + reference.acceleration.y + reference.velocity.y;
 
 		//Check the x direction
-		if ((pHPos.y > quad->items[i]->hitbox.y && pHPos.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)
-			|| (pHPos.h > quad->items[i]->hitbox.y && pHPos.h < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)) {
+		if ((pHPos.y < quad->items[i]->hitbox.y && pHPos.h > quad->items[i]->hitbox.y)
+			|| (pHPos.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h && pHPos.h > quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)) {
 			if (depthXLeft <= 0 && depthXLeft > -MAX_DEPTH_X) //left
 				CollisionHandler(reference, quad->items[i], true, depthXLeft);
 			else if (depthXRight >= 0 && depthXRight < MAX_DEPTH_X) //right
@@ -101,8 +101,8 @@ void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, 
 		}
 
 		//Check the y direction
-		if ((pHPos.x >= quad->items[i]->hitbox.x && pHPos.x <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
-			|| (pHPos.w >= quad->items[i]->hitbox.x && pHPos.w <= quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)) {
+		if ((pHPos.x < quad->items[i]->hitbox.x && pHPos.w > quad->items[i]->hitbox.x)
+			|| (pHPos.x < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w && pHPos.w > quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)) {
 			if (depthYBottom >= 0 && depthYBottom < MAX_DEPTH_Y) //descending
 				CollisionHandler(reference, quad->items[i], false, depthYBottom);
 			else if (depthYTop <= 0 && depthYTop > -MAX_DEPTH_Y) //ascending

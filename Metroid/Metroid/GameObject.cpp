@@ -9,7 +9,7 @@ GameObject::GameObject(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOff
 	HITBOX_OFFSET_X = hitboxOffsetX;
 	HITBOX_OFFSET_Y = hitboxOffsetY;
 
-	hitbox = { position.x + HITBOX_OFFSET_X, position.y + HITBOX_OFFSET_Y, sourceRect.w - HITBOX_OFFSET_X, sourceRect.h };
+	hitbox = { position.x + HITBOX_OFFSET_X, position.y + HITBOX_OFFSET_Y, sourceRect.w - (HITBOX_OFFSET_X * 2), sourceRect.h - HITBOX_OFFSET_Y};
 
 	velocity.x = 0;
 	velocity.y = 0;

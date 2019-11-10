@@ -9,7 +9,7 @@ LevelManager::LevelManager(std::map<std::string, std::string> textures, SDL_Rend
 	textureFiles = textures;
 	gRenderer = renderer;
 
-	player = new Player(SDL_Rect{ 0,0,0,0 }, SDL_Rect{ 0, 0, 75, 78 }, 0, 0);
+	player = new Player(SDL_Rect{ 0,0,0,0 }, SDL_Rect{ 0, 0, 75, 78 }, 12, 3);
 	player->loadTexture(textureFiles["PlayerSheet"], renderer);
 
 	transitioning = false;
