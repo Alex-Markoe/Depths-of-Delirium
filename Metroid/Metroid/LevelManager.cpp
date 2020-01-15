@@ -9,7 +9,7 @@ LevelManager::LevelManager(std::map<std::string, std::string> textures, SDL_Rend
 	textureFiles = textures;
 	gRenderer = renderer;
 
-	player = new Player(SDL_Rect{ 0,0,0,0 }, SDL_Rect{ 0, 0, 75, 78 }, 12, 3);
+	player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, 12, 3);
 	player->loadTexture(textureFiles["PlayerSheet"], renderer);
 
 	transitioning = false;
@@ -58,8 +58,6 @@ void LevelManager::Update(){
 
 //Render all relevant objects
 void LevelManager::RenderAll(SDL_Renderer* renderer){
-	player->Draw(renderer);
-
 	if (platforms->count != 0) {
 		platforms->Render(renderer);
 	}
@@ -69,6 +67,7 @@ void LevelManager::RenderAll(SDL_Renderer* renderer){
 	if (swingingPlatforms->count != 0) {
 		swingingPlatforms->Render(renderer);
 	}
+	player->Draw(renderer);
 }
 
 //Initialize the level, and reset from the last level
@@ -76,122 +75,107 @@ void LevelManager::Init(){
 	std::ifstream fileRead(lvlTransition->roomName, std::ios::in | std::ios::binary | std::ios::beg);
 
 	if (fileRead.is_open()){
+		//Reset all data structs and read in the level dimensions
 		fileRead.read(reinterpret_cast<char*>(&levelHeight), sizeof(levelHeight));
 		fileRead.read(reinterpret_cast<char*>(&levelWidth), sizeof(levelWidth));
 		platforms->Reset(levelWidth * TILE_SIZE, levelHeight * TILE_SIZE);
 		movingPlatforms->Reset(levelWidth * TILE_SIZE, levelHeight * TILE_SIZE);
 		swingingPlatforms->Reset(levelWidth * TILE_SIZE, levelHeight * TILE_SIZE);
 
-		char tile = '.';
-		char prevTile = '.';
-		char nextTile[] = "";
-		char * prevTiles = new char[levelWidth];
+		//Arrays to hold the tiles needing to be read
+		char * futureTiles = new char[levelWidth];
+		fileRead.read(futureTiles, levelWidth);
+		std::string tilesToRead = futureTiles;
+		std::string previousTiles = tilesToRead;
 
+		//Enums denoting variables about the tile to be placed
 		TileType type = Background;
-		TileOrientation orientation = Middle;
+		TileOrientation orientation = HorizontalMiddle;
 		SDL_Point pivotPos = SDL_Point{0,0};
 
+		//Loop through the entire level and add the tiles
 		for (unsigned i = 0; i < levelHeight; i++){
-			char * currTiles = new char[levelWidth];
+			if (i < levelHeight - 1)
+				fileRead.read(futureTiles, levelWidth);
 
-			//Loop through each element in the row
 			for (unsigned j = 0; j < levelWidth; j++){
-				if (j < levelWidth - 1)
-					fileRead.read(nextTile, sizeof(char));
-				else
-					tile = nextTile[0];
-				if (j == 0) {
-					tile = nextTile[0];
-					fileRead.read(nextTile, sizeof(char));
+				//Background spaces
+				if (tilesToRead[j] == 'B') { 
+					type = Background;
 				}
-				currTiles[j] = tile;
+				
+				//Regular platforms
+				else if (tilesToRead[j] == 'F') { 
+					type = Platform;
 
-				//Determine what the tile should look like
-				if(i == 0){ //First row of tiles
-
-					if (tile == 'B'){ //Background tile
-						type = Background;
-					}
-
-					else if (tile == 'F') { //Regular tile
-						type = Platform;
-						if (prevTile == '.' && *nextTile == '.')
-							orientation = Middle;
-						else if (prevTile == '.' && *nextTile == '.')
-							orientation = Middle;
+					//Check the left and right adjacent tiles 
+					if (j == 0) {//Check if its the first tile in the row
+						if (tilesToRead[j + 1] == 'B')
+							orientation = HorizontalRight;
 						else
-							orientation = Middle;
+							orientation = HorizontalMiddle;
+					}
+					else if (j == levelWidth - 1) {//Check if its the last tile in the row
+						if (tilesToRead[j - 1] == 'B')
+							orientation = HorizontalLeft;
+						else
+							orientation = HorizontalMiddle;
+					}
+					else {//All subsequent tiles
+						if (tilesToRead[j - 1] == 'B' && tilesToRead[j + 1] == 'B')
+							orientation = VerticalTop;
+						else if (tilesToRead[j - 1] == 'B' && tilesToRead[j + 1] != 'B')
+							orientation = HorizontalLeft;
+						else if (tilesToRead[j - 1] != 'B' && tilesToRead[j + 1] == 'B')
+							orientation = HorizontalRight;
+						else
+							orientation = HorizontalMiddle;
 					}
 
-					else if (tile == 'R') { //Moving tile
-						type = Move;
+					//Check the top and bottom adjacent tiles and set orientation
+					if (previousTiles[j] != 'B' && futureTiles[j] != 'B') {
+						if (orientation == HorizontalLeft)
+							orientation = Left;
+						else if (orientation == HorizontalRight)
+							orientation = Right;
+						else
+							orientation = Below;
 					}
-
-					else if (tile == 'G') { //Swinging Tile
-						type = Swing;
+					else if (previousTiles[j] != 'B' && futureTiles[j] == 'B' && orientation == HorizontalMiddle) {
+						orientation = Bottom;
 					}
-
-					if (type != Background)
-						AddTile(type, orientation, pivotPos, j, i); //Add the tile
+					else if (previousTiles[j] == 'B' && futureTiles[j] != 'B') {
+						if (orientation == HorizontalLeft)
+							orientation = TopLeft;
+						else if (orientation == HorizontalRight)
+							orientation = TopRight;
+						else
+							orientation = TopMiddle;
+					}
+					else if (previousTiles[j] == 'B' && futureTiles[j] == 'B' && orientation == VerticalTop){
+						orientation = VerticalMiddle;
+					}
 				}
 
-				else{ //All subsequent rows
-
-					if (tile == 'B'){ //Background tile
-						type = Background;
-					}
-
-					else if (tile == 'F'){ //Regular tile
-						type = Platform;
-						if (prevTile == '.' && *nextTile == '.') {
-							if (prevTiles[j] == 'B')
-								orientation = Middle;
-							else
-								orientation = Middle;
-						}
-						else if (prevTile == '.' && *nextTile == '.') {
-							if (prevTiles[j] == 'B')
-								orientation = Middle;
-							else
-								orientation = Middle;
-						}
-						else {
-							if (prevTiles[j] == 'B')
-								orientation = Middle;
-							else
-								orientation = Middle;
-						}
-					}
-
-					else if (tile == 'R'){ //Moving tile
-						type = Move;
-					}
-
-					else if (tile == 'G') { //Swinging Tile
-						type = Swing;
-					}
-
-					if (type != Background)
-						AddTile(type, orientation, pivotPos, j, i); //Add the tile
+				//Moving tile
+				else if (tilesToRead[j] == 'R') { 
+					type = Move;
 				}
 
-				//Update the tiles
-				tile = nextTile[0];
-				prevTile = tile;
+				//Swinging tile
+				else if (tilesToRead[j] == 'G') {
+					type = Swing;
+				}
+
+				//Add the tile
+				if (type != Background)
+					AddTile(type, orientation, pivotPos, j, i);
 			}
 			
 			//get a list of the previous tiles for tile initialization
-			delete[] prevTiles;
-			prevTiles = new char[levelWidth];
-			for (unsigned k = 0; k < levelWidth; k++){
-				prevTiles[k] = currTiles[k];
-			}
-			delete[] currTiles;
-
-			char tile = '.';
-			char prevTile = '.';
+			previousTiles = tilesToRead;
+			tilesToRead = futureTiles;
 		}
-		delete[] prevTiles;
 	}
 }
 
@@ -242,23 +226,23 @@ void LevelManager::AddTile(TileType type, TileOrientation orientation, SDL_Point
 	
 	switch (type) {
 	case Swing:
-		tile = new SwingingTile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,30,30 }, 0, 0, type, orientation,
+		tile = new SwingingTile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 0, 0, type, orientation,
 			lvlTransition->setting, SDL_Rect{ pivotPos.x, pivotPos.y, 0, 0 });
 		tile->loadTexture(textureFiles["TileSheet"], gRenderer);
 		swingingPlatforms->Add(tile);
 		break;
 	case Move:
-		tile = new MovingTile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,30,30 }, 0, 0, type, orientation,
+		tile = new MovingTile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 0, 0, type, orientation,
 			lvlTransition->setting, SDL_Rect{ pivotPos.x, pivotPos.y, 0, 0 });
 		tile->loadTexture(textureFiles["TileSheet"], gRenderer);
 		movingPlatforms->Add(tile);
 		break;
 	case Transition:
-		transitions.push_back(new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,30,30 }, 0, 0, type, orientation,
+		transitions.push_back(new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 0, 0, type, orientation,
 			lvlTransition->setting));
 		break;
 	default:
-		tile = new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,30,30 }, 0, 0, type, orientation,
+		tile = new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, TILE_SIZE, TILE_SIZE }, SDL_Rect{ 0, 0,TILE_SIZE/2,TILE_SIZE/2 }, 0, 0, type, orientation,
 			lvlTransition->setting);
 		tile->loadTexture(textureFiles["TileSheet"], gRenderer);
 		platforms->Add(tile);

@@ -86,7 +86,7 @@ bool loadMedia() {
 	bool success = true;
 
 	textureFiles["PlayerSheet"] = "Assets/WizardSpriteSheet.png";
-	textureFiles["TileSheet"] = "Assets/TileSpriteSheet.png";
+	textureFiles["TileSheet"] = "Assets/TileSheet.png";
 
 	//Load in all assets
 	/*player.loadTexture("Assets/WizardSpriteSheet.png", gRenderer);*/

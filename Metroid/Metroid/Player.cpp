@@ -94,12 +94,12 @@ void Player::Update(){
 	if (previousState != playerState) {
 		frame = 0;
 		stateChange = true;
+		UpdateFrame();
 	}
 	else {
 		stateChange = false;
 	}
 
-	UpdateFrame();
 	UpdateAnimation();
 
 	//Apply gravity

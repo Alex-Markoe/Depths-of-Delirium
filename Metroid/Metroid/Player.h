@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Projectile.h"
+#include "ProjectileManager.h"
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>
@@ -29,6 +31,8 @@ public:
 private:
 	PSTATE playerState;
 	PSTATE previousState;
+	PROJECTILE_TYPE current_Proj;
+
 	const Uint8 *state;
 	int p_vel_Y;
 

@@ -40,7 +40,7 @@ private:
 	void AddTile(TileType type, TileOrientation orientation, SDL_Point pivotPos, int locX, int locY);
 
 	const float GRAVITY = 9.81f;
-	const int TILE_SIZE = 30;
+	const int TILE_SIZE = 60;
 	const int TRANSITION_DEPTH = 25;
 };
 

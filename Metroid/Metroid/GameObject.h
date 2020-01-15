@@ -32,7 +32,6 @@ protected:
 	bool stateChange;
 
 	int ANIM_SOURCE_X;
-	int ANIM_SOURCE_Y;
 	int HITBOX_OFFSET_X;
 	int HITBOX_OFFSET_Y;
 

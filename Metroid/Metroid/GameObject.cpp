@@ -4,8 +4,6 @@
 GameObject::GameObject(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY){
 	position = initPosition;
 	sourceRect = initSource;
-	position.w = sourceRect.w;
-	position.h = sourceRect.h;
 	HITBOX_OFFSET_X = hitboxOffsetX;
 	HITBOX_OFFSET_Y = hitboxOffsetY;
 
@@ -64,13 +62,9 @@ void GameObject::ApplyForce(SDL_Point force) {
 //Funtion to set the source rectangle in the case of changing states
 void GameObject::setAnim(int sourceX, int sourceY, int maxFrame) {
 	ANIM_SOURCE_X = sourceX;
-	ANIM_SOURCE_Y = sourceY;
 	MAX_FRAME = maxFrame;
-
-	if (stateChange){
-		sourceRect.x = sourceX;
-		sourceRect.y = sourceY;
-	}
+	sourceRect.x = sourceX;
+	sourceRect.y = sourceY;
 }
 
 void GameObject::UpdatePosition(){

@@ -4,8 +4,6 @@
 
 Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType Type, TileOrientation Orientation, Setting Setting) :
 	GameObject(initPosition, initSource, hitboxOffsetX, hitboxOFfsetY){
-	int sourceX = 0;
-	int sourceY = 0;
 	type = Type;
 	orientation = Orientation;
 	setting = Setting;
@@ -16,22 +14,40 @@ Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hi
 		case Platform:
 			switch (orientation){
 			case TopLeft:
+				SetSourceLoc(TILE_SPRITE_SIZE, 0);
 				break;
 			case TopRight:
+				SetSourceLoc(TILE_SPRITE_SIZE * 2, 0);
 				break;
 			case TopMiddle:
+				SetSourceLoc(0, 0);
 				break;
 			case Left:
+				SetSourceLoc(TILE_SPRITE_SIZE, TILE_SPRITE_SIZE);
 				break;
 			case Right:
+				SetSourceLoc(TILE_SPRITE_SIZE * 2, TILE_SPRITE_SIZE);
 				break;
-			case Middle:
+			case HorizontalMiddle:
+				SetSourceLoc(0, TILE_SPRITE_SIZE * 3);
 				break;
-			case CenterHorizontal:
+			case HorizontalLeft:
+				SetSourceLoc(TILE_SPRITE_SIZE, TILE_SPRITE_SIZE * 3);
 				break;
-			case CenterVertical:
+			case HorizontalRight:
+				SetSourceLoc(TILE_SPRITE_SIZE * 2, TILE_SPRITE_SIZE * 3);
 				break;
 			case Bottom:
+				SetSourceLoc(TILE_SPRITE_SIZE, TILE_SPRITE_SIZE * 2);
+				break;
+			case Below:
+				SetSourceLoc(TILE_SPRITE_SIZE * 2, TILE_SPRITE_SIZE * 2);
+				break;
+			case VerticalTop:
+				SetSourceLoc(0, TILE_SPRITE_SIZE);
+				break;
+			case VerticalMiddle:
+				SetSourceLoc(0, TILE_SPRITE_SIZE * 2);
 				break;
 			}
 			break;
@@ -52,12 +68,14 @@ Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hi
 		}
 		break;
 	}
-
-	sourceRect.x = sourceX;
-	sourceRect.y = sourceY;
 }
 
 
 Tile::~Tile()
 {
+}
+
+void Tile::SetSourceLoc(int x, int y) {
+	sourceRect.x = x;
+	sourceRect.y = y;
 }

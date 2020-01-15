@@ -17,12 +17,15 @@ enum TileOrientation {
 	TopMiddle,
 	TopLeft,
 	TopRight,
+	HorizontalMiddle,
+	HorizontalLeft,
+	HorizontalRight,
 	Left,
 	Right,
-	Middle,
+	Below,
 	Bottom,
-	CenterHorizontal,
-	CenterVertical
+	VerticalTop,
+	VerticalMiddle,
 };
 
 enum Setting {
@@ -35,11 +38,12 @@ class Tile : public GameObject
 public:
 	Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType type, TileOrientation orientation, Setting setting);
 	~Tile();
+	void SetSourceLoc(int x, int y);
 	TileType type;
 
 private:
 	TileOrientation orientation;
 	Setting setting;
-	const int TILE_SIZE = 30;
+	const int TILE_SPRITE_SIZE = 30;
 };
 
