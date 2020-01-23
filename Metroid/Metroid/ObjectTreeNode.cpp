@@ -9,6 +9,7 @@ ObjectTreeNode::~ObjectTreeNode(){
 	unsigned size = items.size();
 	for (unsigned i = 0; i < size; i++){
 		delete items.front();
+		items.erase(items.begin());
 	}
 	items.clear();
 }

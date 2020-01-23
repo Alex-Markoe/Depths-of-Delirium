@@ -2,7 +2,7 @@
 
 Transitioner::Transitioner(){
 	roomName = "Levels/test.level";
-	setting = Caverns;
+	setting = CAVERNS;
 	roomNumber = 1;
 }
 
@@ -17,7 +17,7 @@ SDL_Point Transitioner::Update(){
 	int y;
 
 	switch (setting){
-	case Caverns: //Transitions for caverns
+	case CAVERNS: //Transitions for caverns
 		switch (roomNumber){
 		case 1:
 			roomName = "Levels/test.level";

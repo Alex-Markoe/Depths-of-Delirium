@@ -6,7 +6,7 @@ ObjectTree::ObjectTree(int levelWidth, int levelHeight){
 }
 
 ObjectTree::~ObjectTree(){
-
+	delete head;
 }
 
 //Public version of the add method
@@ -139,54 +139,6 @@ void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, 
 	}
 }
 
-//Methods to return all the objects in the tree
-std::vector<GameObject*> ObjectTree::AllObjects(){
-	if (head != NULL){
-		return AllObjects(head);
-	}
-	else{
-		std::vector<GameObject*> nothing;
-		return nothing;
-	}
-}
-
-//Get all objects in the tree
-std::vector<GameObject*> ObjectTree::AllObjects(ObjectTreeNode* quad){
-	std::vector<GameObject*> items = std::vector<GameObject*>();
-
-	for (unsigned i = 0; i < quad->items.size(); i++) {
-		items.push_back(quad->items[i]);
-	}
-
-	if (quad->quads[0] != NULL){
-		std::vector<GameObject*> moreItems = AllObjects(quad->quads[0]);
-		if (moreItems.size() > 0)
-			for (unsigned i = 0; i < moreItems.size(); i++){
-				items.push_back(moreItems[i]);
-			}
-
-		moreItems = AllObjects(quad->quads[1]);
-		if (moreItems.size() > 0)
-			for (unsigned i = 0; i < moreItems.size(); i++) {
-				items.push_back(moreItems[i]);
-			}
-
-		moreItems = AllObjects(quad->quads[2]);
-		if (moreItems.size() > 0)
-			for (unsigned i = 0; i < moreItems.size(); i++) {
-				items.push_back(moreItems[i]);
-			}
-
-		moreItems = AllObjects(quad->quads[3]);
-		if (moreItems.size() > 0)
-			for (unsigned i = 0; i < moreItems.size(); i++) {
-				items.push_back(moreItems[i]);
-			}
-	}
-	
-	return items;
-}
-
 //public version of the render method
 void ObjectTree::Render(SDL_Renderer* renderer){
 	if (head != NULL)
@@ -210,26 +162,26 @@ void ObjectTree::Render(SDL_Renderer* renderer, ObjectTreeNode* quad) {
 }
 
 //public version of position update method
-void ObjectTree::UpdatePosition(){
+void ObjectTree::Update(){
 	if (head != NULL){
-		UpdatePosition(head);
+		Update(head);
 	}
 }
 
 //loop through the tree and call all the Update position methods
 //for each object | specialized for moving/swinging platforms
-void ObjectTree::UpdatePosition(ObjectTreeNode* quad){
+void ObjectTree::Update(ObjectTreeNode* quad){
 	if (quad->items.size() > 0){
 		for (unsigned i = 0; i <quad->items.size(); i++){
-			quad->items[i]->UpdatePosition();
+			quad->items[i]->Update();
 		}
 	}
 
 	if (quad->quads[0] != NULL){
-		UpdatePosition(quad->quads[0]);
-		UpdatePosition(quad->quads[1]);
-		UpdatePosition(quad->quads[2]);
-		UpdatePosition(quad->quads[3]);
+		Update(quad->quads[0]);
+		Update(quad->quads[1]);
+		Update(quad->quads[2]);
+		Update(quad->quads[3]);
 	}
 }
 
@@ -239,7 +191,7 @@ void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item, bool 
 	if (name == "class Player") {
 		int force = 0;
 		switch (t->type) {
-			case Bounce:
+			case BOUNCE:
 				force = BOUNCE_VELOCITY * (depth / abs(depth));
 				break;
 			default:

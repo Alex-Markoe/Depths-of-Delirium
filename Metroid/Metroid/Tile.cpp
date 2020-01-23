@@ -1,69 +1,67 @@
 #include "Tile.h"
 
-
-
-Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType Type, TileOrientation Orientation, Setting Setting) :
+Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TILE_TYPE Type, TILE_ORIENTATION Orientation, SETTING Setting) :
 	GameObject(initPosition, initSource, hitboxOffsetX, hitboxOFfsetY){
 	type = Type;
 	orientation = Orientation;
 	setting = Setting;
 
 	switch (setting){
-	case Caverns: //Cavern initalization
+	case CAVERNS: //Cavern initalization
 		switch(type){
-		case Platform:
+		case PLATFORM:
 			switch (orientation){
-			case TopLeft:
+			case TOP_LEFT:
 				SetSourceLoc(TILE_SPRITE_SIZE, 0);
 				break;
-			case TopRight:
+			case TOP_RIGHT:
 				SetSourceLoc(TILE_SPRITE_SIZE * 2, 0);
 				break;
-			case TopMiddle:
+			case TOP_MIDDLE:
 				SetSourceLoc(0, 0);
 				break;
-			case Left:
+			case LEFT:
 				SetSourceLoc(TILE_SPRITE_SIZE, TILE_SPRITE_SIZE);
 				break;
-			case Right:
+			case RIGHT:
 				SetSourceLoc(TILE_SPRITE_SIZE * 2, TILE_SPRITE_SIZE);
 				break;
-			case HorizontalMiddle:
+			case HORIZONTAL_MIDDLE:
 				SetSourceLoc(0, TILE_SPRITE_SIZE * 3);
 				break;
-			case HorizontalLeft:
+			case HORIZONTAL_LEFT:
 				SetSourceLoc(TILE_SPRITE_SIZE, TILE_SPRITE_SIZE * 3);
 				break;
-			case HorizontalRight:
+			case HORIZONTAL_RIGHT:
 				SetSourceLoc(TILE_SPRITE_SIZE * 2, TILE_SPRITE_SIZE * 3);
 				break;
-			case Bottom:
+			case BOTTOM:
 				SetSourceLoc(TILE_SPRITE_SIZE, TILE_SPRITE_SIZE * 2);
 				break;
-			case Below:
+			case INTERIOR:
 				SetSourceLoc(TILE_SPRITE_SIZE * 2, TILE_SPRITE_SIZE * 2);
 				break;
-			case VerticalTop:
+			case VERTICAL_TOP:
 				SetSourceLoc(0, TILE_SPRITE_SIZE);
 				break;
-			case VerticalMiddle:
+			case VERTICAL_MIDDLE:
 				SetSourceLoc(0, TILE_SPRITE_SIZE * 2);
 				break;
 			}
 			break;
-		case Bounce:
+		case BOUNCE:
 			break;
-		case Spike:
+		case SPIKE:
 			break;
-		case Swap:
+		case SWAP:
 			break;
-		case Passable:
+		case PASSABLE:
 			break;
-		case Swing:
+		case SWING:
 			break;
-		case Move:
+		case MOVE:
 			break;
-		case Transition:
+		case TRANSITION:
 			break;
 		}
 		break;

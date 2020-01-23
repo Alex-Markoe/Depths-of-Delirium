@@ -1,49 +1,49 @@
 #pragma once
 #include "GameObject.h"
 
-enum TileType {
-	Bounce,
-	Swap,
-	Passable,
-	Spike,
-	Swing,
-	Move,
-	Platform,
-	Transition,
-	Background
+enum TILE_TYPE {
+	BOUNCE,
+	SWAP,
+	PASSABLE,
+	SPIKE,
+	SWING,
+	MOVE,
+	PLATFORM,
+	TRANSITION,
+	BACKGROUND
 };
 
-enum TileOrientation {
-	TopMiddle,
-	TopLeft,
-	TopRight,
-	HorizontalMiddle,
-	HorizontalLeft,
-	HorizontalRight,
-	Left,
-	Right,
-	Below,
-	Bottom,
-	VerticalTop,
-	VerticalMiddle,
+enum TILE_ORIENTATION {
+	TOP_MIDDLE,
+	TOP_LEFT,
+	TOP_RIGHT,
+	HORIZONTAL_MIDDLE,
+	HORIZONTAL_LEFT,
+	HORIZONTAL_RIGHT,
+	LEFT,
+	RIGHT,
+	INTERIOR,
+	BOTTOM,
+	VERTICAL_TOP,
+	VERTICAL_MIDDLE,
 };
 
-enum Setting {
-	Caverns
+enum SETTING {
+	CAVERNS
 
 };
 
 class Tile : public GameObject
 {
 public:
-	Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TileType type, TileOrientation orientation, Setting setting);
+	Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TILE_TYPE type, TILE_ORIENTATION orientation, SETTING setting);
 	~Tile();
 	void SetSourceLoc(int x, int y);
-	TileType type;
+	TILE_TYPE type;
 
 private:
-	TileOrientation orientation;
-	Setting setting;
+	TILE_ORIENTATION orientation;
+	SETTING setting;
 	const int TILE_SPRITE_SIZE = 30;
 };
 

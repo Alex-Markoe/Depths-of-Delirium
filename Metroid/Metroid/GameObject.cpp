@@ -18,7 +18,7 @@ GameObject::GameObject(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOff
 //Destructor
 GameObject::~GameObject(){
 	SDL_DestroyTexture(texture);
-	texture = NULL;
+	texture = nullptr;
 }
 
 //Simple method that updates the animation frame
@@ -32,6 +32,11 @@ void GameObject::UpdateAnimation(){
 //Function that handles loading in textures
 void GameObject::loadTexture(std::string path, SDL_Renderer* gRenderer) {
 	//Load the image
+	if (texture != nullptr) {
+		SDL_DestroyTexture(texture);
+		texture = nullptr;
+	}
+
 	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
 	if (loadedSurface == NULL) {
 		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
@@ -67,6 +72,7 @@ void GameObject::setAnim(int sourceX, int sourceY, int maxFrame) {
 	sourceRect.y = sourceY;
 }
 
+//Update the object's position based on any recently applied forces
 void GameObject::UpdatePosition(){
 	velocity.x += acceleration.x;
 	velocity.y += acceleration.y;
@@ -89,4 +95,9 @@ void GameObject::UpdatePosition(){
 
 	acceleration.x = 0;
 	acceleration.y = 0;
+}
+
+//Update function meant to be overriden
+void GameObject::Update() {
+
 }

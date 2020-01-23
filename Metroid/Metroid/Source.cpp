@@ -33,6 +33,8 @@ bool SetDisplay (){
 	if (SDL_GetDisplayBounds(0, &display) != 0) {
 		success = false;
 	}
+	//float size = (float)display.w / (float)display.h;
+	//float otherSize = 1920.f / 1080.f;
 	window = SDL_CreateWindow("Cool Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, display.w, display.h, SDL_WINDOW_SHOWN);
 	if (window == NULL) 
 		success = false;
@@ -46,7 +48,6 @@ bool init(){
 
 	//Initalize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
 		success = false;
 	}
 	else
@@ -92,6 +93,14 @@ bool loadMedia() {
 	/*player.loadTexture("Assets/WizardSpriteSheet.png", gRenderer);*/
 	level = new LevelManager(textureFiles, gRenderer);
 	level->Init();
+	/*level->Init();
+	level->Init();
+	level->Init();
+	level->Init();
+	level->Init();
+	level->Init();
+	level->Init();
+	level->Init();*/
 
 	return success;
 }
@@ -103,6 +112,7 @@ void close() {
 	SDL_DestroyWindow(window);
 	window = NULL;
 	gRenderer = NULL;
+	delete level;
 
 	//Quit all SDL subsystems
 	IMG_Quit();
@@ -141,7 +151,7 @@ int main(int argc, char* args[]) {
 				SDL_RenderClear(gRenderer);
 				
 				//Call any draw methods for any gameobjects
-				level->RenderAll(gRenderer);
+				level->RenderAll();
 
 				//Upate the screen
 				SDL_RenderPresent(gRenderer);

@@ -12,10 +12,11 @@ public:
 
 	void UpdateAnimation();
 	void loadTexture(std::string path, SDL_Renderer* gRenderer);
-	void Draw(SDL_Renderer* gRenderer);
 	void ApplyForce(SDL_Point force);
-	void UpdatePosition();
+	virtual void Draw(SDL_Renderer* gRenderer);
+	virtual void UpdatePosition();
 	virtual void setAnim(int sourceX, int sourceY, int maxFrame);
+	virtual void Update();
 
 	SDL_Point acceleration;
 	SDL_Point velocity;
