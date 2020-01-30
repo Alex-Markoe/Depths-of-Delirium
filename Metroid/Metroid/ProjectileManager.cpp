@@ -17,6 +17,8 @@ ProjectileManager::~ProjectileManager(){
 void ProjectileManager::Update() {
 	for (unsigned i = 0; i < projectiles.size(); i++) {
 		projectiles[i]->Update();
+		if (!projectiles[i]->active) 
+			Remove(projectiles[i]);
 	}
 }
 
@@ -44,4 +46,3 @@ void ProjectileManager::Remove(Projectile* toRemove) {
 		}
 	}
 }
-

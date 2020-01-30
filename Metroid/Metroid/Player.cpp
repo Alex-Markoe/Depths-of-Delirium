@@ -77,9 +77,8 @@ void Player::UpdateState(){
 		playerState = ATTACK;
 		SDL_Point mousePos = {0,0};
 		SDL_GetMouseState(&mousePos.x, &mousePos.y);
-		float distance = sqrt(pow(mousePos.x - position.x, 2) + pow(mousePos.y - position.y, 2));
 		float angle = atan2(mousePos.y - position.y, mousePos.x - position.x);
-		SDL_Point initialForce = { 10 * cos(angle), 10 * sin(angle) };
+		SDL_Point initialForce = { 5.f * cos(angle), 5.f * sin(angle) };
 
 		projectiles->Add(position, initialForce, FIRE, true, 0);
 		attackTimer = SDL_GetTicks();

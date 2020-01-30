@@ -23,6 +23,7 @@ public:
 	SDL_Rect position;
 	SDL_Rect sourceRect;
 	SDL_Rect hitbox;
+	short collisionLayer;
 
 protected:
 	SDL_Texture* texture;

@@ -17,11 +17,13 @@ public:
 	void Draw(SDL_Renderer* gRenderer) override;
 
 	PROJECTILE_TYPE proj_Type;
+	bool active;
 
 private: 
 	SDL_Point init_Force;
 	SDL_Point init_Position;
 	bool playerOwned;
 	float initAngle;
+	Uint32 activeTimer;
 };
 
