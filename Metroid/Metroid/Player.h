@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>
+#include <cmath>
 
 enum PLAYER_STATE {
 	JUMP,
@@ -27,6 +28,8 @@ public:
 	void Update() override;
 
 private:
+	void SpawnProjectile(PROJECTILE_TYPE type);
+
 	PLAYER_STATE playerState;
 	PLAYER_STATE previousState;
 	PROJECTILE_TYPE current_Proj_Type;

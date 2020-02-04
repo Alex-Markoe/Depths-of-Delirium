@@ -84,6 +84,8 @@ void ObjectTree::CollisionDetector(GameObject &reference) {
 //determine if the referenced object is colliding with any objects in its relevant quads
 void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Rect pHPos){
 	//Loop through each object in the quad
+	//PHpos = player hitbox position
+	//coll = frame of collision detection for quads
 	for (unsigned i = 0; i < quad->items.size(); i++) {
 
 		int depthXLeft = pHPos.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + reference.acceleration.x + reference.velocity.x;
@@ -101,8 +103,8 @@ void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, 
 		}
 
 		//Check the y direction
-		if ((pHPos.x < quad->items[i]->hitbox.x && pHPos.w > quad->items[i]->hitbox.x)
-			|| (pHPos.x < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w && pHPos.w > quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)) {
+		if ((pHPos.x > quad->items[i]->hitbox.x && pHPos.x < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
+			|| (pHPos.w < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w && pHPos.w > quad->items[i]->hitbox.x)) {
 			if (depthYBottom >= 0 && depthYBottom < MAX_DEPTH_Y) //descending
 				CollisionHandler(reference, quad->items[i], false, depthYBottom);
 			else if (depthYTop <= 0 && depthYTop > -MAX_DEPTH_Y) //ascending

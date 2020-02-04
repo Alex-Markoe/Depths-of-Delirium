@@ -4,7 +4,6 @@ Projectile::Projectile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOff
 	GameObject(initPosition, initSource, hitboxOffsetX, hitboxOffsetY)
 {
 	init_Force = initForce;
-	init_Position = SDL_Point{ initPosition.x, initPosition.y };
 	proj_Type = proj;
 	playerOwned = player;
 	initAngle = angle;
@@ -41,5 +40,5 @@ void Projectile::Update() {
 }
 
 void Projectile::Draw(SDL_Renderer* gRenderer){
-	SDL_RenderCopyEx(gRenderer, texture, &sourceRect, &position, initAngle, &init_Position, flipType);
+	SDL_RenderCopyEx(gRenderer, texture, &sourceRect, &position, initAngle, NULL, flipType);
 }

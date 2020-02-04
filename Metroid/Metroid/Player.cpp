@@ -6,7 +6,7 @@ Player::Player(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, in
 	playerState = IDLE;
 	previousState = IDLE;
 	state = SDL_GetKeyboardState(NULL);
-	MAX_VELOCITY_Y = 10;
+	MAX_VELOCITY_Y = 15;
 	MAX_VELOCITY_X = 8;
 	projectiles = projManager;
 	attackTimer = 0;
@@ -75,12 +75,7 @@ void Player::UpdateState(){
 	}
 	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1) && attackTimer == 0) { //Firing a spell
 		playerState = ATTACK;
-		SDL_Point mousePos = {0,0};
-		SDL_GetMouseState(&mousePos.x, &mousePos.y);
-		float angle = atan2(mousePos.y - position.y, mousePos.x - position.x);
-		SDL_Point initialForce = { 5.f * cos(angle), 5.f * sin(angle) };
-
-		projectiles->Add(position, initialForce, FIRE, true, 0);
+		SpawnProjectile(FIRE);
 		attackTimer = SDL_GetTicks();
 		moving = true;
 	}
@@ -95,7 +90,7 @@ void Player::UpdateState(){
 		inAir = false;
 
 	//Determine whether or not the player is currently idle
-	if (!moving) {
+	if (!moving && attackTimer == 0) {
 		playerState = IDLE;
 		velocity.x = 0;
 	}
@@ -106,6 +101,11 @@ void Player::UpdateState(){
 
 void Player::Update(){
 	//Call the other update methods
+	if (velocity.x < 0)
+		flipType = SDL_FLIP_HORIZONTAL;
+	else if (velocity.x > 0)
+		flipType = SDL_FLIP_NONE;
+
 	UpdateState();
 	if (previousState != playerState) {
 		frame = 0;
@@ -124,4 +124,16 @@ void Player::Update(){
 	//Update the position and previous state
 	p_vel_Y = velocity.y;
 	previousState = playerState;
+}
+
+void Player::SpawnProjectile(PROJECTILE_TYPE type) {
+	SDL_Point mousePos = { 0,0 };
+	SDL_GetMouseState(&mousePos.x, &mousePos.y);
+	float angle = atan2(mousePos.y - position.y, mousePos.x - position.x);
+	SDL_Point initialForce = { 5.f * cos(angle), 5.f * sin(angle) };
+	projectiles->Add(position, initialForce, type, true, angle * (180.f/M_PI));
+	if (mousePos.x < position.x)
+		flipType = SDL_FLIP_HORIZONTAL;
+	else
+		flipType = SDL_FLIP_NONE;
 }

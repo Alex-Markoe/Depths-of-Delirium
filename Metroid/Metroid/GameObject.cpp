@@ -7,7 +7,7 @@ GameObject::GameObject(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOff
 	HITBOX_OFFSET_X = hitboxOffsetX;
 	HITBOX_OFFSET_Y = hitboxOffsetY;
 
-	hitbox = { position.x + HITBOX_OFFSET_X, position.y + HITBOX_OFFSET_Y, sourceRect.w - (HITBOX_OFFSET_X * 2), sourceRect.h - HITBOX_OFFSET_Y};
+	hitbox = { position.x + HITBOX_OFFSET_X, position.y + HITBOX_OFFSET_Y, position.w - (HITBOX_OFFSET_X * 2), position.h - HITBOX_OFFSET_Y};
 
 	velocity.x = 0;
 	velocity.y = 0;
@@ -77,8 +77,8 @@ void GameObject::UpdatePosition(){
 	velocity.x += acceleration.x;
 	velocity.y += acceleration.y;
 	
-	if (velocity.y > MAX_VELOCITY_Y)
-		velocity.y = MAX_VELOCITY_Y;
+	if (abs(velocity.y) > MAX_VELOCITY_Y)
+		velocity.y = MAX_VELOCITY_Y * (velocity.y / abs(velocity.y));
 	if (abs(velocity.x) > MAX_VELOCITY_X)
 		velocity.x = MAX_VELOCITY_X * (velocity.x / abs(velocity.x));
 
@@ -87,11 +87,6 @@ void GameObject::UpdatePosition(){
 
 	hitbox.x = position.x + HITBOX_OFFSET_X;
 	hitbox.y = position.y + HITBOX_OFFSET_Y;
-
-	if (velocity.x < 0)
-		flipType = SDL_FLIP_HORIZONTAL;
-	else if (velocity.x > 0)
-		flipType = SDL_FLIP_NONE;
 
 	acceleration.x = 0;
 	acceleration.y = 0;

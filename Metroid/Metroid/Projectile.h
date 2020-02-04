@@ -21,7 +21,6 @@ public:
 
 private: 
 	SDL_Point init_Force;
-	SDL_Point init_Position;
 	bool playerOwned;
 	float initAngle;
 	Uint32 activeTimer;
