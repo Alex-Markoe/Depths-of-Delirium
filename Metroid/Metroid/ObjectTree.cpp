@@ -67,15 +67,19 @@ void ObjectTree::Reset(ObjectTreeNode* quad){
 }
 
 void ObjectTree::CollisionDetector(GameObject &reference) {
+	//Bounds of possible collision quadrants
 	int collX = reference.hitbox.x - MAX_COLLISION_DIST_X;
 	int collY = reference.hitbox.y - MAX_COLLISION_DIST_Y;
 	int collW = reference.hitbox.w + reference.hitbox.x + MAX_COLLISION_DIST_X;
 	int collH = reference.hitbox.h + reference.hitbox.y + MAX_COLLISION_DIST_Y;
 
+	//reference hitbox
 	int x = reference.hitbox.x;
 	int y = reference.hitbox.y;
 	int width = reference.hitbox.x + reference.hitbox.w;
 	int height = reference.hitbox.y + reference.hitbox.h;
+
+	//reference type
 
 	if (head != NULL)
 		CollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Rect{ x, y, width, height });
@@ -87,7 +91,6 @@ void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, 
 	//PHpos = player hitbox position
 	//coll = frame of collision detection for quads
 	for (unsigned i = 0; i < quad->items.size(); i++) {
-
 		int depthXLeft = pHPos.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + reference.acceleration.x + reference.velocity.x;
 		int depthXRight = pHPos.w - quad->items[i]->hitbox.x + reference.acceleration.x + reference.velocity.x;
 		int depthYTop = pHPos.y - (quad->items[i]->hitbox.h + quad->items[i]->hitbox.y) + reference.acceleration.y + reference.velocity.y;
@@ -205,5 +208,9 @@ void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item, bool 
 			reference.ApplyForce(SDL_Point{ force, 0 });
 		else //y dimension
 			reference.ApplyForce(SDL_Point{ 0, force });
+	}
+	else if (name == "class Projectile") {
+		Projectile* proj = (Projectile*)&reference;
+		proj->active = false;
 	}
 }

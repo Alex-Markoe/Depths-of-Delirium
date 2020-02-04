@@ -36,7 +36,7 @@ enum SETTING {
 class Tile : public GameObject
 {
 public:
-	Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TILE_TYPE type, TILE_ORIENTATION orientation, SETTING setting);
+	Tile(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset, TILE_TYPE type, TILE_ORIENTATION orientation, SETTING setting);
 	~Tile();
 	void SetSourceLoc(int x, int y);
 	TILE_TYPE type;

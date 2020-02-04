@@ -1,7 +1,8 @@
 #include "Tile.h"
 
-Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOFfsetY, TILE_TYPE Type, TILE_ORIENTATION Orientation, SETTING Setting) :
-	GameObject(initPosition, initSource, hitboxOffsetX, hitboxOFfsetY){
+Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset, 
+			TILE_TYPE Type, TILE_ORIENTATION Orientation, SETTING Setting) :
+	GameObject(initPosition, initSource, hitboxOffset){
 	type = Type;
 	orientation = Orientation;
 	setting = Setting;

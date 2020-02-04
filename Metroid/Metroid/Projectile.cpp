@@ -1,7 +1,8 @@
 #include "Projectile.h"
 
-Projectile::Projectile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY, SDL_Point initForce, PROJECTILE_TYPE proj, bool player, float angle):
-	GameObject(initPosition, initSource, hitboxOffsetX, hitboxOffsetY)
+Projectile::Projectile(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset,
+	SDL_Point initForce, PROJECTILE_TYPE proj, bool player, float angle, int lifeTime):
+	GameObject(initPosition, initSource, hitboxOffset)
 {
 	init_Force = initForce;
 	proj_Type = proj;
@@ -9,22 +10,9 @@ Projectile::Projectile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOff
 	initAngle = angle;
 	active = true;
 
-	int timerModifier = 500;
-	switch (proj) {
-	case FIRE:
-		sourceRect = SDL_Rect{ 0,0,30,30 };
-		break;
-	case ICE:
-		sourceRect = SDL_Rect{ 0,0,30,30 };
-		break;
-	case PUSH:
-		sourceRect = SDL_Rect{ 0,0,30,30 };
-		break;
-	}
-
-	MAX_VELOCITY_X = 50;
-	MAX_VELOCITY_Y = 50;
-	activeTimer = SDL_GetTicks() + timerModifier;
+	MAX_VELOCITY.x = 50;
+	MAX_VELOCITY.y = 50;
+	activeTimer = SDL_GetTicks() + lifeTime;
 }
 
 Projectile::~Projectile()

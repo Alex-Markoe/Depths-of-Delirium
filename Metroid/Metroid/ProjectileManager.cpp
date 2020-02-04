@@ -31,8 +31,23 @@ void ProjectileManager::Render() {
 
 //Add a new projectile to the collection
 void ProjectileManager::Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type, bool playerOwned, float angle) {
-	Projectile* projectile = new Projectile(pos, SDL_Rect{0,0,0,0}, 0, 0, force, type, playerOwned, angle);
-	projectile->loadTexture("Assets/TileSpriteSheet.png", gRenderer);
+	SDL_Rect source;
+	int frames = 0, lifeTime = 500;
+	SDL_Point hitboxOffset = { 0,0 };
+	switch (type) {
+	case FIRE:
+		source = SDL_Rect{ 0,0,48,21 };
+		break;
+	case ICE:
+		source = SDL_Rect{ 0,0,30,30 };
+		break;
+	case PUSH:
+		source = SDL_Rect{ 0,0,30,30 };
+		break;
+	}
+	Projectile* projectile = new Projectile(SDL_Rect{pos.x, pos.y, source.w, source.h}, source, 
+											hitboxOffset, force, type, playerOwned, angle, lifeTime);
+	projectile->loadTexture("Assets/Fireball.png", gRenderer);
 	projectiles.push_back(projectile);
 }
 

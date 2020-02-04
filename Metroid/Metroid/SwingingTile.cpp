@@ -1,7 +1,8 @@
 #include "SwingingTile.h"
 
-SwingingTile::SwingingTile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY, TILE_TYPE type, TILE_ORIENTATION orientation, SETTING setting, SDL_Rect pivotPoint)
-	: Tile(initPosition, initSource, hitboxOffsetX, hitboxOffsetY, type, orientation, setting){
+SwingingTile::SwingingTile(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset, 
+					TILE_TYPE type, TILE_ORIENTATION orientation, SETTING setting, SDL_Rect pivotPoint)
+	: Tile(initPosition, initSource, hitboxOffset, type, orientation, setting){
 	pivot = pivotPoint;
 	initialPosition = initPosition;
 

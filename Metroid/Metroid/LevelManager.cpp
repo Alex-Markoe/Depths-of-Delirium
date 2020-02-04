@@ -9,7 +9,7 @@ LevelManager::LevelManager(std::map<std::string, std::string> textures, SDL_Rend
 	textureFiles = textures;
 	gRenderer = renderer;
 
-	player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, 12, 3, projectiles);
+	player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 }, projectiles);
 	player->loadTexture(textureFiles["PlayerSheet"], gRenderer);
 
 	transitioning = false;
@@ -35,6 +35,9 @@ void LevelManager::Update(){
 	if (platforms->count != 0){
 		platforms->Update();
 		platforms->CollisionDetector(*player);
+		for (unsigned i = 0; i < projectiles->projectiles.size(); i++) {
+			platforms->CollisionDetector(*projectiles->projectiles[i]);
+		}
 	}
 
 	//Change positions
@@ -198,19 +201,23 @@ void LevelManager::AddTile(TILE_TYPE type, TILE_ORIENTATION orientation, SDL_Poi
 	
 	switch (type) {
 	case SWING:
-		tile = new SwingingTile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 0, 0, type, orientation,
+		tile = new SwingingTile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 
+			SDL_Point{ 0,0 }, type, orientation,
 			lvlTransition->setting, SDL_Rect{ pivotPos.x, pivotPos.y, 0, 0 });
 		break;
 	case MOVE:
-		tile = new MovingTile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 0, 0, type, orientation,
+		tile = new MovingTile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE },
+			SDL_Point{ 0,0 }, type, orientation,
 			lvlTransition->setting, SDL_Rect{ pivotPos.x, pivotPos.y, 0, 0 });
 		break;
 	case TRANSITION:
-		transitions.push_back(new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 0, 0, type, orientation,
+		transitions.push_back(new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 
+			SDL_Point{0,0}, type, orientation,
 			lvlTransition->setting));
 		break;
 	default:
-		tile = new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, TILE_SIZE, TILE_SIZE }, SDL_Rect{ 0, 0,TILE_SIZE/2,TILE_SIZE/2 }, 0, 0, type, orientation,
+		tile = new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, TILE_SIZE, TILE_SIZE }, SDL_Rect{ 0, 0,TILE_SIZE/2,TILE_SIZE/2 }, 
+			SDL_Point{ 0,0 }, type, orientation,
 			lvlTransition->setting);
 		break;
 	}

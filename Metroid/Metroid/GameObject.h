@@ -7,7 +7,7 @@
 
 class GameObject{
 public:
-	GameObject(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY);
+	GameObject(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset);
 	~GameObject();
 
 	void UpdateAnimation();
@@ -28,16 +28,13 @@ public:
 protected:
 	SDL_Texture* texture;
 	SDL_RendererFlip flipType;
+	SDL_Point HITBOX_OFFSET;
+	SDL_Point MAX_VELOCITY;
 
 	int frame;
 	int MAX_FRAME;
 	bool stateChange;
 
 	int ANIM_SOURCE_X;
-	int HITBOX_OFFSET_X;
-	int HITBOX_OFFSET_Y;
-
-	int MAX_VELOCITY_Y;
-	int MAX_VELOCITY_X;
 };
 

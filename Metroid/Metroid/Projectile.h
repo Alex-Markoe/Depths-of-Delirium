@@ -11,7 +11,8 @@ enum PROJECTILE_TYPE {
 class Projectile : public GameObject
 {
 public:
-	Projectile(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY, SDL_Point initForce, PROJECTILE_TYPE proj, bool player, float angle);
+	Projectile(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset, 
+				SDL_Point initForce, PROJECTILE_TYPE proj, bool player, float angle, int lifeTime);
 	~Projectile();
 	void Update() override;
 	void Draw(SDL_Renderer* gRenderer) override;
@@ -21,8 +22,8 @@ public:
 
 private: 
 	SDL_Point init_Force;
+	Uint32 activeTimer;
 	bool playerOwned;
 	float initAngle;
-	Uint32 activeTimer;
 };
 

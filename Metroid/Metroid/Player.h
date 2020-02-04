@@ -21,7 +21,7 @@ enum PLAYER_STATE {
 class Player : public GameObject
 {
 public:
-	Player(SDL_Rect initPosition, SDL_Rect initSource, int hitboxOffsetX, int hitboxOffsetY, ProjectileManager* projManager);
+	Player(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset, ProjectileManager* projManager);
 	~Player();
 	void UpdateFrame();
 	void UpdateState();
