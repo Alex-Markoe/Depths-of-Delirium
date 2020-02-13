@@ -10,8 +10,8 @@ Projectile::Projectile(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hit
 	initAngle = angle;
 	active = true;
 
-	MAX_VELOCITY.x = 50;
-	MAX_VELOCITY.y = 50;
+	MAX_VELOCITY.x = 40;
+	MAX_VELOCITY.y = 40;
 	activeTimer = SDL_GetTicks() + lifeTime;
 }
 

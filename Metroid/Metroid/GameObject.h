@@ -33,7 +33,6 @@ protected:
 
 	int frame;
 	int MAX_FRAME;
-	bool stateChange;
 
 	int ANIM_SOURCE_X;
 };

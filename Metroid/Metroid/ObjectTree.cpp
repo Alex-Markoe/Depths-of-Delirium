@@ -66,7 +66,8 @@ void ObjectTree::Reset(ObjectTreeNode* quad){
 	delete quad;
 }
 
-void ObjectTree::CollisionDetector(GameObject &reference) {
+//Detect collision based on box collider
+void ObjectTree::BoxCollisionDetector(GameObject &reference) {
 	//Bounds of possible collision quadrants
 	int collX = reference.hitbox.x - MAX_COLLISION_DIST_X;
 	int collY = reference.hitbox.y - MAX_COLLISION_DIST_Y;
@@ -82,23 +83,21 @@ void ObjectTree::CollisionDetector(GameObject &reference) {
 	//reference type
 
 	if (head != NULL)
-		CollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Rect{ x, y, width, height });
+		BoxCollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Rect{ x, y, width, height });
 }
 
 //determine if the referenced object is colliding with any objects in its relevant quads
-void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Rect pHPos){
+void ObjectTree::BoxCollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Rect hitboxPosition){
 	//Loop through each object in the quad
-	//PHpos = player hitbox position
 	//coll = frame of collision detection for quads
 	for (unsigned i = 0; i < quad->items.size(); i++) {
-		int depthXLeft = pHPos.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + reference.acceleration.x + reference.velocity.x;
-		int depthXRight = pHPos.w - quad->items[i]->hitbox.x + reference.acceleration.x + reference.velocity.x;
-		int depthYTop = pHPos.y - (quad->items[i]->hitbox.h + quad->items[i]->hitbox.y) + reference.acceleration.y + reference.velocity.y;
-		int depthYBottom = pHPos.h - quad->items[i]->hitbox.y + reference.acceleration.y + reference.velocity.y;
 
 		//Check the x direction
-		if ((pHPos.y < quad->items[i]->hitbox.y && pHPos.h > quad->items[i]->hitbox.y)
-			|| (pHPos.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h && pHPos.h > quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)) {
+		if ((hitboxPosition.y < quad->items[i]->hitbox.y && hitboxPosition.h > quad->items[i]->hitbox.y)
+			|| (hitboxPosition.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h && hitboxPosition.h > quad->items[i]->hitbox.y + quad->items[i]->hitbox.h)) {
+			int speedX = reference.velocity.x + reference.acceleration.x;
+			int depthXLeft = hitboxPosition.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + speedX;
+			int depthXRight = hitboxPosition.w - quad->items[i]->hitbox.x + speedX;
 			if (depthXLeft <= 0 && depthXLeft > -MAX_DEPTH_X) //left
 				CollisionHandler(reference, quad->items[i], true, depthXLeft);
 			else if (depthXRight >= 0 && depthXRight < MAX_DEPTH_X) //right
@@ -106,8 +105,11 @@ void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, 
 		}
 
 		//Check the y direction
-		if ((pHPos.x > quad->items[i]->hitbox.x && pHPos.x < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
-			|| (pHPos.w < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w && pHPos.w > quad->items[i]->hitbox.x)) {
+		if ((hitboxPosition.x > quad->items[i]->hitbox.x && hitboxPosition.x < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w)
+			|| (hitboxPosition.w < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w && hitboxPosition.w > quad->items[i]->hitbox.x)) {
+			int speedY = reference.velocity.y + reference.acceleration.y;
+			int depthYTop = hitboxPosition.y - (quad->items[i]->hitbox.h + quad->items[i]->hitbox.y) + speedY;
+			int depthYBottom = hitboxPosition.h - quad->items[i]->hitbox.y + speedY;
 			if (depthYBottom >= 0 && depthYBottom < MAX_DEPTH_Y) //descending
 				CollisionHandler(reference, quad->items[i], false, depthYBottom);
 			else if (depthYTop <= 0 && depthYTop > -MAX_DEPTH_Y) //ascending
@@ -117,29 +119,75 @@ void ObjectTree::CollisionDetector(GameObject &reference, ObjectTreeNode* quad, 
 
 	//Check the next quadrant
 	if (quad->quads[0] != NULL){
-		if (((coll.x >= quad->quads[0]->dimensions.x && coll.x <= quad->quads[0]->dimensions.x + quad->quads[0]->dimensions.w) 
-			|| (coll.w >= quad->quads[0]->dimensions.x && coll.w <= quad->quads[0]->dimensions.x + quad->quads[0]->dimensions.w)) &&
-			((coll.y >= quad->quads[0]->dimensions.y && coll.y <= quad->quads[0]->dimensions.y + quad->quads[0]->dimensions.h)
-			|| (coll.h >= quad->quads[0]->dimensions.y && coll.h <= quad->quads[0]->dimensions.y + quad->quads[0]->dimensions.h))) {
-			CollisionDetector(reference, quad->quads[0], coll, pHPos);
+		if (InBounds(coll, quad->quads[0])) {
+			BoxCollisionDetector(reference, quad->quads[0], coll, hitboxPosition);
 		}
-		if (((coll.x >= quad->quads[1]->dimensions.x && coll.x <= quad->quads[1]->dimensions.x + quad->quads[1]->dimensions.w)
-			|| (coll.w >= quad->quads[1]->dimensions.x && coll.w <= quad->quads[1]->dimensions.x + quad->quads[1]->dimensions.w)) &&
-			((coll.y >= quad->quads[1]->dimensions.y && coll.y <= quad->quads[1]->dimensions.y + quad->quads[1]->dimensions.h)
-			|| (coll.h >= quad->quads[1]->dimensions.y && coll.h <= quad->quads[1]->dimensions.y + quad->quads[1]->dimensions.h))) {
-			CollisionDetector(reference, quad->quads[1], coll, pHPos);
+		if (InBounds(coll, quad->quads[1])) {
+			BoxCollisionDetector(reference, quad->quads[1], coll, hitboxPosition);
 		}
-		if (((coll.x >= quad->quads[2]->dimensions.x && coll.x <= quad->quads[2]->dimensions.x + quad->quads[2]->dimensions.w)
-			|| (coll.w >= quad->quads[2]->dimensions.x && coll.w <= quad->quads[2]->dimensions.x + quad->quads[2]->dimensions.w)) &&
-			((coll.y >= quad->quads[2]->dimensions.y && coll.y <= quad->quads[2]->dimensions.y + quad->quads[2]->dimensions.h)
-			|| (coll.h >= quad->quads[2]->dimensions.y && coll.h <= quad->quads[2]->dimensions.y + quad->quads[2]->dimensions.h))) {
-			CollisionDetector(reference, quad->quads[2], coll, pHPos);
+		if (InBounds(coll, quad->quads[2])) {
+			BoxCollisionDetector(reference, quad->quads[2], coll, hitboxPosition);
 		}
-		if (((coll.x >= quad->quads[3]->dimensions.x && coll.x <= quad->quads[3]->dimensions.x + quad->quads[3]->dimensions.w)
-			|| (coll.w >= quad->quads[3]->dimensions.x && coll.w <= quad->quads[3]->dimensions.x + quad->quads[3]->dimensions.w)) &&
-			((coll.y >= quad->quads[3]->dimensions.y && coll.y <= quad->quads[3]->dimensions.y + quad->quads[3]->dimensions.h)
-			|| (coll.h >= quad->quads[3]->dimensions.y && coll.h <= quad->quads[3]->dimensions.y + quad->quads[3]->dimensions.h))) {
-			CollisionDetector(reference, quad->quads[3], coll, pHPos);
+		if (InBounds(coll, quad->quads[3])) {
+			BoxCollisionDetector(reference, quad->quads[3], coll, hitboxPosition);
+		}
+	}
+}
+
+//Detect collision based on hitbox center
+void ObjectTree::CircleCollisionDetector(GameObject &reference) {
+	int centerX = reference.hitbox.x + (reference.hitbox.w/2);
+	int centerY = reference.hitbox.y + (reference.hitbox.h/2);
+
+	int collX = reference.hitbox.x - MAX_COLLISION_DIST_X;
+	int collY = reference.hitbox.y - MAX_COLLISION_DIST_Y;
+	int collW = reference.hitbox.x + MAX_COLLISION_DIST_X;
+	int collH = reference.hitbox.y + MAX_COLLISION_DIST_Y;
+
+	if (head != NULL)
+		CircleCollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Point{centerX, centerY});
+}
+
+//Determine if a projectile is currently colliding with a wall
+void ObjectTree::CircleCollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Point center) {
+	for (unsigned i = 0; i < quad->items.size(); i++) {
+
+		//Check the x direction
+		if (center.y > quad->items[i]->hitbox.y && center.y < quad->items[i]->hitbox.y + quad->items[i]->hitbox.h){
+			int speedX = reference.velocity.x + reference.acceleration.x;
+			int depthXLeft = center.x - (quad->items[i]->hitbox.w + quad->items[i]->hitbox.x) + speedX;
+			int depthXRight = center.x - quad->items[i]->hitbox.x + speedX;
+			if (depthXLeft <= 0 && depthXLeft > -MAX_DEPTH_X) //left
+				CollisionHandler(reference, quad->items[i], true, depthXLeft);
+			else if (depthXRight >= 0 && depthXRight < MAX_DEPTH_X) //right
+				CollisionHandler(reference, quad->items[i], true, depthXRight);
+		}
+
+		//Check the y direction
+		if (center.x > quad->items[i]->hitbox.x && center.x < quad->items[i]->hitbox.x + quad->items[i]->hitbox.w){
+			int speedY = reference.velocity.y + reference.acceleration.y;
+			int depthYTop = center.y - (quad->items[i]->hitbox.h + quad->items[i]->hitbox.y) + speedY;
+			int depthYBottom = center.y - quad->items[i]->hitbox.y + speedY;
+			if (depthYBottom >= 0 && depthYBottom < MAX_DEPTH_Y) //descending
+				CollisionHandler(reference, quad->items[i], false, depthYBottom);
+			else if (depthYTop <= 0 && depthYTop > -MAX_DEPTH_Y) //ascending
+				CollisionHandler(reference, quad->items[i], false, depthYTop);
+		}
+	}
+
+	//Check the next quadrant
+	if (quad->quads[0] != NULL) {
+		if (InBounds(coll, quad->quads[0])) {
+			CircleCollisionDetector(reference, quad->quads[0], coll, center);
+		}
+		if (InBounds(coll, quad->quads[1])) {
+			CircleCollisionDetector(reference, quad->quads[1], coll, center);
+		}
+		if (InBounds(coll, quad->quads[2])) {
+			CircleCollisionDetector(reference, quad->quads[2], coll, center);
+		}
+		if (InBounds(coll, quad->quads[3])) {
+			CircleCollisionDetector(reference, quad->quads[3], coll, center);
 		}
 	}
 }
@@ -190,6 +238,17 @@ void ObjectTree::Update(ObjectTreeNode* quad){
 	}
 }
 
+//Helper function
+//Check if an object is within relevant bounds of an adjacent quadrant
+bool ObjectTree::InBounds(SDL_Rect coll, ObjectTreeNode* node) {
+	return ((coll.x >= node->dimensions.x && coll.x <= node->dimensions.x + node->dimensions.w)
+		   || (coll.w >= node->dimensions.x && coll.w <= node->dimensions.x + node->dimensions.w)) &&
+		   ((coll.y >= node->dimensions.y && coll.y <= node->dimensions.y + node->dimensions.h)
+		   || (coll.h >= node->dimensions.y && coll.h <= node->dimensions.y + node->dimensions.h));
+}
+
+
+//Handle collisions based on the object
 void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item, bool dimension, int depth) {
 	Tile * t = (Tile*)item;
 	std::string name = typeid(reference).name();

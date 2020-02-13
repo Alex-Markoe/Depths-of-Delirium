@@ -33,7 +33,7 @@ void ProjectileManager::Render() {
 void ProjectileManager::Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type, bool playerOwned, float angle) {
 	SDL_Rect source;
 	int frames = 0, lifeTime = 500;
-	SDL_Point hitboxOffset = { 0,0 };
+	SDL_Point hitboxOffset = { 0, 0 };
 	switch (type) {
 	case FIRE:
 		source = SDL_Rect{ 0,0,48,21 };
@@ -48,6 +48,7 @@ void ProjectileManager::Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type,
 	Projectile* projectile = new Projectile(SDL_Rect{pos.x, pos.y, source.w, source.h}, source, 
 											hitboxOffset, force, type, playerOwned, angle, lifeTime);
 	projectile->loadTexture("Assets/Fireball.png", gRenderer);
+	projectile->setAnim(0, 0, 2);
 	projectiles.push_back(projectile);
 }
 

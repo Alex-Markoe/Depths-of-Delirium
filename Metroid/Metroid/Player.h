@@ -8,13 +8,10 @@
 #include <cmath>
 
 enum PLAYER_STATE {
+	IDLE,
 	JUMP,
 	FALL,
-	IDLE,
-	ATTACK,
-	FORCE,
-	RUN_LEFT,
-	RUN_RIGHT,
+	RUN,
 	DUCK,
 };
 
@@ -39,7 +36,8 @@ private:
 	int p_vel_Y;
 
 	bool inAir;
-	bool moving;
+	bool inAction;
+	bool attacking;
 	Uint32 attackTimer;
 	const int TERMINAL_VELOCITY = 1;
 };

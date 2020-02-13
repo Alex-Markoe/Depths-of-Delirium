@@ -34,9 +34,9 @@ void LevelManager::Update(){
 	//Check collisions
 	if (platforms->count != 0){
 		platforms->Update();
-		platforms->CollisionDetector(*player);
+		platforms->BoxCollisionDetector(*player);
 		for (unsigned i = 0; i < projectiles->projectiles.size(); i++) {
-			platforms->CollisionDetector(*projectiles->projectiles[i]);
+			platforms->CircleCollisionDetector(*projectiles->projectiles[i]);
 		}
 	}
 
