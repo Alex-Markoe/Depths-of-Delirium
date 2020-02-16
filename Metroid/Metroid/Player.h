@@ -37,8 +37,8 @@ private:
 
 	bool inAir;
 	bool inAction;
-	bool attacking;
-	Uint32 attackTimer;
+	Uint32 spell_Anim_Timer;
+	Uint32 attack_Timer;
 	const int TERMINAL_VELOCITY = 1;
 };
 

@@ -270,6 +270,11 @@ void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item, bool 
 	}
 	else if (name == "class Projectile") {
 		Projectile* proj = (Projectile*)&reference;
-		proj->active = false;
+		if (proj->proj_Type == PUSH && t->type == FORCE) {
+			proj->SetForce(SDL_Point{ -proj->velocity.x * 2, -proj->velocity.y * 2});
+			proj->playerOwned = false;
+		}
+		else
+			proj->active = false;
 	}
 }

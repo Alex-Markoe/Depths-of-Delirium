@@ -64,7 +64,7 @@ void GameObject::ApplyForce(SDL_Point force) {
 }
 
 //Funtion to set the source rectangle in the case of changing states
-void GameObject::setAnim(int sourceX, int sourceY, int maxFrame) {
+void GameObject::SetAnim(int sourceX, int sourceY, int maxFrame) {
 	ANIM_SOURCE_X = sourceX;
 	MAX_FRAME = maxFrame;
 	sourceRect.x = sourceX;

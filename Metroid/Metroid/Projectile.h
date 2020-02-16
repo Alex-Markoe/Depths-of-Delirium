@@ -16,14 +16,14 @@ public:
 	~Projectile();
 	void Update() override;
 	void Draw(SDL_Renderer* gRenderer) override;
+	void SetForce(SDL_Point force);
 
 	PROJECTILE_TYPE proj_Type;
 	bool active;
+	bool playerOwned;
 
 private: 
 	SDL_Point init_Force;
 	Uint32 activeTimer;
-	bool playerOwned;
 	float initAngle;
 };
-

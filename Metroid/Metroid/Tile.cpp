@@ -50,6 +50,9 @@ Tile::Tile(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset,
 				break;
 			}
 			break;
+		case FORCE:
+			SetSourceLoc(0, TILE_SPRITE_SIZE * 4);
+			break;
 		case BOUNCE:
 			break;
 		case SPIKE:

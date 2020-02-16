@@ -34,6 +34,7 @@ private:
 
 	void AddTile(TILE_TYPE type, TILE_ORIENTATION orientation, SDL_Point pivotPos, int locX, int locY);
 	void ReadLevelData(char * lvlData, std::string& tileData, int startIndex, int lvlWidth);
+	void ProjectileCollision(Projectile* p, GameObject& character);
 
 	const int TILE_SIZE = 60;
 	const int TRANSITION_DEPTH = 25;

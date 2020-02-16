@@ -15,7 +15,7 @@ public:
 	void ApplyForce(SDL_Point force);
 	virtual void Draw(SDL_Renderer* gRenderer);
 	virtual void UpdatePosition();
-	virtual void setAnim(int sourceX, int sourceY, int maxFrame);
+	virtual void SetAnim(int sourceX, int sourceY, int maxFrame);
 	virtual void Update();
 
 	SDL_Point acceleration;

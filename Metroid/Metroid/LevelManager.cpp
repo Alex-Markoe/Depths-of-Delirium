@@ -37,6 +37,7 @@ void LevelManager::Update(){
 		platforms->BoxCollisionDetector(*player);
 		for (unsigned i = 0; i < projectiles->projectiles.size(); i++) {
 			platforms->CircleCollisionDetector(*projectiles->projectiles[i]);
+			ProjectileCollision(projectiles->projectiles[i], *player);
 		}
 	}
 
@@ -169,6 +170,11 @@ void LevelManager::Init(){
 					type = SWING;
 				}
 
+				//Bounce tile
+				else if (tilesToRead[j] == 'S') {
+					type = FORCE;
+				}
+
 				//Add the tile
 				if (type != BACKGROUND)
 					AddTile(type, orientation, pivotPos, j, i);
@@ -233,5 +239,24 @@ void LevelManager::ReadLevelData(char * lvlData, std::string& tileData, int star
 	tileData = "";
 	for (int i = startIndex * lvlWidth; i < (startIndex + 1) * lvlWidth; i++) {
 		tileData += lvlData[i];
+	}
+}
+
+//Check if a projectile is colliding with a character
+void LevelManager::ProjectileCollision(Projectile* p, GameObject& character) {
+	SDL_Point center{ p->hitbox.x + (p->hitbox.w / 2), p->hitbox.y + (p->hitbox.h / 2) };
+	//Check if there is a collision
+	if (center.x >= character.hitbox.x && center.x <= character.hitbox.x + character.hitbox.w && 
+		center.y >= character.hitbox.y && center.y <= character.hitbox.y + character.hitbox.h) {
+
+		std::string name = typeid(character).name();
+		if (name == "class Player" && !p->playerOwned) {
+			switch (p->proj_Type) {
+			case PUSH:
+				character.ApplyForce(SDL_Point{ p->velocity.x, p->velocity.y });
+				break;
+			}
+			p->active = false;
+		}
 	}
 }

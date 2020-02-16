@@ -19,7 +19,7 @@ Projectile::~Projectile()
 {
 }
 
-void Projectile::Update() {
+void Projectile::Update(){
 	ApplyForce(init_Force);
 	UpdateAnimation();
 	UpdatePosition();
@@ -29,4 +29,8 @@ void Projectile::Update() {
 
 void Projectile::Draw(SDL_Renderer* gRenderer){
 	SDL_RenderCopyEx(gRenderer, texture, &sourceRect, &position, initAngle, NULL, flipType);
+}
+
+void Projectile::SetForce(SDL_Point force) {
+	init_Force = force;
 }

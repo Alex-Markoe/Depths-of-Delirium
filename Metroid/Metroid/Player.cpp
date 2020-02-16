@@ -9,7 +9,7 @@ Player::Player(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffse
 	MAX_VELOCITY.y = 15;
 	MAX_VELOCITY.x = 8;
 	projectiles = projManager;
-	attackTimer = 0;
+	attack_Timer = 0;
 	current_Proj_Type = FIRE;
 }
 
@@ -20,27 +20,25 @@ Player::~Player(){
 
 //Update the player's movement based on the current state
 void Player::UpdateFrame(){
-	if (attacking && playerState != RUN) 
-		setAnim(0, 78, 0);
+	if (spell_Anim_Timer > 0 && playerState != RUN) 
+		SetAnim(0, 78, 0);
 	else {
 		switch (playerState) {
 		case IDLE:
-			setAnim(0, 0, 0);
+			SetAnim(0, 0, 0);
 			break;
 		case RUN:
-			if (!attacking)
-				setAnim(75, 0, 3);
-			else
-				setAnim(75, 78, 3);
+			if (spell_Anim_Timer == 0) SetAnim(75, 0, 3);
+			else SetAnim(75, 78, 3);
 			break;
 		case JUMP:
-			setAnim(75, 156, 1);
+			SetAnim(75, 156, 1);
 			break;
 		case FALL:
-			setAnim(0, 156, 3);
+			SetAnim(0, 156, 3);
 			break;
 		case DUCK:
-			setAnim(0, 156, 0);
+			SetAnim(0, 156, 0);
 			break;
 		}
 	}
@@ -60,9 +58,9 @@ void Player::UpdateState(){
 		ApplyForce(SDL_Point{ -8 - velocity.x, 0 });
 		inAction = true;
 	}
-	if (state[SDL_SCANCODE_SPACE]) { //Using the force push
-		attacking = true;
+	if (state[SDL_SCANCODE_SPACE] && attack_Timer == 0) { //Using the force push
 		SpawnProjectile(PUSH);
+		attack_Timer = SDL_GetTicks();
 		inAction = true;
 	}
 	if (state[SDL_SCANCODE_W] && !inAir) { //Jumping
@@ -75,10 +73,9 @@ void Player::UpdateState(){
 		velocity.x = 0;
 		inAction = true;
 	}
-	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1) && attackTimer == 0) { //Firing a spell
-		attacking = true;
+	if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1) && attack_Timer == 0) { //Firing a spell
 		SpawnProjectile(current_Proj_Type);
-		attackTimer = SDL_GetTicks();
+		attack_Timer = SDL_GetTicks();
 		inAction = true;
 	}
 	
@@ -91,32 +88,24 @@ void Player::UpdateState(){
 	else
 		inAir = false;
 
-	if (attackTimer > 0 && attackTimer + 500 < SDL_GetTicks()) {
-		attackTimer = 0;
-		attacking = false;
-	}
+	if (attack_Timer > 0 && attack_Timer + 500 < SDL_GetTicks()) attack_Timer = 0;
+	if (spell_Anim_Timer > 0 && spell_Anim_Timer + 250 < SDL_GetTicks()) spell_Anim_Timer = 0;
 
 	//Determine whether or not the player is currently idle
 	if (!inAction) {
 		playerState = IDLE;
 		velocity.x = 0;
-		attacking = false;
 	}
 }
 
 void Player::Update(){
 	//Call the other update methods
-	if (velocity.x < 0)
-		flipType = SDL_FLIP_HORIZONTAL;
-	else if (velocity.x > 0)
-		flipType = SDL_FLIP_NONE;
+	if (velocity.x < 0) flipType = SDL_FLIP_HORIZONTAL;
+	else if (velocity.x > 0) flipType = SDL_FLIP_NONE;
 
 	UpdateState();
-	if (previousState != playerState) {
-		frame = 0;
-	}
+	if (previousState != playerState) frame = 0;
 	UpdateFrame();
-
 	UpdateAnimation();
 
 	//Apply gravity
@@ -136,8 +125,9 @@ void Player::SpawnProjectile(PROJECTILE_TYPE type) {
 	SDL_Point initialForce = { 5.f * cos(angle), 5.f * sin(angle) };
 	projectiles->Add(SDL_Rect{position.x + (hitbox.w/2), position.y + (hitbox.h/2), 0, 0}, 
 								initialForce, type, true, angle * (180.f / M_PI));
-	if (mousePos.x < position.x)
-		flipType = SDL_FLIP_HORIZONTAL;
-	else
-		flipType = SDL_FLIP_NONE;
+
+	if (mousePos.x < position.x) flipType = SDL_FLIP_HORIZONTAL;
+	else flipType = SDL_FLIP_NONE;
+
+	spell_Anim_Timer = SDL_GetTicks();
 }
