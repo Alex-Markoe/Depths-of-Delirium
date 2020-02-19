@@ -127,6 +127,7 @@
     <ClCompile Include="MovingTile.cpp" />
     <ClCompile Include="ObjectTree.cpp" />
     <ClCompile Include="ObjectTreeNode.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="MovingTile.h" />
     <ClInclude Include="ObjectTree.h" />
     <ClInclude Include="ObjectTreeNode.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileManager.h" />

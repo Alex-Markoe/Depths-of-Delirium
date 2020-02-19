@@ -11,7 +11,7 @@
 
 class LevelManager{
 public:
-	LevelManager(std::map<std::string, std::string> textures, SDL_Renderer* renderer);
+	LevelManager(SDL_Renderer* renderer);
 	~LevelManager();
 	void Update();
 	void RenderAll();
@@ -24,8 +24,7 @@ private:
 	ObjectTree* platforms;
 	ProjectileManager* projectiles;
 	SDL_Renderer* gRenderer;
-	std::vector<GameObject*> transitions;
-	std::map<std::string, std::string> textureFiles;
+	//std::vector<GameObject*> transitions;
 
 	bool transitioning;
 	float swingTimer;

@@ -15,9 +15,7 @@ Projectile::Projectile(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hit
 	activeTimer = SDL_GetTicks() + lifeTime;
 }
 
-Projectile::~Projectile()
-{
-}
+Projectile::~Projectile(){}
 
 void Projectile::Update(){
 	ApplyForce(init_Force);

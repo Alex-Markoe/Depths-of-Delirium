@@ -7,6 +7,10 @@
 #include "Player.h"
 #include "LevelManager.h"
 
+#define _CRTDBG_MAP_ALLOC
+#include <cstdlib>
+#include <crtdbg.h>
+
 //constants for the window size
 const int WINDOW_WIDTH = 1920;
 const int WINDOW_HEIGHT = 1080;
@@ -15,14 +19,13 @@ const int WINDOW_HEIGHT = 1080;
 bool init();
 bool loadMedia();
 void close();
+void wrapper();
 
 //window being rendered to
 SDL_Window* window = NULL;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
-
-std::map<std::string, std::string> textureFiles;
 
 LevelManager* level;
 SDL_Rect display;
@@ -86,12 +89,8 @@ bool loadMedia() {
 	//Loading flag
 	bool success = true;
 
-	textureFiles["PlayerSheet"] = "Assets/WizardSpriteSheet.png";
-	textureFiles["TileSheet"] = "Assets/TileSheet.png";
-
 	//Load in all assets
-	/*player.loadTexture("Assets/WizardSpriteSheet.png", gRenderer);*/
-	level = new LevelManager(textureFiles, gRenderer);
+	level = new LevelManager(gRenderer);
 	level->Init();
 	/*level->Init();
 	level->Init();
@@ -119,8 +118,8 @@ void close() {
 	SDL_Quit();
 }
 
-//Main function, basic stuff that goes to the screen
-int main(int argc, char* args[]) {
+//wrapper function for memory leak detection
+void wrapper() {
 	//Startup SDL and create a new window
 	if (!init()) {
 		printf("Failed to initialize!\n");
@@ -138,10 +137,10 @@ int main(int argc, char* args[]) {
 			//Hold the application running
 			while (!quit) {
 				//Handle events on queue
-				while (SDL_PollEvent(&e) != 0){
+				while (SDL_PollEvent(&e) != 0) {
 					//User requests to exit
-					if (e.type == SDL_QUIT){ 
-						quit = true; 
+					if (e.type == SDL_QUIT) {
+						quit = true;
 					}
 				}
 				//Update all necessary position values
@@ -149,7 +148,7 @@ int main(int argc, char* args[]) {
 
 				//Clear the screen
 				SDL_RenderClear(gRenderer);
-				
+
 				//Call any draw methods for any gameobjects
 				level->RenderAll();
 
@@ -161,6 +160,12 @@ int main(int argc, char* args[]) {
 
 	//Close SDL and all subsystems
 	close();
+}
+
+//Main function, basic stuff that goes to the screen
+int main(int argc, char* args[]) {
+	wrapper();
+	_CrtDumpMemoryLeaks();
 	
 	return 0;
 }

@@ -23,6 +23,7 @@ public:
 	void UpdateFrame();
 	void UpdateState();
 	void Update() override;
+	void ApplyPush(SDL_Point force);
 
 private:
 	void SpawnProjectile(PROJECTILE_TYPE type);
@@ -36,9 +37,8 @@ private:
 	int p_vel_Y;
 
 	bool inAir;
-	bool inAction;
+	bool pushed;
 	Uint32 spell_Anim_Timer;
 	Uint32 attack_Timer;
 	const int TERMINAL_VELOCITY = 1;
 };
-

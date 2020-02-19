@@ -8,13 +8,13 @@ class ProjectileManager
 public:
 	ProjectileManager(SDL_Renderer* renderer);
 	~ProjectileManager();
-	void Update();
+	virtual void Update();
 	void Remove(Projectile* toRemove);
-	void Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type, bool playerOwned, float angle);
+	virtual void Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type, bool playerOwned, float angle);
 	void Render();
 	std::vector<Projectile*> projectiles;
 
-private:
+protected:
 	SDL_Renderer* gRenderer;
 };
 

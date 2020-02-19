@@ -1,28 +1,28 @@
 #include "LevelManager.h"
 
 //Constructor, initialize all important variables
-LevelManager::LevelManager(std::map<std::string, std::string> textures, SDL_Renderer* renderer){
+LevelManager::LevelManager(SDL_Renderer* renderer){
 	platforms = new ObjectTree(0, 0);
 	lvlTransition = new Transitioner();
 	projectiles = new ProjectileManager(renderer);
 
-	textureFiles = textures;
 	gRenderer = renderer;
 
 	player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 }, projectiles);
-	player->loadTexture(textureFiles["PlayerSheet"], gRenderer);
+	player->loadTexture("Assets/WizardSpriteSheet.png", gRenderer);
 
 	transitioning = false;
 }
 
 //Destructor
 LevelManager::~LevelManager(){
+	platforms->Reset(0, 0);
 	delete player;
 	delete lvlTransition;
 	delete platforms;
 	delete projectiles;
 	gRenderer = nullptr;
-	transitions.clear();
+	//transitions.clear();
 }
 
 //Call all update methods of any objects in the level
@@ -45,22 +45,19 @@ void LevelManager::Update(){
 	player->UpdatePosition();
 
 	//Change the level if a transition is hit
-	TransitionCollisions();
+	/*TransitionCollisions();
 	if (transitioning){
 		lvlTransition->roomNumber++;
 		SDL_Point p = lvlTransition->Update();
 		player->position.x = p.x;
 		player->position.y = p.y;
 		Init();
-	}
+	}*/
 }
 
 //Render all relevant objects
 void LevelManager::RenderAll(){
-	if (platforms->count != 0) {
-		platforms->Render(gRenderer);
-	}
-	
+	if (platforms->count != 0) platforms->Render(gRenderer);
 	projectiles->Render();
 	player->Draw(gRenderer);
 }
@@ -192,13 +189,13 @@ void LevelManager::Init(){
 
 //Check to see if the player is colliding with a transition tile
 void LevelManager::TransitionCollisions(){
-	for (unsigned i = 0; i < transitions.size(); i++){
+	/*for (unsigned i = 0; i < transitions.size(); i++){
 		if (((player->position.y > transitions[i]->position.y && player->position.y < transitions[i]->position.y + transitions[i]->position.h)
 			|| (player->position.h > transitions[i]->position.y && player->position.h < transitions[i]->position.y + transitions[i]->position.h))
 			&& ((player->position.x + player->position.w - transitions[i]->position.x >= TRANSITION_DEPTH && player->position.x + player->position.w - transitions[i]->position.x < TILE_SIZE)
 			|| (player->position.x - transitions[i]->position.x + transitions[i]->position.w <= -TRANSITION_DEPTH && player->position.x - transitions[i]->position.x + transitions[i]->position.w > -TILE_SIZE)))
 			transitioning = true;
-	}
+	}*/
 }
 
 //Add a tile based on the given parameters
@@ -216,11 +213,11 @@ void LevelManager::AddTile(TILE_TYPE type, TILE_ORIENTATION orientation, SDL_Poi
 			SDL_Point{ 0,0 }, type, orientation,
 			lvlTransition->setting, SDL_Rect{ pivotPos.x, pivotPos.y, 0, 0 });
 		break;
-	case TRANSITION:
+	/*case TRANSITION:
 		transitions.push_back(new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, 0, 0 }, SDL_Rect{ 0,0,TILE_SIZE,TILE_SIZE }, 
 			SDL_Point{0,0}, type, orientation,
 			lvlTransition->setting));
-		break;
+		break;*/
 	default:
 		tile = new Tile(SDL_Rect{ locX * TILE_SIZE, locY * TILE_SIZE, TILE_SIZE, TILE_SIZE }, SDL_Rect{ 0, 0,TILE_SIZE/2,TILE_SIZE/2 }, 
 			SDL_Point{ 0,0 }, type, orientation,
@@ -229,7 +226,7 @@ void LevelManager::AddTile(TILE_TYPE type, TILE_ORIENTATION orientation, SDL_Poi
 	}
 
 	if (tile != nullptr) {
-		tile->loadTexture(textureFiles["TileSheet"], gRenderer);
+		tile->loadTexture("Assets/TileSheet.png", gRenderer);
 		platforms->Add(tile);
 	}
 }
@@ -244,16 +241,17 @@ void LevelManager::ReadLevelData(char * lvlData, std::string& tileData, int star
 
 //Check if a projectile is colliding with a character
 void LevelManager::ProjectileCollision(Projectile* p, GameObject& character) {
-	SDL_Point center{ p->hitbox.x + (p->hitbox.w / 2), p->hitbox.y + (p->hitbox.h / 2) };
+	SDL_Rect center{ p->hitbox.x + (p->hitbox.w / 2), p->hitbox.y + (p->hitbox.h / 2), 
+					 p->hitbox.w/2, p->hitbox.h/2};
 	//Check if there is a collision
-	if (center.x >= character.hitbox.x && center.x <= character.hitbox.x + character.hitbox.w && 
-		center.y >= character.hitbox.y && center.y <= character.hitbox.y + character.hitbox.h) {
+	if (center.x + center.w >= character.hitbox.x && center.x - center.w <= character.hitbox.x + character.hitbox.w &&
+		center.y + center.h >= character.hitbox.y && center.y - center.h <= character.hitbox.y + character.hitbox.h) {
 
 		std::string name = typeid(character).name();
 		if (name == "class Player" && !p->playerOwned) {
 			switch (p->proj_Type) {
 			case PUSH:
-				character.ApplyForce(SDL_Point{ p->velocity.x, p->velocity.y });
+				player->ApplyPush(SDL_Point{ p->velocity.x, p->velocity.y });
 				break;
 			}
 			p->active = false;

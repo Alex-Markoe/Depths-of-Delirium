@@ -46,7 +46,7 @@ void Player::UpdateFrame(){
 
 //Update the player's state then call all other update methods
 void Player::UpdateState(){
-	inAction = false;
+	bool inAction = false;
 
 	if (state[SDL_SCANCODE_D]) { //Running right
 		playerState = RUN; 
@@ -88,16 +88,20 @@ void Player::UpdateState(){
 	else
 		inAir = false;
 
-	if (attack_Timer > 0 && attack_Timer + 500 < SDL_GetTicks()) attack_Timer = 0;
+	if (attack_Timer > 0 && attack_Timer + 500 < SDL_GetTicks()) {
+		attack_Timer = 0;
+		pushed = false;
+	}
 	if (spell_Anim_Timer > 0 && spell_Anim_Timer + 250 < SDL_GetTicks()) spell_Anim_Timer = 0;
 
 	//Determine whether or not the player is currently idle
 	if (!inAction) {
 		playerState = IDLE;
-		velocity.x = 0;
+		if (!pushed) velocity.x = 0;
 	}
 }
 
+//Called every frame
 void Player::Update(){
 	//Call the other update methods
 	if (velocity.x < 0) flipType = SDL_FLIP_HORIZONTAL;
@@ -130,4 +134,10 @@ void Player::SpawnProjectile(PROJECTILE_TYPE type) {
 	else flipType = SDL_FLIP_NONE;
 
 	spell_Anim_Timer = SDL_GetTicks();
+}
+
+//Apply the force push and ensure the player will move
+void Player::ApplyPush(SDL_Point force) {
+	ApplyForce(force);
+	pushed = true;
 }
