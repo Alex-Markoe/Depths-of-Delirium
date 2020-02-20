@@ -6,6 +6,9 @@
 #include <fstream>
 #include <vector>
 
+bool InBounds(SDL_Rect coll, ObjectTreeNode* node);
+void CollisionHandler(GameObject& reference, GameObject* item, bool dimension, int depth);
+
 class ObjectTree{
 public:
 	ObjectTree(int levelWidth, int levelHeight);
@@ -35,7 +38,5 @@ private:
 	void Update(ObjectTreeNode* quad);
 	void BoxCollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Rect futurePosition);
 	void CircleCollisionDetector(GameObject &reference, ObjectTreeNode* quad, SDL_Rect coll, SDL_Point center);
-	bool InBounds(SDL_Rect coll, ObjectTreeNode* node);
-	void CollisionHandler(GameObject& reference, GameObject* item, bool dimension, int depth);
 };
 

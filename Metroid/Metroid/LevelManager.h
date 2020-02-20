@@ -5,6 +5,7 @@
 #include "ProjectileManager.h"
 #include "MovingTile.h"
 #include "SwingingTile.h"
+#include "ParticleSystem.h"
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -20,6 +21,7 @@ public:
 
 private:
 	Player* player;
+	ParticleSystem* particles;
 	Transitioner* lvlTransition;
 	ObjectTree* platforms;
 	ProjectileManager* projectiles;

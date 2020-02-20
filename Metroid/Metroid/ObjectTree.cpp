@@ -240,7 +240,7 @@ void ObjectTree::Update(ObjectTreeNode* quad){
 
 //Helper function
 //Check if an object is within relevant bounds of an adjacent quadrant
-bool ObjectTree::InBounds(SDL_Rect coll, ObjectTreeNode* node) {
+bool InBounds(SDL_Rect coll, ObjectTreeNode* node) {
 	return ((coll.x >= node->dimensions.x && coll.x <= node->dimensions.x + node->dimensions.w)
 		   || (coll.w >= node->dimensions.x && coll.w <= node->dimensions.x + node->dimensions.w)) &&
 		   ((coll.y >= node->dimensions.y && coll.y <= node->dimensions.y + node->dimensions.h)
@@ -249,15 +249,12 @@ bool ObjectTree::InBounds(SDL_Rect coll, ObjectTreeNode* node) {
 
 
 //Handle collisions based on the object
-void ObjectTree::CollisionHandler(GameObject& reference, GameObject* item, bool dimension, int depth) {
+void CollisionHandler(GameObject& reference, GameObject* item, bool dimension, int depth) {
 	Tile * t = (Tile*)item;
 	std::string name = typeid(reference).name();
 	if (name == "class Player") {
 		int force = 0;
 		switch (t->type) {
-			case BOUNCE:
-				force = BOUNCE_VELOCITY * (depth / abs(depth));
-				break;
 			default:
 				force = -depth;
 				break;

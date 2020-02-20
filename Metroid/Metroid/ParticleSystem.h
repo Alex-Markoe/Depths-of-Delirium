@@ -2,13 +2,11 @@
 #include "ProjectileManager.h"
 
 class ParticleSystem :
-	public ProjectileManager
-{
+	public ProjectileManager{
 public:
 	ParticleSystem(SDL_Renderer* gRenderer, SDL_Point init_Speed, SDL_Point initPosition,
 				   SDL_Point gravity, PROJECTILE_TYPE systemType, int range, int angle,
 				   int lifetime, int spawnFrequency, int systemLifetime);
-	~ParticleSystem();
 	void Update() override;
 	void UpdatePosition(SDL_Rect new_Position);
 	void Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type, bool playerOwned, float angle) override;

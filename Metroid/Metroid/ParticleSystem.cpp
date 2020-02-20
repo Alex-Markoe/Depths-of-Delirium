@@ -5,6 +5,7 @@ ParticleSystem::ParticleSystem(SDL_Renderer* gRenderer, SDL_Point speed,
 	SDL_Point initPosition, SDL_Point gravity, PROJECTILE_TYPE systemType,
 	int range, int angle, int lifetime, int spawnFrequency, int systemLifetime) 
 	: ProjectileManager(gRenderer){
+	position = SDL_Rect{ initPosition.x, initPosition.y, 0, 0 };
 	init_Speed = speed;
 	init_Angle = angle;
 	grav = gravity;
@@ -15,9 +16,6 @@ ParticleSystem::ParticleSystem(SDL_Renderer* gRenderer, SDL_Point speed,
 	spawn_Timer = SDL_GetTicks() + spawnFrequency;
 	if (systemLifetime > 0) system_Lifetime = SDL_GetTicks() + systemLifetime;
 }
-
-//Destructor
-ParticleSystem::~ParticleSystem(){}
 
 //Override of update specific for particle systems
 void ParticleSystem::Update(){
@@ -36,6 +34,7 @@ void ParticleSystem::Update(){
 		float angle = init_Angle + range;
 		SDL_Point t_F{init_Speed.x * cos(angle), init_Speed.y * sin(angle)};
 		Add(position, t_F, type, false, angle);
+		spawn_Timer = SDL_GetTicks() + spawn_Frequency;
 	}
 }
 
@@ -44,7 +43,7 @@ void ParticleSystem::Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type, bo
 	SDL_Rect source;
 	switch (type) {
 	case FIRE:
-		source = SDL_Rect{ 0,0,0,0 };
+		source = SDL_Rect{ 0,0,48,21 };
 		break;
 	case ICE:
 		source = SDL_Rect{ 0,0,0,0 };
@@ -54,9 +53,10 @@ void ParticleSystem::Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type, bo
 		break;
 	}
 
-	Projectile* proj = new Projectile(SDL_Rect{pos.x, pos.y, source.x, source.y}, 
-		source, SDL_Point{}, force, type, playerOwned, angle, particle_Lifetime);
-	proj->loadTexture("Assets/", gRenderer);
+	Projectile* proj = new Projectile(SDL_Rect{pos.x, pos.y, source.w, source.h}, 
+		source, SDL_Point{0,0}, force, type, playerOwned, angle, particle_Lifetime);
+	proj->loadTexture("Assets/Fireball.png", gRenderer);
+	projectiles.push_back(proj);
 }
 
 //Update the central position of the particle system

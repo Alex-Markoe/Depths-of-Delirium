@@ -7,7 +7,7 @@ ProjectileManager::ProjectileManager(SDL_Renderer* renderer){
 
 //Destructor, remove any remaining projectiles
 ProjectileManager::~ProjectileManager(){
-	for (unsigned i = 0; i < projectiles.size(); i++){
+	for (; projectiles.size() > 0;){
 		delete projectiles.front();
 		projectiles.erase(projectiles.begin());
 	}
@@ -32,10 +32,12 @@ void ProjectileManager::Render() {
 void ProjectileManager::Add(SDL_Rect pos, SDL_Point force, PROJECTILE_TYPE type, bool playerOwned, float angle){
 	SDL_Rect source;
 	int frames = 0, lifeTime = 500;
+	std::string texturePath;
 	SDL_Point hitboxOffset = { 0, 0 };
 	switch (type) {
 	case FIRE:
 		source = SDL_Rect{ 0,0,48,21 };
+		texturePath = "Assets/Fireball.png";
 		break;
 	case ICE:
 		source = SDL_Rect{ 0,0,30,30 };

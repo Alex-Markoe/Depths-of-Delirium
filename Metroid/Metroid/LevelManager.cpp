@@ -5,7 +5,8 @@ LevelManager::LevelManager(SDL_Renderer* renderer){
 	platforms = new ObjectTree(0, 0);
 	lvlTransition = new Transitioner();
 	projectiles = new ProjectileManager(renderer);
-
+	particles = new ParticleSystem(renderer, SDL_Point{ 10,10 }, SDL_Point{ 300,300 },
+		SDL_Point{ 0,-5 }, FIRE, 360, 0, 100, 50, 0);
 	gRenderer = renderer;
 
 	player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 }, projectiles);
@@ -21,6 +22,7 @@ LevelManager::~LevelManager(){
 	delete lvlTransition;
 	delete platforms;
 	delete projectiles;
+	delete particles;
 	gRenderer = nullptr;
 	//transitions.clear();
 }
@@ -30,6 +32,7 @@ void LevelManager::Update(){
 	//Update all the objects in the level
 	player->Update();
 	projectiles->Update();
+	particles->Update();
 	
 	//Check collisions
 	if (platforms->count != 0){
@@ -60,6 +63,7 @@ void LevelManager::RenderAll(){
 	if (platforms->count != 0) platforms->Render(gRenderer);
 	projectiles->Render();
 	player->Draw(gRenderer);
+	particles->Render();
 }
 
 //Initialize the level, and reset from the last level
@@ -240,7 +244,7 @@ void LevelManager::ReadLevelData(char * lvlData, std::string& tileData, int star
 }
 
 //Check if a projectile is colliding with a character
-void LevelManager::ProjectileCollision(Projectile* p, GameObject& character) {
+void LevelManager::ProjectileCollision(Projectile* p, GameObject& character){
 	SDL_Rect center{ p->hitbox.x + (p->hitbox.w / 2), p->hitbox.y + (p->hitbox.h / 2), 
 					 p->hitbox.w/2, p->hitbox.h/2};
 	//Check if there is a collision
@@ -248,8 +252,8 @@ void LevelManager::ProjectileCollision(Projectile* p, GameObject& character) {
 		center.y + center.h >= character.hitbox.y && center.y - center.h <= character.hitbox.y + character.hitbox.h) {
 
 		std::string name = typeid(character).name();
-		if (name == "class Player" && !p->playerOwned) {
-			switch (p->proj_Type) {
+		if (name == "class Player" && !p->playerOwned){
+			switch (p->proj_Type){
 			case PUSH:
 				player->ApplyPush(SDL_Point{ p->velocity.x, p->velocity.y });
 				break;
