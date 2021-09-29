@@ -1,11 +1,6 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <stdio.h>
-#include <string>
-#include <fstream>
-#include <map>
-#include "Player.h"
-#include "LevelManager.h"
+//#include <SDL.h>
+//#include <SDL_image.h>
+#include "World.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
@@ -27,7 +22,7 @@ SDL_Window* window = NULL;
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
-LevelManager* level;
+World* world;
 SDL_Rect display;
 
 //function to get the display bounds and set the resolution
@@ -70,7 +65,8 @@ bool init(){
 			else{
 				//Initialize the renderer color
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
+				//Set the resolution scaling base
+				SDL_RenderSetLogicalSize(gRenderer, 1920, 1080);
 				//Initalize PNG loading
 				int imgFlags = IMG_INIT_PNG;
 				if (!(IMG_Init(imgFlags) & imgFlags)) {
@@ -90,16 +86,8 @@ bool loadMedia() {
 	bool success = true;
 
 	//Load in all assets
-	level = new LevelManager(gRenderer);
-	level->Init();
-	/*level->Init();
-	level->Init();
-	level->Init();
-	level->Init();
-	level->Init();
-	level->Init();
-	level->Init();
-	level->Init();*/
+	world = new World(gRenderer);
+	world->LoadLevel();
 
 	return success;
 }
@@ -107,11 +95,11 @@ bool loadMedia() {
 //Function that handles quitting out of the game
 void close() {
 	//Destroy the window
+	delete world;
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(window);
 	window = NULL;
 	gRenderer = NULL;
-	delete level;
 
 	//Quit all SDL subsystems
 	IMG_Quit();
@@ -133,7 +121,7 @@ void wrapper() {
 			//Main loop flag
 			bool quit = false;
 			SDL_Event e;
-
+			
 			//Hold the application running
 			while (!quit) {
 				//Handle events on queue
@@ -144,14 +132,14 @@ void wrapper() {
 					}
 				}
 				//Update all necessary position values
-				level->Update();
+				world->Update();
 
 				//Clear the screen
 				SDL_RenderClear(gRenderer);
 
 				//Call any draw methods for any gameobjects
-				level->RenderAll();
-
+				world->Render();
+				
 				//Upate the screen
 				SDL_RenderPresent(gRenderer);
 			}
@@ -163,7 +151,7 @@ void wrapper() {
 }
 
 //Main function, basic stuff that goes to the screen
-int main(int argc, char* args[]) {
+int main(int argc, char *args[]) {
 	wrapper();
 	_CrtDumpMemoryLeaks();
 	

@@ -1,95 +1,40 @@
 #include "GameObject.h"
 
 //Constructor
-GameObject::GameObject(SDL_Rect initPosition, SDL_Rect initSource, SDL_Point hitboxOffset){
-	position = initPosition;
-	sourceRect = initSource;
-	HITBOX_OFFSET = hitboxOffset;
-
-	hitbox = { position.x + HITBOX_OFFSET.x, position.y + HITBOX_OFFSET.y, position.w - (HITBOX_OFFSET.x * 2), position.h - HITBOX_OFFSET.y};
-
-	velocity.x = 0;
-	velocity.y = 0;
-	frame = 0;
-	flipType = SDL_FLIP_NONE;
+GameObject::GameObject(){
+	physics = nullptr;
+	renderer = nullptr;
+	collider = nullptr;
+	animator = nullptr;
 }
-
 //Destructor
 GameObject::~GameObject(){
-	SDL_DestroyTexture(texture);
-	texture = nullptr;
+	if (physics != nullptr) delete physics;
+	if (renderer != nullptr) delete renderer;
+	if (collider != nullptr) delete collider;
+	if (animator != nullptr) delete animator;
+	for (int i = 0; i < components.size(); i++) {
+		delete components[i];
+	}
+	components.clear();
 }
 
-//Simple method that updates the animation frame
-void GameObject::UpdateAnimation(){
-	frame++;
-	if (frame/7 > MAX_FRAME) { frame = 0; }
-
-	sourceRect.x = ANIM_SOURCE_X + ((frame/7) * sourceRect.w);
+//Set initial variables
+void GameObject::Init(SDL_Rect _position, bool _dynamic) {
+	position = _position;
+	dynamic = _dynamic;
 }
 
-//Function that handles loading in textures
-void GameObject::loadTexture(std::string path, SDL_Renderer* gRenderer) {
-	//Load the image
-	if (texture != nullptr) {
-		SDL_DestroyTexture(texture);
-		texture = nullptr;
-	}
-
-	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
-	if (loadedSurface == NULL) {
-		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
-	}
-	else {
-		//Create texture from the surface pixels
-		texture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
-		if (texture == NULL) {
-			printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), IMG_GetError());
+//Update all components
+void GameObject::Update(float deltaTime){
+	//Check physics
+	if (dynamic) {
+		if (physics != nullptr) {
+			physics->UpdatePosition(position, deltaTime);
+			if (collider != nullptr) collider->UpdatePosition(position);
 		}
-
-		//Get rid of the old surface
-		SDL_FreeSurface(loadedSurface);
 	}
+	//Check attachable components
+	for (unsigned i = 0; i < components.size(); i++) components[i]->Update();
+	if (animator != nullptr) animator->Update();
 }
-
-//Simple function to render the object to the screen
-void GameObject::Draw(SDL_Renderer* gRenderer){
-	SDL_RenderCopyEx(gRenderer, texture, &sourceRect, &position, 0, NULL, flipType);
-}
-
-//Apply a force to the object
-void GameObject::ApplyForce(SDL_Point force) {
-	acceleration.x += force.x;
-	acceleration.y += force.y;
-}
-
-//Funtion to set the source rectangle in the case of changing states
-void GameObject::SetAnim(int sourceX, int sourceY, int maxFrame) {
-	ANIM_SOURCE_X = sourceX;
-	MAX_FRAME = maxFrame;
-	sourceRect.x = sourceX;
-	sourceRect.y = sourceY;
-}
-
-//Update the object's position based on any recently applied forces
-void GameObject::UpdatePosition(){
-	velocity.x += acceleration.x;
-	velocity.y += acceleration.y;
-	
-	if (abs(velocity.y) > MAX_VELOCITY.y)
-		velocity.y = MAX_VELOCITY.y * (velocity.y / abs(velocity.y));
-	if (abs(velocity.x) > MAX_VELOCITY.x)
-		velocity.x = MAX_VELOCITY.x * (velocity.x / abs(velocity.x));
-
-	position.x += velocity.x;
-	position.y += velocity.y;
-
-	hitbox.x = position.x + HITBOX_OFFSET.x;
-	hitbox.y = position.y + HITBOX_OFFSET.y;
-
-	acceleration.x = 0;
-	acceleration.y = 0;
-}
-
-//Update function meant to be overriden
-void GameObject::Update(){}

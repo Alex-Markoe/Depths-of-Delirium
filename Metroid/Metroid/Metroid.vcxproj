@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{3DD5DF1E-E53A-4439-A949-F3B6FD748374}</ProjectGuid>
     <RootNamespace>Metroid</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -73,6 +73,10 @@
     <IncludePath>D:\Cpp_Libs\SDL2_image-2.0.4\include;D:\Cpp_Libs\SDL2-2.0.9\include;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Cpp_Libs\SDL2_image-2.0.4\lib\x86;D:\Cpp_Libs\SDL2-2.0.9\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Repos\Libraries\SDL2_image-2.0.5\include;C:\Repos\Libraries\SDL2-2.0.12\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Repos\Libraries\SDL2-2.0.12\lib\x64;C:\Repos\Libraries\SDL2_image-2.0.5\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -91,7 +95,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -122,32 +131,47 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationComponent.cpp" />
+    <ClCompile Include="ButtonComponent.cpp" />
+    <ClCompile Include="CollisionComponent.cpp" />
+    <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="PhysicsComponent.cpp" />
+    <ClCompile Include="PlayerOnObstacleHandler.cpp" />
+    <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="LevelManager.cpp" />
-    <ClCompile Include="MovingTile.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="TextureDatabase.cpp" />
+    <ClCompile Include="World.cpp" />
     <ClCompile Include="ObjectTree.cpp" />
     <ClCompile Include="ObjectTreeNode.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="ParticleSystemComponent.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="SwingingTile.cpp" />
-    <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Transitioner.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationComponent.h" />
+    <ClInclude Include="BossComponent.h" />
+    <ClInclude Include="ButtonComponent.h" />
+    <ClInclude Include="CollisionComponent.h" />
+    <ClInclude Include="CollisionHandlers.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="LevelManager.h" />
-    <ClInclude Include="MovingTile.h" />
+    <ClInclude Include="MainScene.h" />
+    <ClInclude Include="ParticleSystemComponent.h" />
+    <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="PlayerOnObstacleHandler.h" />
+    <ClInclude Include="ProjectileComponent.h" />
+    <ClInclude Include="RenderComponent.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="TextureDatabase.h" />
+    <ClInclude Include="World.h" />
     <ClInclude Include="ObjectTree.h" />
     <ClInclude Include="ObjectTreeNode.h" />
-    <ClInclude Include="ParticleSystem.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Projectile.h" />
     <ClInclude Include="ProjectileManager.h" />
-    <ClInclude Include="SwingingTile.h" />
-    <ClInclude Include="Tile.h" />
     <ClInclude Include="Transitioner.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

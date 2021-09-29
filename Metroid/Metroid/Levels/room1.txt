@@ -1,0 +1,9 @@
+NONE
+Levels/room2.txt
+60
+60
+60
+60
+Levels/test.level
+I
+F
