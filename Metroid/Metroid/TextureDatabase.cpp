@@ -7,6 +7,10 @@ TextureDatabase::~TextureDatabase() {
 	}
 }
 
+SDL_Texture* TextureDatabase::GetTexture(int index) {
+	return textures[index];
+}
+
 //Function that handles loading in textures
 void TextureDatabase::LoadTexture(SDL_Renderer* gRenderer, std::string path, int index) {
 	//Load the image
@@ -33,6 +37,10 @@ void TextureDatabase::LoadTexture(SDL_Renderer* gRenderer, std::string path, int
 
 //Load in all of the assets
 void TextureDatabase::LoadAssets(SDL_Renderer* gRenderer) {
+	for (unsigned i = 0; i < TEXTURE_COUNT; i++) {
+		textures[i] = nullptr;
+	}
 	LoadTexture(gRenderer, "Assets/WizardSpriteSheet.png", PLAYER_TXT);
 	LoadTexture(gRenderer, "Assets/TileSheet.png", ICE_TILES_TXT);
+	LoadTexture(gRenderer, "Assets/Buttons.png", BUTTON_TXT);
 }

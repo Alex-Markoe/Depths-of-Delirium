@@ -20,19 +20,19 @@ CollisionComponent::~CollisionComponent() {
 void CollisionComponent::CollisionHandler(OBJECT_TYPE type, SDL_Point force) {
 	switch (type) {
 	case OBSTACLE:
-		ObstacleCollision->execute(obj, force);
+		ObstacleCollision->Execute(obj, force);
 		break;
 	case PROJECTILE:
-		ProjectileCollision->execute(obj, force);
+		ProjectileCollision->Execute(obj, force);
 		break;
 	case PLAYER:
-		PlayerCollision->execute(obj, force);
+		PlayerCollision->Execute(obj, force);
 		break;
 	case BOSS:
-		BossCollision->execute(obj, force);
+		BossCollision->Execute(obj, force);
 		break;
 	case ZONE:
-		ZoneCollision->execute(obj, force);
+		ZoneCollision->Execute(obj, force);
 		break;
 	}
 }

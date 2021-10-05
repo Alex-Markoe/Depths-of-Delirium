@@ -1,20 +1,16 @@
-#include "Transitioner.h"
+#include "FileManager.h"
 
 //Constructor
-Transitioner::Transitioner(){
-	to_open = "Levels/room1.txt";
-	ReadSave();
-	ReadFile();
-}
+FileManager::FileManager(){}
 //Destructor
-Transitioner::~Transitioner(){
+FileManager::~FileManager(){
 	for (unsigned i = 0; i < 4; i++) {
 		if (boss_data[i] != nullptr) delete boss_data[i];
 	}
 }
 
 //CREATE SAVED DATA
-void Transitioner::CreateSave() {
+void FileManager::CreateSave() {
 	std::ofstream save_file_create;
 	save_file_create.open("Levels/save_data.txt", std::ios::out | std::ios::beg);
 	if (save_file_create.is_open()) {
@@ -24,7 +20,7 @@ void Transitioner::CreateSave() {
 	}
 }
 //READ IN SAVED DATA
-void Transitioner::ReadSave(){
+void FileManager::ReadSave(){
 	std::ifstream save_file_read;
 	save_file_read.open("Levels/save_data.txt", std::ios::in | std::ios::beg);
 	if (save_file_read.is_open()) {
@@ -36,7 +32,7 @@ void Transitioner::ReadSave(){
 		std::getline(save_file_read, data);
 		for (unsigned i = 0; i < 4; i++) {
 			if (data[i] == 'T') {
-
+				//CREATE BOSS DATA
 			}
 			else {
 				boss_data[i] = nullptr;
@@ -47,14 +43,35 @@ void Transitioner::ReadSave(){
 	}
 }
 //WRITE SAVED DATA
-void Transitioner::WriteSave() {
+void FileManager::WriteSave() {
+	std::ofstream save_file_create;
+	save_file_create.open("Levels/save_data.txt", std::ios::out | std::ios::beg);
+	if (save_file_create.is_open()) {
+		//CHECK IF IN UNFINISHED BOSS
+		if (boss_room && boss_data[setting] != nullptr) {
+			save_file_create << previous_room;
+		}
+		else {
+			save_file_create << to_open;
+		}
 
+		save_file_create << "\n";
+		for (unsigned i = 0; i < 4; i++) {
+			if (boss_data[i] == nullptr) {
+				save_file_create << "F";
+			}
+			else {
+				save_file_create << "T";
+			}
+		}
+		save_file_create.close();
+	}
 }
 
 //READ ROOM DATA IN 
-bool Transitioner::ReadFile() {
+bool FileManager::ReadFile() {
 	std::ifstream room_file_read;
-	bool boss_room = false;
+	boss_room = false;
 	room_file_read.open(to_open, std::ios::in | std::ios::beg);
 	if (room_file_read.is_open()) {
 		std::string data;
@@ -106,6 +123,6 @@ bool Transitioner::ReadFile() {
 	return boss_room;
 }
 
-BossComponent* Transitioner::GetBossData() { return boss_data[setting]; }
-void Transitioner::ToNext() { to_open = next_room; }
-void Transitioner::ToPrevious() { to_open = previous_room; }
+BossComponent* FileManager::GetBossData() { return boss_data[setting]; }
+void FileManager::ToNext() { to_open = next_room; }
+void FileManager::ToPrevious() { to_open = previous_room; }

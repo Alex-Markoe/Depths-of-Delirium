@@ -1,6 +1,6 @@
 //GUARD
-#ifndef __TRANSITIONER_H_INCLUDED__
-#define __TRANSITIONER_H_INCLUDED__
+#ifndef __FILEMANAGER_H_INCLUDED__
+#define __FILEMANAGER_H_INCLUDED__
 
 //FORWARD DEPENDENCIES
 class BossComponent;
@@ -24,10 +24,13 @@ enum SETTING {
 //READS IN ROOM DATA TO
 //BE READ BY THE WORLD FOR
 //LEVEL LOADING
-class Transitioner{
+class FileManager{
 public:
-	Transitioner();
-	~Transitioner();
+	static FileManager& instance() {
+	static FileManager* instance = new FileManager();
+	return *instance;
+	};
+	~FileManager();
 	void CreateSave();
 	void ReadSave();
 	void WriteSave();
@@ -44,8 +47,11 @@ public:
 	SETTING setting;
 
 private:
+	FileManager();
+
+	bool boss_room;
 	std::string to_open; //next room file to open
 	BossComponent* boss_data[4];
 };
 
-#endif //__TRANSITIONER_H_INCLUDED__
+#endif //__FILEMANAGER_H_INCLUDED__

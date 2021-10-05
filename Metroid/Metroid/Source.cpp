@@ -87,7 +87,6 @@ bool loadMedia() {
 
 	//Load in all assets
 	world = new World(gRenderer);
-	world->LoadLevel();
 
 	return success;
 }

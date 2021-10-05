@@ -133,14 +133,22 @@
   <ItemGroup>
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="ButtonComponent.cpp" />
+    <ClCompile Include="ContinueGameCommand.cpp" />
+    <ClCompile Include="ExitGameCommand.cpp" />
+    <ClCompile Include="ToNewGameCommand.cpp" />
+    <ClCompile Include="ToTitleCommand.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
     <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="PauseScene.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
     <ClCompile Include="PlayerOnObstacleHandler.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TextureDatabase.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="UnpauseCommand.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="ObjectTree.cpp" />
     <ClCompile Include="ObjectTreeNode.cpp" />
@@ -149,30 +157,39 @@
     <ClCompile Include="ProjectileComponent.cpp" />
     <ClCompile Include="ProjectileManager.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Transitioner.cpp" />
+    <ClCompile Include="FileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="BossComponent.h" />
+    <ClInclude Include="ButtonCommand.h" />
     <ClInclude Include="ButtonComponent.h" />
+    <ClInclude Include="ContinueGameCommand.h" />
+    <ClInclude Include="ExitGameCommand.h" />
+    <ClInclude Include="ToNewGameCommand.h" />
+    <ClInclude Include="ToTitleCommand.h" />
     <ClInclude Include="CollisionComponent.h" />
     <ClInclude Include="CollisionHandlers.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="ParticleSystemComponent.h" />
+    <ClInclude Include="PauseScene.h" />
     <ClInclude Include="PhysicsComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="PlayerOnObstacleHandler.h" />
     <ClInclude Include="ProjectileComponent.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="TextureDatabase.h" />
+    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="UnpauseCommand.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="ObjectTree.h" />
     <ClInclude Include="ObjectTreeNode.h" />
     <ClInclude Include="ProjectileManager.h" />
-    <ClInclude Include="Transitioner.h" />
+    <ClInclude Include="FileManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

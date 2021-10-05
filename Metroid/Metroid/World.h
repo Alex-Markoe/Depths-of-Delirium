@@ -3,7 +3,7 @@
 #define __WORLD_H_INCLUDED__
 
 //INCLUDE DEPENDENCIES
-#include "Scene.h";
+#include "SceneManager.h"
 
 //WORLD CLASS
 //UPDATES OBJECTS IN THE WORLD
@@ -16,9 +16,10 @@ public:
 	void Update();
 	void Render();
 
+	Scene* active_scene;
+
 private:
 	SDL_Renderer* gRenderer;
-	Scene* active_scene;
 
 	//CLOCK VARIABLES
 	float deltaTime;

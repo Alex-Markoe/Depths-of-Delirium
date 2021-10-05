@@ -5,16 +5,17 @@
 //INCLUDE DEPENDENCIES
 #include <fstream>
 #include "ObjectTree.h"
-#include "Transitioner.h"
+#include "FileManager.h"
 #include "PlayerOnObstacleHandler.h"
-#include "Scene.h"
+#include "SceneManager.h"
 
 class MainScene : public Scene{
 public:
 	MainScene();
 	~MainScene();
-	void Update() override;
+	void Update(float deltaTime) override;
 	void Render(SDL_Renderer* gRenderer) override;
+	void LoadLevel();
 
 private:
 	//WORLD OBJECTS
@@ -30,12 +31,10 @@ private:
 	uint32_t LEVEL_HEIGHT;
 
 	ObjectTree* collision_space;
-	Transitioner* transitioner;
+	const Uint8* key_state;
 
 	//COLLISION HANDLERS
 	PlayerOnObstacleHandler* PoO_handler;
-
-	void LoadLevel();
 };
 
 #endif //__MAINSCENE_H_INCLUDED__

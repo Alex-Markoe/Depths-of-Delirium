@@ -31,6 +31,12 @@
     <Filter Include="Source Files\Scenes">
       <UniqueIdentifier>{ee3fe1d5-332b-47c0-929b-f3a405df1708}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ButtonCommands">
+      <UniqueIdentifier>{e4065765-a809-4f4d-8261-4ca63380a710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ButtonCommands">
+      <UniqueIdentifier>{79cd31f4-576e-4162-838a-2cc3fdcb2cb7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -43,9 +49,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ObjectTreeNode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Transitioner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProjectileManager.cpp">
@@ -90,6 +93,33 @@
     <ClCompile Include="TextureDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseScene.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToTitleCommand.cpp">
+      <Filter>Source Files\ButtonCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToNewGameCommand.cpp">
+      <Filter>Source Files\ButtonCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ContinueGameCommand.cpp">
+      <Filter>Source Files\ButtonCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="ExitGameCommand.cpp">
+      <Filter>Source Files\ButtonCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="UnpauseCommand.cpp">
+      <Filter>Source Files\ButtonCommands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -99,9 +129,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ObjectTreeNode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Transitioner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ProjectileManager.h">
@@ -154,6 +181,36 @@
     </ClInclude>
     <ClInclude Include="TextureDatabase.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseScene.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonCommand.h">
+      <Filter>Header Files\ButtonCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ToTitleCommand.h">
+      <Filter>Header Files\ButtonCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ToNewGameCommand.h">
+      <Filter>Header Files\ButtonCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ContinueGameCommand.h">
+      <Filter>Header Files\ButtonCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitGameCommand.h">
+      <Filter>Header Files\ButtonCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="UnpauseCommand.h">
+      <Filter>Header Files\ButtonCommands</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

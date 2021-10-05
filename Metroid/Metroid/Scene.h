@@ -4,12 +4,13 @@
 
 //INCLUDE DEPENDENCIES
 #include "GameObject.h";
+#include "TextureDatabase.h";
 
 class Scene{
 public:
-	Scene(){};
+	Scene() {};
 	~Scene(){};
-	virtual void Update(){};
+	virtual void Update(float deltaTime){};
 	virtual void Render(SDL_Renderer* gRenderer){};
 };
 

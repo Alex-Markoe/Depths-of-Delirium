@@ -11,7 +11,7 @@ class PlayerOnObstacleHandler : public Handler {
 public:
 	PlayerOnObstacleHandler() {};
 	~PlayerOnObstacleHandler() {};
-	void execute(GameObject* obj, SDL_Point force) override;
+	void Execute(GameObject* obj, SDL_Point force) override;
 };
 
 #endif //__POOHANDLER_H_INCLUDED__

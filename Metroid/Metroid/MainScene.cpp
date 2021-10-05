@@ -2,8 +2,8 @@
 
 //Constructor
 MainScene::MainScene() {
+	//CREATE MANAGERS
 	collision_space = new ObjectTree(0, 0);
-	transitioner = new Transitioner();
 
 	//player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 });
 
@@ -12,17 +12,20 @@ MainScene::MainScene() {
 
 	//INITIALIZE PLATFORMS
 	platforms = new GameObject[200];
+	key_state = SDL_GetKeyboardState(NULL);
 }
 //Destructor
 MainScene::~MainScene() {
 	delete collision_space;
 	delete PoO_handler;
-	delete transitioner;
 	delete[] platforms;
 }
 
-void MainScene::Update() {
-
+void MainScene::Update(float deltaTime) {
+	//PAUSE
+	if (key_state[SDL_SCANCODE_ESCAPE]) {
+		SceneManager::instance().ChangeScene(PAUSE);
+	}
 }
 
 void MainScene::Render(SDL_Renderer* gRenderer) {
@@ -33,7 +36,10 @@ void MainScene::Render(SDL_Renderer* gRenderer) {
 
 //Initialize the level, and reset from the last level
 void MainScene::LoadLevel() {
-	std::ifstream fileRead(transitioner->room_file_name, std::ios::in | std::ios::binary | std::ios::beg);
+	if (FileManager::instance().ReadFile()) {
+		//INITIALIZE BOSS DATA
+	}
+	std::ifstream fileRead(FileManager::instance().room_file_name, std::ios::in | std::ios::binary | std::ios::beg);
 
 	if (fileRead.is_open()) {
 		//Reset all data structs and read in the level dimensions
@@ -57,6 +63,7 @@ void MainScene::LoadLevel() {
 		//GameObject* tile = nullptr;
 		RenderComponent* _renderer = nullptr;
 		CollisionComponent* _collider = nullptr;
+		SDL_Texture* txt = TextureDatabase::instance().GetTexture(FileManager::instance().setting);
 		int x = -1, y = 0, sourceX, sourceY;
 		//Loop through the entire level and add the tiles
 		for (unsigned i = 0; i < size; i++) {
@@ -137,7 +144,7 @@ void MainScene::LoadLevel() {
 
 			//CREATE TILE AND ADD ITS COMPONENTS
 			platforms[total_tile_count].Init(SDL_Rect{ x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE }, false);
-			_renderer = new RenderComponent(textures[transitioner->setting], SDL_Rect{ sourceX, sourceY, TILE_SIZE / 2, TILE_SIZE / 2 }, 0.0f);
+			_renderer = new RenderComponent(txt, SDL_Rect{ sourceX, sourceY, TILE_SIZE / 2, TILE_SIZE / 2 }, 0.0f);
 			_collider = new CollisionComponent(&platforms[total_tile_count], platforms[total_tile_count].position, SDL_Point{ 0, 0 }, OBSTACLE);
 			_collider->PlayerCollision = PoO_handler;
 			platforms[total_tile_count].renderer = _renderer;
