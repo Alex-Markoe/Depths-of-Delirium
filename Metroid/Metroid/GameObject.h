@@ -6,7 +6,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <vector>
-#include "RenderComponent.h"
 #include "AnimationComponent.h"
 #include "PhysicsComponent.h"
 #include "CollisionComponent.h"

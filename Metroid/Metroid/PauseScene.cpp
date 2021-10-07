@@ -12,7 +12,7 @@ PauseScene::PauseScene() {
 	CollisionComponent* _collider = nullptr;
 	int off_y = 450;
 	for (unsigned i = 0; i < 2; i++) {
-		buttons[i].position = SDL_Rect{ 300, 100 + (off_y), BUTTON_SIZE_X, BUTTON_SIZE_Y };
+		buttons[i].Init(SDL_Rect{ 300, 100 + (off_y), BUTTON_SIZE_X, BUTTON_SIZE_Y }, false);
 		_renderer = new RenderComponent(TextureDatabase::instance().GetTexture(BUTTON_TXT), SDL_Rect{ 0, 0 + off_y, BUTTON_SIZE_X, BUTTON_SIZE_Y }, 0);
 		_collider = new CollisionComponent(&buttons[i], buttons[i].position, SDL_Point{ 0, 0 }, OBSTACLE);
 		buttons[i].renderer = _renderer;

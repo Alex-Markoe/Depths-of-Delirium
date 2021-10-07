@@ -8,6 +8,7 @@
 #include "FileManager.h"
 #include "PlayerOnObstacleHandler.h"
 #include "SceneManager.h"
+#include "PlayerComponent.h"
 
 class MainScene : public Scene{
 public:

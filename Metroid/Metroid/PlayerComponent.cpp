@@ -47,13 +47,13 @@ void PlayerComponent::HandleInput(){
 	if (state[SDL_SCANCODE_D]) { //Running right
 		playerState = RUN; 
 		renderer->SetFlip(SDL_FLIP_NONE); 
-		physics->ApplyForce(SDL_Point{ 8 - physics->velocity.x, 0 });
+		physics->ApplyForce(SDL_Point{ 8 - (int)physics->velocity_x, 0 });
 		inAction = true; 
 	}
 	else if (state[SDL_SCANCODE_A]) { //Running left
 		playerState = RUN;
 		renderer->SetFlip(SDL_FLIP_HORIZONTAL);
-		physics->ApplyForce(SDL_Point{ -8 - physics->velocity.x, 0 });
+		physics->ApplyForce(SDL_Point{ -8 - (int)physics->velocity_x, 0 });
 		inAction = true;
 	}
 	if (state[SDL_SCANCODE_W] && jump_count > 0) { //Jumping
@@ -62,7 +62,7 @@ void PlayerComponent::HandleInput(){
 		inAction = true;
 	}
 	//Check to see if the player is in the air
-	if (physics->velocity.y != 0 || previous_yVelocity != 0) {
+	if (physics->velocity_y != 0 || previous_yVelocity != 0) {
 		playerState = JUMP;
 		inAction = true;
 	}
@@ -116,7 +116,7 @@ void PlayerComponent::Update(){
 	physics->ApplyForce(SDL_Point{ 0, TERMINAL_VELOCITY });
 
 	//Update the position and previous state
-	previous_yVelocity = physics->velocity.y;
+	previous_yVelocity = physics->velocity_y;
 	previousState = playerState;
 }
 

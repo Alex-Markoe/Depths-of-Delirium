@@ -1,37 +1,47 @@
 #include "PhysicsComponent.h"
 //Constructor
-PhysicsComponent::PhysicsComponent(SDL_Point max_velocity, SDL_Point _decceleration) {
-	velocity.x = 0;
-	velocity.y = 0;
+PhysicsComponent::PhysicsComponent(SDL_Point max_velocity, float _decell_x, float _decell_y) {
+	velocity_x = 0;
+	velocity_y = 0;
+	acceleration_x = 0;
+	acceleration_y = 0;
 	MAX_VELOCITY = max_velocity;
-	decceleration = _decceleration;
+	decell_x = _decell_x;
+	decell_y = _decell_y;
 }
 //Destructor
 PhysicsComponent::~PhysicsComponent() {}
 
 //Apply a force to the object
 void PhysicsComponent::ApplyForce(SDL_Point force) {
-	acceleration.x += force.x;
-	acceleration.y += force.y;
+	acceleration_x += force.x;
+	acceleration_y += force.y;
+}
+
+void PhysicsComponent::ResetKinematics() {
+	acceleration_x = 0.0f;
+	acceleration_y = 0.0f;
+	velocity_x = 0.0f;
+	velocity_y = 0.0f;
 }
 
 //Update the object's position based on any recently applied forces
 void PhysicsComponent::UpdatePosition(SDL_Rect& position, float deltaTime) {
-	velocity.x += acceleration.x * deltaTime;
-	velocity.y += acceleration.y * deltaTime;
+	velocity_x += acceleration_x * deltaTime;
+	velocity_y += acceleration_y * deltaTime;
 
-	if (abs(velocity.y) > MAX_VELOCITY.y)
-		velocity.y = MAX_VELOCITY.y * (velocity.y / abs(velocity.y));
-	if (abs(velocity.x) > MAX_VELOCITY.x)
-		velocity.x = MAX_VELOCITY.x * (velocity.x / abs(velocity.x));
+	if (fabs(velocity_y) > MAX_VELOCITY.y)
+		velocity_y = MAX_VELOCITY.y * (velocity_y / fabs(velocity_y));
+	if (fabs(velocity_x) > MAX_VELOCITY.x)
+		velocity_x = MAX_VELOCITY.x * (velocity_x / fabs(velocity_x));
 
-	position.x += velocity.x;
-	position.y += velocity.y;
+	position.x += velocity_x;
+	position.y += velocity_y;
 
-	acceleration.x = 0;
-	acceleration.y = 0;
-	velocity.x *= decceleration.x;
-	velocity.y *= decceleration.y;
+	acceleration_x = 0;
+	acceleration_y = 0;
+	velocity_x *= decell_x;
+	velocity_y *= decell_y;
 }
 
 void PhysicsComponent::Update(){}

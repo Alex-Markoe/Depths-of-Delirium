@@ -1,9 +1,9 @@
 NONE
 Levels/room2.txt
-60
-60
-60
-60
+150
+150
+150
+150
 Levels/test.level
 I
 F

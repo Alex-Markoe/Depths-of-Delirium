@@ -54,6 +54,7 @@ void ObjectTree::Add(GameObject* item){
 void ObjectTree::Add(GameObject* item, ObjectTreeNode* quad){
 	if (quad->quads[0] == NULL){
 		quad->items.push_back(item);
+		item->collider->quad = quad;
 	}
 	else{
 		SDL_Rect hitbox = item->collider->hitbox;
@@ -104,7 +105,7 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 		//Check the x direction
 		if ((hitbox.y < item_hitbox.y && hitbox.h > item_hitbox.y)
 			|| (hitbox.y < item_hitbox.y + item_hitbox.h && hitbox.h > item_hitbox.y + item_hitbox.h)) {
-			int speedX = reference->physics->velocity.x + reference->physics->acceleration.x;
+			int speedX = reference->physics->velocity_x + reference->physics->acceleration_x;
 			int depthXLeft = hitbox.x - (item_hitbox.w + item_hitbox.x) + speedX;
 			int depthXRight = hitbox.w - item_hitbox.x + speedX;
 			if (depthXLeft <= 0 && depthXLeft > -MAX_DEPTH_X) //left
@@ -116,7 +117,7 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 		//Check the y direction
 		if ((hitbox.x > item_hitbox.x && hitbox.x < item_hitbox.x + item_hitbox.w)
 			|| (hitbox.w < item_hitbox.x + item_hitbox.w && hitbox.w > item_hitbox.x)) {
-			int speedY = reference->physics->velocity.y + reference->physics->acceleration.y;
+			int speedY = reference->physics->velocity_y + reference->physics->acceleration_y;
 			int depthYTop = hitbox.y - (item_hitbox.h + item_hitbox.y) + speedY;
 			int depthYBottom = hitbox.h - item_hitbox.y + speedY;
 			if (depthYBottom >= 0 && depthYBottom < MAX_DEPTH_Y) //descending

@@ -2,20 +2,29 @@
 
 //Constructor
 MainScene::MainScene() {
-	//CREATE MANAGERS
-	collision_space = new ObjectTree(0, 0);
-
-	//player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 });
+	//INITIALIZE PLATFORMS
+	platforms = new GameObject[200];
+	key_state = SDL_GetKeyboardState(NULL);
 
 	//CREATE COLLISION HANDLERS
 	PoO_handler = new PlayerOnObstacleHandler();
 
-	//INITIALIZE PLATFORMS
-	platforms = new GameObject[200];
-	key_state = SDL_GetKeyboardState(NULL);
+	//CREATE MANAGERS
+	collision_space = new ObjectTree(32 * TILE_SIZE, 18 * TILE_SIZE);
+
+	//player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 });
+	player = new GameObject();
+	player->Init(SDL_Rect{ 0, 0, 75, 78 }, true);
+	player->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PLAYER_TXT), SDL_Rect{ 0, 0, 75, 78 }, 0);
+	player->collider = new CollisionComponent(player, player->position, SDL_Point{ 12, 3 }, PLAYER);
+	player->physics = new PhysicsComponent(SDL_Point{ 8, 15 }, 1.0f, 0.99f);
+	player->animator = new AnimationComponent(player->renderer);
+	player->components.emplace_back(new PlayerComponent(player->renderer, player->physics, player->animator));
+	player->collider->ObstacleCollision = PoO_handler;
 }
 //Destructor
 MainScene::~MainScene() {
+	delete player;
 	delete collision_space;
 	delete PoO_handler;
 	delete[] platforms;
@@ -26,12 +35,15 @@ void MainScene::Update(float deltaTime) {
 	if (key_state[SDL_SCANCODE_ESCAPE]) {
 		SceneManager::instance().ChangeScene(PAUSE);
 	}
+	collision_space->BoxCollisionDetector(player);
+	player->Update(deltaTime);
 }
 
 void MainScene::Render(SDL_Renderer* gRenderer) {
 	for (unsigned i = 0; i < active_tile_count; i++) {
 		platforms[i].renderer->Render(gRenderer, platforms[i].position);
 	}
+	player->renderer->Render(gRenderer, player->position);
 }
 
 //Initialize the level, and reset from the last level
@@ -39,6 +51,9 @@ void MainScene::LoadLevel() {
 	if (FileManager::instance().ReadFile()) {
 		//INITIALIZE BOSS DATA
 	}
+	SDL_Point ppos = FileManager::instance().enter_position;
+	player->position = SDL_Rect{ppos.x, ppos.y, player->position.w, player->position.h};
+	player->physics->ResetKinematics();
 	std::ifstream fileRead(FileManager::instance().room_file_name, std::ios::in | std::ios::binary | std::ios::beg);
 
 	if (fileRead.is_open()) {
@@ -146,7 +161,6 @@ void MainScene::LoadLevel() {
 			platforms[total_tile_count].Init(SDL_Rect{ x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE }, false);
 			_renderer = new RenderComponent(txt, SDL_Rect{ sourceX, sourceY, TILE_SIZE / 2, TILE_SIZE / 2 }, 0.0f);
 			_collider = new CollisionComponent(&platforms[total_tile_count], platforms[total_tile_count].position, SDL_Point{ 0, 0 }, OBSTACLE);
-			_collider->PlayerCollision = PoO_handler;
 			platforms[total_tile_count].renderer = _renderer;
 			platforms[total_tile_count].collider = _collider;
 
@@ -154,7 +168,7 @@ void MainScene::LoadLevel() {
 			total_tile_count++;
 			active_tile_count++;
 		}
-
+		collision_space->Add(player);
 		//CLEANUP
 		delete[] lvl_Data;
 		fileRead.close();
