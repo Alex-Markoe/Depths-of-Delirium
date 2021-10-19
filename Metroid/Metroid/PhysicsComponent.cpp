@@ -27,16 +27,16 @@ void PhysicsComponent::ResetKinematics() {
 
 //Update the object's position based on any recently applied forces
 void PhysicsComponent::UpdatePosition(SDL_Rect& position, float deltaTime) {
-	velocity_x += acceleration_x * deltaTime;
-	velocity_y += acceleration_y * deltaTime;
+	velocity_x += acceleration_x;
+	velocity_y += acceleration_y;
 
 	if (fabs(velocity_y) > MAX_VELOCITY.y)
 		velocity_y = MAX_VELOCITY.y * (velocity_y / fabs(velocity_y));
 	if (fabs(velocity_x) > MAX_VELOCITY.x)
 		velocity_x = MAX_VELOCITY.x * (velocity_x / fabs(velocity_x));
-
-	position.x += velocity_x;
-	position.y += velocity_y;
+	
+	position.x += velocity_x * deltaTime;
+	position.y += velocity_y * deltaTime;
 
 	acceleration_x = 0;
 	acceleration_y = 0;

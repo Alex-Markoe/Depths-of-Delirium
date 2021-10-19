@@ -26,7 +26,7 @@ void World::Update(){
 	tick_time = SDL_GetPerformanceCounter();
 	deltaTime = (float)((tick_time - last_tick_time) * 1000 / (float)SDL_GetPerformanceCounter());
 	deltaTime *= 1000.0f;
-
+	//std::cout << deltaTime << std::endl;
 	//Update active scene
 	active_scene->Update(deltaTime);
 }

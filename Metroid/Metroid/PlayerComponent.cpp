@@ -47,17 +47,17 @@ void PlayerComponent::HandleInput(){
 	if (state[SDL_SCANCODE_D]) { //Running right
 		playerState = RUN; 
 		renderer->SetFlip(SDL_FLIP_NONE); 
-		physics->ApplyForce(SDL_Point{ 8 - (int)physics->velocity_x, 0 });
+		physics->ApplyForce(SDL_Point{ HORIZONTAL_VELOCITY - (int)physics->velocity_x, 0 });
 		inAction = true; 
 	}
 	else if (state[SDL_SCANCODE_A]) { //Running left
 		playerState = RUN;
 		renderer->SetFlip(SDL_FLIP_HORIZONTAL);
-		physics->ApplyForce(SDL_Point{ -8 - (int)physics->velocity_x, 0 });
+		physics->ApplyForce(SDL_Point{ -HORIZONTAL_VELOCITY - (int)physics->velocity_x, 0 });
 		inAction = true;
 	}
 	if (state[SDL_SCANCODE_W] && jump_count > 0) { //Jumping
-		physics->ApplyForce(SDL_Point{ 0, -10 });
+		physics->ApplyForce(SDL_Point{ 0, JUMP_VELOCITY });
 		jump_count--;
 		inAction = true;
 	}

@@ -20,19 +20,19 @@ CollisionComponent::~CollisionComponent() {
 void CollisionComponent::CollisionHandler(OBJECT_TYPE type, SDL_Point force) {
 	switch (type) {
 	case OBSTACLE:
-		ObstacleCollision->Execute(obj, force);
+		if (ObstacleCollision != nullptr) ObstacleCollision->Execute(obj, force);
 		break;
 	case PROJECTILE:
-		ProjectileCollision->Execute(obj, force);
+		if (ProjectileCollision != nullptr) ProjectileCollision->Execute(obj, force);
 		break;
 	case PLAYER:
-		PlayerCollision->Execute(obj, force);
+		if (PlayerCollision != nullptr) PlayerCollision->Execute(obj, force);
 		break;
 	case BOSS:
-		BossCollision->Execute(obj, force);
+		if (BossCollision != nullptr) BossCollision->Execute(obj, force);
 		break;
 	case ZONE:
-		ZoneCollision->Execute(obj, force);
+		if (ZoneCollision != nullptr) ZoneCollision->Execute(obj, force);
 		break;
 	}
 }
@@ -40,6 +40,7 @@ void CollisionComponent::CollisionHandler(OBJECT_TYPE type, SDL_Point force) {
 void CollisionComponent::UpdatePosition(SDL_Rect position) {
 	hitbox.x = position.x + HITBOX_OFFSET.x;
 	hitbox.y = position.y + HITBOX_OFFSET.y;
+	if (quad == nullptr) return;
 	if (hitbox.x + hitbox.w < quad->dimensions.x || hitbox.x > quad->dimensions.x + quad->dimensions.w ||
 		hitbox.y + hitbox.h < quad->dimensions.y || hitbox.y > quad->dimensions.y + quad->dimensions.h) {
 		out_of_quad = true;

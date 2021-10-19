@@ -17,8 +17,8 @@ public:
 	ObjectTree(int levelWidth, int levelHeight);
 	~ObjectTree();
 	void Add(GameObject* item);
-	void BoxCollisionDetector(GameObject* reference);
-	void CircleCollisionDetector(GameObject* reference);
+	void BoxCollisionDetector(GameObject* reference, float deltaTime);
+	void CircleCollisionDetector(GameObject* reference, float deltaTime);
 	void Reset(int levelWidth, int levelHeight);
 	void Clear();
 
@@ -27,14 +27,14 @@ private:
 
 	const int MAX_COLLISION_DIST_X = 15;
 	const int MAX_COLLISION_DIST_Y = 15;
-	const int MAX_DEPTH_X = 30;
-	const int MAX_DEPTH_Y = 30;
+	const int MAX_DEPTH_X = 45;
+	const int MAX_DEPTH_Y = 45;
 
 	void Init(int levelWidth, int levelHeight);
 	void Divide(int iterations, ObjectTreeNode* quad);
 	void Add(GameObject* item, ObjectTreeNode* quad);
-	void BoxCollisionDetector(GameObject* reference, ObjectTreeNode* quad, SDL_Rect collisionSpace, SDL_Rect hitbox);
-	void CircleCollisionDetector(GameObject* reference, ObjectTreeNode* quad, SDL_Rect collisionSpace, SDL_Rect hitbox);
+	void BoxCollisionDetector(GameObject* reference, ObjectTreeNode* quad, SDL_Rect collisionSpace, SDL_Rect hitbox, float deltaTime);
+	void CircleCollisionDetector(GameObject* reference, ObjectTreeNode* quad, SDL_Rect collisionSpace, SDL_Rect hitbox, float deltaTime);
 	void Clear(ObjectTreeNode* quad);
 };
 

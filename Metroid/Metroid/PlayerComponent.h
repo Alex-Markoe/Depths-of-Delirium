@@ -29,7 +29,9 @@ private:
 
 	Uint32 spell_Anim_Timer;
 	Uint32 attack_Timer;
-	const int TERMINAL_VELOCITY = 5;
+	int TERMINAL_VELOCITY = 60;
+	int HORIZONTAL_VELOCITY = 60;
+	int JUMP_VELOCITY = -100;
 
 	void HandleInput();
 	void UpdateState();
