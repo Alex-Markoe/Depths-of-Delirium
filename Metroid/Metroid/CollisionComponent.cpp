@@ -17,22 +17,22 @@ CollisionComponent::~CollisionComponent() {
 	obj = nullptr;
 }
 
-void CollisionComponent::CollisionHandler(OBJECT_TYPE type, SDL_Point force) {
+void CollisionComponent::CollisionHandler(OBJECT_TYPE type, float f_x, float f_y) {
 	switch (type) {
 	case OBSTACLE:
-		if (ObstacleCollision != nullptr) ObstacleCollision->Execute(obj, force);
+		if (ObstacleCollision != nullptr) ObstacleCollision->Execute(obj, f_x, f_y);
 		break;
 	case PROJECTILE:
-		if (ProjectileCollision != nullptr) ProjectileCollision->Execute(obj, force);
+		if (ProjectileCollision != nullptr) ProjectileCollision->Execute(obj, f_x, f_y);
 		break;
 	case PLAYER:
-		if (PlayerCollision != nullptr) PlayerCollision->Execute(obj, force);
+		if (PlayerCollision != nullptr) PlayerCollision->Execute(obj, f_x, f_y);
 		break;
 	case BOSS:
-		if (BossCollision != nullptr) BossCollision->Execute(obj, force);
+		if (BossCollision != nullptr) BossCollision->Execute(obj, f_x, f_y);
 		break;
 	case ZONE:
-		if (ZoneCollision != nullptr) ZoneCollision->Execute(obj, force);
+		if (ZoneCollision != nullptr) ZoneCollision->Execute(obj, f_x, f_y);
 		break;
 	}
 }

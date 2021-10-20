@@ -16,7 +16,7 @@ class Handler {
 public:
 	Handler(){};
 	~Handler(){};
-	virtual void Execute(GameObject* obj, SDL_Point force){};
+	virtual void Execute(GameObject* obj, float f_x, float f_y){};
 };
 
 #endif //__HANDLER_H_INCLUDED__

@@ -99,31 +99,46 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, float deltaTime) {
 void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* quad, SDL_Rect collisionSpace, SDL_Rect hitbox, float deltaTime){
 	//Loop through each object in the quad
 	SDL_Rect item_hitbox;
+	bool collide_y;
 	for (unsigned i = 0; i < quad->items.size(); i++) {
 		item_hitbox = quad->items[i]->collider->hitbox;
-
-		//Check the x direction
-		if ((hitbox.y < item_hitbox.y && hitbox.h > item_hitbox.y)
-			|| (hitbox.y < item_hitbox.y + item_hitbox.h && hitbox.h > item_hitbox.y + item_hitbox.h)) {
-			int speed_x = reference->physics->velocity_x + reference->physics->acceleration_x;
-			int depth_left = hitbox.x - (item_hitbox.w + item_hitbox.x);
-			int depth_right = hitbox.w - item_hitbox.x;
-			if (depth_left <= 0 && depth_left + (speed_x * deltaTime) > -MAX_DEPTH_X) //left
-				reference->collider->CollisionHandler(quad->items[i]->collider->type, SDL_Point{ depth_left - speed_x, 0 });
-			else if (depth_right >= 0 && depth_right + (speed_x * deltaTime) < MAX_DEPTH_X) //right
-				reference->collider->CollisionHandler(quad->items[i]->collider->type, SDL_Point{ depth_right - speed_x, 0 });
-		}
+		collide_y = false;
 
 		//Check the y direction
 		if ((hitbox.x > item_hitbox.x && hitbox.x < item_hitbox.x + item_hitbox.w)
 			|| (hitbox.w < item_hitbox.x + item_hitbox.w && hitbox.w > item_hitbox.x)) {
-			int speed_y = reference->physics->velocity_y + reference->physics->acceleration_y;
-			int depth_top = hitbox.y - (item_hitbox.h + item_hitbox.y);
-			int depth_bottom = hitbox.h - item_hitbox.y;
-			if (depth_bottom >= 0 && depth_bottom + (speed_y * deltaTime) < MAX_DEPTH_Y) //descending
-				reference->collider->CollisionHandler(quad->items[i]->collider->type, SDL_Point{ 0, -depth_bottom - speed_y});
-			else if (depth_top <= 0 && depth_top + (speed_y * deltaTime) > -MAX_DEPTH_Y) //ascending
-				reference->collider->CollisionHandler(quad->items[i]->collider->type, SDL_Point{ 0, depth_top - speed_y});
+			float speed_y = reference->physics->velocity_y + reference->physics->acceleration_y;
+			float depth_top = hitbox.y - (item_hitbox.h + item_hitbox.y);
+			float depth_bottom = hitbox.h - item_hitbox.y;
+			if (depth_bottom > 0 && depth_bottom + (speed_y * deltaTime) < MAX_DEPTH_Y) { //descending
+				depth_bottom /= deltaTime;
+				reference->collider->CollisionHandler(quad->items[i]->collider->type, 0, -depth_bottom - speed_y);
+				collide_y = true;
+			}
+			else if (depth_top < 0 && depth_top + (speed_y * deltaTime) > -MAX_DEPTH_Y) { //ascending
+				depth_top /= deltaTime;
+				reference->collider->CollisionHandler(quad->items[i]->collider->type, 0, -depth_top - speed_y);
+				collide_y = true;
+			}
+		}
+
+		//Move on if there was a collision in the y direction
+		if (collide_y) continue;
+
+		//Check the x direction
+		if ((hitbox.y < item_hitbox.y && hitbox.h > item_hitbox.y)
+			|| (hitbox.y < item_hitbox.y + item_hitbox.h && hitbox.h > item_hitbox.y + item_hitbox.h)) {
+			float speed_x = reference->physics->velocity_x + reference->physics->acceleration_x;
+			float depth_left = hitbox.x - (item_hitbox.w + item_hitbox.x);
+			float depth_right = hitbox.w - item_hitbox.x;
+			if (depth_left < 0 && depth_left + (speed_x * deltaTime) > -MAX_DEPTH_X) { //left
+				depth_left /= deltaTime;
+				reference->collider->CollisionHandler(quad->items[i]->collider->type, -depth_left - speed_x, 0);
+			}
+			else if (depth_right > 0 && depth_right + (speed_x * deltaTime) < MAX_DEPTH_X) { //right
+				depth_right /= deltaTime;
+				reference->collider->CollisionHandler(quad->items[i]->collider->type, -depth_right - speed_x, 0);
+			}
 		}
 	}
 
@@ -174,7 +189,7 @@ void ObjectTree::CircleCollisionDetector(GameObject* reference, ObjectTreeNode* 
 		float distance_total = sqrt(pow(hitbox.w + half_width, 2) + pow(hitbox.h + half_height, 2));
 
 		if (distance < distance_total){
-			reference->collider->CollisionHandler(quad->items[i]->collider->type, SDL_Point{ 0, 0 });
+			reference->collider->CollisionHandler(quad->items[i]->collider->type, 0, 0);
 		}
 	}
 

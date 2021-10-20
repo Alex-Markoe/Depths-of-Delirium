@@ -31,7 +31,7 @@ public:
 	~CollisionComponent();
 	void Update() override;
 	void UpdatePosition(SDL_Rect position);
-	void CollisionHandler(OBJECT_TYPE type, SDL_Point force);
+	void CollisionHandler(OBJECT_TYPE type, float f_x, float f_y);
 
 	Handler* ObstacleCollision;
 	Handler* PlayerCollision;

@@ -13,9 +13,9 @@ PhysicsComponent::PhysicsComponent(SDL_Point max_velocity, float _decell_x, floa
 PhysicsComponent::~PhysicsComponent() {}
 
 //Apply a force to the object
-void PhysicsComponent::ApplyForce(SDL_Point force) {
-	acceleration_x += force.x;
-	acceleration_y += force.y;
+void PhysicsComponent::ApplyForce(float f_x, float f_y) {
+	acceleration_x += f_x;
+	acceleration_y += f_y;
 }
 
 void PhysicsComponent::ResetKinematics() {

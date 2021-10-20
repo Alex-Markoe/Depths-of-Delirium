@@ -17,7 +17,7 @@ MainScene::MainScene() {
 	player->Init(SDL_Rect{ 0, 0, 75, 78 }, true);
 	player->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PLAYER_TXT), SDL_Rect{ 0, 0, 75, 78 }, 0);
 	player->collider = new CollisionComponent(player, player->position, SDL_Point{ 12, 3 }, PLAYER);
-	player->physics = new PhysicsComponent(SDL_Point{ 360, 360 }, 1.0f, 0.99f);
+	player->physics = new PhysicsComponent(SDL_Point{ 360, 360 }, 0.8f, 1.0f);
 	player->animator = new AnimationComponent(player->renderer);
 	player->components.emplace_back(new PlayerComponent(player->renderer, player->physics, player->animator));
 	player->collider->ObstacleCollision = PoO_handler;
@@ -54,6 +54,7 @@ void MainScene::LoadLevel() {
 	SDL_Point ppos = FileManager::instance().enter_position;
 	player->position = SDL_Rect{ppos.x, ppos.y, player->position.w, player->position.h};
 	player->physics->ResetKinematics();
+	player->physics->ApplyForce(0, 10.0f);
 	player->collider->UpdatePosition(player->position);
 	std::ifstream fileRead(FileManager::instance().room_file_name, std::ios::in | std::ios::binary | std::ios::beg);
 

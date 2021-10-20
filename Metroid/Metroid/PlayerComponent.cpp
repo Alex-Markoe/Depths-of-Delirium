@@ -10,6 +10,7 @@ PlayerComponent::PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _
 	state = SDL_GetKeyboardState(NULL);
 	attack_Timer = 0;
 	jump_count = 1;
+	on_ground = false;
 }
 //Destructor
 PlayerComponent::~PlayerComponent(){
@@ -47,27 +48,29 @@ void PlayerComponent::HandleInput(){
 	if (state[SDL_SCANCODE_D]) { //Running right
 		playerState = RUN; 
 		renderer->SetFlip(SDL_FLIP_NONE); 
-		physics->ApplyForce(SDL_Point{ HORIZONTAL_VELOCITY - (int)physics->velocity_x, 0 });
+		physics->ApplyForce(HORIZONTAL_VELOCITY, 0);
 		inAction = true; 
 	}
 	else if (state[SDL_SCANCODE_A]) { //Running left
 		playerState = RUN;
 		renderer->SetFlip(SDL_FLIP_HORIZONTAL);
-		physics->ApplyForce(SDL_Point{ -HORIZONTAL_VELOCITY - (int)physics->velocity_x, 0 });
+		physics->ApplyForce(-HORIZONTAL_VELOCITY, 0);
 		inAction = true;
 	}
 	if (state[SDL_SCANCODE_W] && jump_count > 0) { //Jumping
-		physics->ApplyForce(SDL_Point{ 0, JUMP_VELOCITY });
+		physics->ApplyForce(0, JUMP_VELOCITY);
 		jump_count--;
 		inAction = true;
 	}
 	//Check to see if the player is in the air
-	if (physics->velocity_y != 0 || previous_yVelocity != 0) {
+	if (physics->velocity_y <= -1.0f || physics->velocity_y >= 1.0f || previous_yVelocity != 0) {
 		playerState = JUMP;
 		inAction = true;
 	}
-	else
+	else {
 		jump_count = 1;
+		on_ground = true;
+	}
 	//MOVEMENT END
 	//ACTION LOGIC
 	if (attack_Timer == 0) {
@@ -113,7 +116,7 @@ void PlayerComponent::Update(){
 	UpdateState();
 
 	//Apply gravity
-	physics->ApplyForce(SDL_Point{ 0, TERMINAL_VELOCITY });
+	if (!on_ground) physics->ApplyForce(0, TERMINAL_VELOCITY);
 
 	//Update the position and previous state
 	previous_yVelocity = physics->velocity_y;
