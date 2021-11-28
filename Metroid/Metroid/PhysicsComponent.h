@@ -12,14 +12,14 @@ public:
 	PhysicsComponent(SDL_Point max_velocity, float _decell_x, float _decell_y);
 	~PhysicsComponent();
 	void Update() override;
-	void ApplyForce(float f_x, float f_y);
+	void ApplyForce(int f_x, int f_y);
 	void UpdatePosition(SDL_Rect& position, float deltaTime);
 	void ResetKinematics();
 
-	float acceleration_x;
-	float acceleration_y;
-	float velocity_x;
-	float velocity_y;
+	int acceleration_x;
+	int acceleration_y;
+	int velocity_x;
+	int velocity_y;
 
 private:
 	SDL_Point MAX_VELOCITY;

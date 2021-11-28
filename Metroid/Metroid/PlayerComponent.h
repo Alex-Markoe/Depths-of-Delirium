@@ -7,6 +7,7 @@
 #include "RenderComponent.h"
 #include "PhysicsComponent.h"
 #include "AnimationComponent.h"
+#include <iostream>
 
 //HANDLE PLAYER INPUT, STATE LOGIC
 //AND PROJECTILE CREATION
@@ -15,6 +16,7 @@ public:
 	PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _physics, AnimationComponent* _animator);
 	~PlayerComponent();
 	void Update() override;
+	void Grounded();
 
 private:
 	RenderComponent* renderer;
@@ -29,9 +31,9 @@ private:
 
 	Uint32 spell_Anim_Timer;
 	Uint32 attack_Timer;
-	int TERMINAL_VELOCITY = 60;
-	int HORIZONTAL_VELOCITY = 50;
-	int JUMP_VELOCITY = -300;
+	int TERMINAL_VELOCITY = 50;
+	int HORIZONTAL_VELOCITY = 100;
+	int JUMP_VELOCITY = -500;
 	bool on_ground;
 
 	void HandleInput();

@@ -63,9 +63,11 @@ void PlayerComponent::HandleInput(){
 		inAction = true;
 	}
 	//Check to see if the player is in the air
-	if (physics->velocity_y <= -1.0f || physics->velocity_y >= 1.0f || previous_yVelocity != 0) {
+	if (physics->velocity_y < 0 || physics->velocity_y > 0 || previous_yVelocity != 0) {
 		playerState = JUMP;
+		on_ground = false;
 		inAction = true;
+		std::cout << physics->velocity_y << std::endl;
 	}
 	else {
 		jump_count = 1;
@@ -121,6 +123,11 @@ void PlayerComponent::Update(){
 	//Update the position and previous state
 	previous_yVelocity = physics->velocity_y;
 	previousState = playerState;
+}
+
+void PlayerComponent::Grounded() {
+	jump_count = 1;
+	on_ground = true;
 }
 
 //Fire a projectile based on the player's position and the relative angle
