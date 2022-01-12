@@ -4,11 +4,9 @@
 
 //FORWARD DEPENDENCIES
 class World;
+class Scene;
 
 //INCLUDE DEPENDENCIES
-#include "TitleScene.h";
-#include "MainScene.h";
-#include "PauseScene.h";
 
 enum SCENE {
 	TITLE,
@@ -16,6 +14,9 @@ enum SCENE {
 	PAUSE
 };
 
+//SCENE MANAGER SINGLETON
+//HANDLES CHANGING SCENES AND DETERMING IF THE 
+//GAME MUST BE EXITED
 class SceneManager {
 public:
 	static SceneManager& instance() {
@@ -26,6 +27,9 @@ public:
 	void SetWorld(World* _world);
 	void ChangeScene(int index);
 	void LoadGameData();
+	void Quit();
+
+	bool exit;
 
 private:
 	SceneManager();

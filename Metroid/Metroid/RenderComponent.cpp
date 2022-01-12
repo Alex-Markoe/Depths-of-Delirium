@@ -1,4 +1,5 @@
 #include "RenderComponent.h"
+
 //Constructor
 RenderComponent::RenderComponent(SDL_Texture* _texture, SDL_Rect _sourceRect, float _angle) {
 	texture = _texture;
@@ -17,4 +18,5 @@ void RenderComponent::Render(SDL_Renderer* gRenderer, SDL_Rect position) {
 }
 
 void RenderComponent::SetFlip(SDL_RendererFlip _flip) { flipType = _flip; }
+void RenderComponent::SetAngle(float _angle) { angle = _angle; }
 void RenderComponent::Update() {}

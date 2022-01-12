@@ -37,6 +37,12 @@
     <Filter Include="Source Files\ButtonCommands">
       <UniqueIdentifier>{79cd31f4-576e-4162-838a-2cc3fdcb2cb7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ProjectileBehaviors">
+      <UniqueIdentifier>{35c69450-1445-455a-8430-5577a60e3074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ProjectileBehaviors">
+      <UniqueIdentifier>{b78a9439-b093-4234-b1fd-02d87183f4e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -78,14 +84,8 @@
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerOnObstacleHandler.cpp">
-      <Filter>Source Files\CollisionHandlers</Filter>
-    </ClCompile>
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>Source Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="MainScene.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -119,6 +119,15 @@
     </ClCompile>
     <ClCompile Include="UnpauseCommand.cpp">
       <Filter>Source Files\ButtonCommands</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerProjectileBehavior.cpp">
+      <Filter>Source Files\ProjectileBehaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCollisionHandler.cpp">
+      <Filter>Source Files\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerProjectileCollisionHandler.cpp">
+      <Filter>Source Files\CollisionHandlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +176,6 @@
     <ClInclude Include="CollisionHandlers.h">
       <Filter>Header Files\CollisionHandlers</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerOnObstacleHandler.h">
-      <Filter>Header Files\CollisionHandlers</Filter>
-    </ClInclude>
     <ClInclude Include="ButtonComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -211,6 +217,18 @@
     </ClInclude>
     <ClInclude Include="UnpauseCommand.h">
       <Filter>Header Files\ButtonCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileBehavior.h">
+      <Filter>Header Files\ProjectileBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerProjectileBehavior.h">
+      <Filter>Header Files\ProjectileBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCollisionHandler.h">
+      <Filter>Header Files\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerProjectileCollisionHandler.h">
+      <Filter>Header Files\CollisionHandlers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

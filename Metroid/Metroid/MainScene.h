@@ -2,13 +2,12 @@
 #ifndef __MAINSCENE_H_INCLUDED__
 #define __MAINSCENE_H_INCLUDED__
 
+//FORWARD DEPENDENCIES
+class ObjectTree;
+class PlayerCollisionHandler;
+
 //INCLUDE DEPENDENCIES
-#include <fstream>
-#include "ObjectTree.h"
-#include "FileManager.h"
-#include "PlayerOnObstacleHandler.h"
-#include "SceneManager.h"
-#include "PlayerComponent.h"
+#include "Scene.h"
 
 class MainScene : public Scene{
 public:
@@ -35,7 +34,7 @@ private:
 	const Uint8* key_state;
 
 	//COLLISION HANDLERS
-	PlayerOnObstacleHandler* PoO_handler;
+	PlayerCollisionHandler* player_collision_handler;
 };
 
 #endif //__MAINSCENE_H_INCLUDED__

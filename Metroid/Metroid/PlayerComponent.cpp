@@ -1,10 +1,14 @@
 #include "PlayerComponent.h"
+#include "PlayerProjectileBehavior.h"
+#include "GameObject.h"
+#include "RenderComponent.h"
 
 //Constructor
-PlayerComponent::PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _physics, AnimationComponent* _animator){
+PlayerComponent::PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _physics, AnimationComponent* _animator, GameObject* _obj){
 	renderer = _renderer;
 	physics = _physics;
 	animator = _animator;
+	obj = _obj;
 	playerState = IDLE;
 	previousState = IDLE;
 	state = SDL_GetKeyboardState(NULL);
@@ -17,6 +21,7 @@ PlayerComponent::~PlayerComponent(){
 	renderer = nullptr;
 	physics = nullptr;
 	animator = nullptr;
+	obj = nullptr;
 }
 
 //Update the player's movement based on the current state
@@ -67,7 +72,6 @@ void PlayerComponent::HandleInput(){
 		playerState = JUMP;
 		on_ground = false;
 		inAction = true;
-		std::cout << physics->velocity_y << std::endl;
 	}
 	else {
 		jump_count = 1;
@@ -78,20 +82,20 @@ void PlayerComponent::HandleInput(){
 	if (attack_Timer == 0) {
 		if (state[SDL_SCANCODE_SPACE]) { //Using the force push
 			//SpawnProjectile(PUSH);
-			attack_Timer = SDL_GetTicks();
-			inAction = true;
+			//attack_Timer = SDL_GetTicks();
+			//inAction = true;
 		}
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1)) { //Firing a spell
-			//SpawnProjectile(current_Proj_Type);
+			SpawnProjectile(new PlayerProjectileBehavior(), PLAYER_PROJ, { 0, 21, 39, 39 }, 500, 500);
 			attack_Timer = SDL_GetTicks();
 			inAction = true;
 		}
 	}
 	//ACTION END
 	//Update Timers
-	if (attack_Timer > 0 && attack_Timer + 500 < SDL_GetTicks()) {
+	/*if (attack_Timer > 0 && attack_Timer + 500 < SDL_GetTicks()) {
 		attack_Timer = 0;
-	}
+	}*/
 	if (spell_Anim_Timer > 0) {
 		if (spell_Anim_Timer + 250 < SDL_GetTicks()) spell_Anim_Timer = 0;
 		else if (playerState == RUN) {
@@ -132,16 +136,13 @@ void PlayerComponent::Grounded() {
 
 //Fire a projectile based on the player's position and the relative angle
 //towards the mouse
-void PlayerComponent::SpawnProjectile(PROJECTILE_TYPE type) {
-	/*SDL_Point mousePos = { 0,0 };
-	SDL_GetMouseState(&mousePos.x, &mousePos.y);
-	float angle = atan2(mousePos.y - position.y, mousePos.x - position.x);
-	SDL_Point initialForce = { 5.f * cos(angle), 5.f * sin(angle) };
-	projectiles->Add(SDL_Rect{position.x + (hitbox.w/2), position.y + (hitbox.h/2), 0, 0}, 
-								initialForce, type, true, angle * (180.f / M_PI));
+void PlayerComponent::SpawnProjectile(ProjectileBehavior* behavior, HANDLER_TYPE type, SDL_Rect source_rect, int lifeTime, float speed) {
+	SDL_Point mouse_pos = { 0,0 };
+	SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
+	float angle = atan2(mouse_pos.y - obj->position.y, mouse_pos.x - obj->position.x);
+	SDL_Point init_force = { speed * cos(angle), speed * sin(angle) };
+	behavior->SetForce(init_force.x, init_force.y);
+	ProjectileManager::instance().Add({obj->position.x, obj->position.y, source_rect.w, source_rect.h}, source_rect, behavior, type, lifeTime);
 
-	if (mousePos.x < position.x) flipType = SDL_FLIP_HORIZONTAL;
-	else flipType = SDL_FLIP_NONE;
-
-	spell_Anim_Timer = SDL_GetTicks();*/
+	spell_Anim_Timer = SDL_GetTicks();
 }

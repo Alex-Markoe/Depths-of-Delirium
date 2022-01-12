@@ -1,4 +1,19 @@
 #include "MainScene.h"
+#include "FileManager.h"
+#include "SceneManager.h"
+#include "ObjectTree.h"
+
+//COLLISION HANDLERS
+#include "PlayerCollisionHandler.h"
+
+//COMPONENTS
+#include "RenderComponent.h"
+#include "PhysicsComponent.h"
+#include "AnimationComponent.h"
+#include "CollisionComponent.h"
+#include "PlayerComponent.h"
+
+#include <fstream>
 
 //Constructor
 MainScene::MainScene() {
@@ -7,43 +22,53 @@ MainScene::MainScene() {
 	key_state = SDL_GetKeyboardState(NULL);
 
 	//CREATE COLLISION HANDLERS
-	PoO_handler = new PlayerOnObstacleHandler();
+	player_collision_handler = new PlayerCollisionHandler();
 
 	//CREATE MANAGERS
 	collision_space = new ObjectTree(32 * TILE_SIZE, 18 * TILE_SIZE);
 
 	//player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 });
+	//INITIALIZE PLAYER
 	player = new GameObject();
 	player->Init(SDL_Rect{ 0, 0, 75, 78 }, true);
 	player->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PLAYER_TXT), SDL_Rect{ 0, 0, 75, 78 }, 0);
 	player->collider = new CollisionComponent(player, player->position, SDL_Point{ 12, 3 }, PLAYER);
 	player->physics = new PhysicsComponent(SDL_Point{ 40, 40 }, 0.8f, 1.0f);
 	player->animator = new AnimationComponent(player->renderer);
-	player->components.emplace_back(new PlayerComponent(player->renderer, player->physics, player->animator));
-	player->collider->ObstacleCollision = PoO_handler;
+	player->AddComponent(new PlayerComponent(player->renderer, player->physics, player->animator, player));
+	player->collider->SetHandler(player_collision_handler);
 }
 //Destructor
 MainScene::~MainScene() {
 	delete player;
 	delete collision_space;
-	delete PoO_handler;
+	delete player_collision_handler;
 	delete[] platforms;
 }
-
+//Update all objects in the level
 void MainScene::Update(float deltaTime) {
 	//PAUSE
 	if (key_state[SDL_SCANCODE_ESCAPE]) {
 		SceneManager::instance().ChangeScene(PAUSE);
 	}
+
+	//Check collision, and check if player is outside 
+	//of their quadrant
 	collision_space->BoxCollisionDetector(player, deltaTime);
 	player->Update(deltaTime);
+	if (player->collider->out_of_quad) {
+		player->collider->ResetQuad();
+		collision_space->Add(player);
+	}
+	ProjectileManager::instance().Update(deltaTime, collision_space);
 }
-
+//Render all objects in the level
 void MainScene::Render(SDL_Renderer* gRenderer) {
 	for (unsigned i = 0; i < active_tile_count; i++) {
-		platforms[i].renderer->Render(gRenderer, platforms[i].position);
+		platforms[i].Render(gRenderer);
 	}
-	player->renderer->Render(gRenderer, player->position);
+	player->Render(gRenderer);
+	ProjectileManager::instance().Render(gRenderer);
 }
 
 //Initialize the level, and reset from the last level
@@ -54,7 +79,7 @@ void MainScene::LoadLevel() {
 	SDL_Point ppos = FileManager::instance().enter_position;
 	player->position = SDL_Rect{ppos.x, ppos.y, player->position.w, player->position.h};
 	player->physics->ResetKinematics();
-	player->physics->ApplyForce(0, 50);
+	player->physics->ApplyForce(0, 500);
 	player->collider->UpdatePosition(player->position);
 	std::ifstream fileRead(FileManager::instance().room_file_name, std::ios::in | std::ios::binary | std::ios::beg);
 

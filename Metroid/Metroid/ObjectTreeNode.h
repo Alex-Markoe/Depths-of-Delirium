@@ -17,10 +17,10 @@ public:
 	ObjectTreeNode(SDL_Rect dim);
 	~ObjectTreeNode();
 	void Divide();
+	void Erase(int index);
 
 	std::vector<GameObject*> items;
 	ObjectTreeNode* quads[4];
-	ObjectTreeNode* parent;
 	SDL_Rect dimensions;
 };
 

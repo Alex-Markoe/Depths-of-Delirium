@@ -4,8 +4,8 @@
 
 //INCLUDE DEPENDENCIES
 #include "ButtonCommand.h"
-#include "SceneManager.h"
 
+//Return to title screen
 class ToTitleCommand : public ButtonCommand {
 public:
 	ToTitleCommand() {};

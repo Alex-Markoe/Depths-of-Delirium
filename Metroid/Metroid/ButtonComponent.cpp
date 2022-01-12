@@ -1,4 +1,6 @@
 #include "ButtonComponent.h"
+#include "CollisionComponent.h"
+#include "ButtonCommand.h"
 
 //Constructor
 ButtonComponent::ButtonComponent(CollisionComponent* _collider, ButtonCommand* _onclick_cmd) {

@@ -1,5 +1,7 @@
 #include "ObjectTree.h"
 #include "GameObject.h"
+#include "CollisionComponent.h"
+#include "PhysicsComponent.h"
 
 //Constructor
 void ObjectTree::Init(int levelWidth, int levelHeight) {
@@ -52,8 +54,8 @@ void ObjectTree::Add(GameObject* item){
 //recursion to find the next best quad
 void ObjectTree::Add(GameObject* item, ObjectTreeNode* quad){
 	if (quad->quads[0] == NULL){
+		item->collider->SetQuad(quad->items.size(), quad);
 		quad->items.push_back(item);
-		item->collider->quad = quad;
 	}
 	else{
 		SDL_Rect hitbox = item->collider->hitbox;
@@ -71,6 +73,7 @@ void ObjectTree::Add(GameObject* item, ObjectTreeNode* quad){
 		}
 		else{
 			quad->items.push_back(item);
+			item->collider->SetQuad(quad->items.size() - 1, quad);
 		}
 	}
 }
@@ -103,6 +106,8 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 	//check to see if it is colliding with the 
 	//referenced object
 	for (unsigned i = 0; i < quad->items.size(); i++) {
+		//Don't check item with itself
+		if (reference == quad->items[i]) continue;
 		item_hitbox = quad->items[i]->collider->hitbox;
 		collide_y = false;
 

@@ -1,6 +1,5 @@
-//#include <SDL.h>
-//#include <SDL_image.h>
 #include "World.h"
+#include <iostream>
 
 #define _CRTDBG_MAP_ALLOC
 #include <cstdlib>
@@ -141,6 +140,8 @@ void wrapper() {
 				
 				//Upate the screen
 				SDL_RenderPresent(gRenderer);
+
+				quit = world->exit;
 			}
 		}
 	}

@@ -1,4 +1,6 @@
 #include "AnimationComponent.h"
+#include "RenderComponent.h"
+
 //Constructor
 AnimationComponent::AnimationComponent(RenderComponent* _renderer) {
 	renderer = _renderer;

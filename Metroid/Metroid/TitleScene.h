@@ -9,7 +9,6 @@ class ExitGameCommand;
 
 //INCLUDE DEPENDENCIES
 #include "Scene.h"
-#include "ButtonComponent.h"
 
 class TitleScene : public Scene{
 public:

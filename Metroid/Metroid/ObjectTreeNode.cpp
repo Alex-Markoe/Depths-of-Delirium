@@ -1,4 +1,7 @@
 #include "ObjectTreeNode.h"
+#include "GameObject.h"
+#include "CollisionComponent.h"
+
 //Constructor
 ObjectTreeNode::ObjectTreeNode(SDL_Rect dim){
 	dimensions = dim;
@@ -20,7 +23,12 @@ void ObjectTreeNode::Divide(){
 	quads[1] = new ObjectTreeNode(SDL_Rect{dimensions.x + (dimensions.w/2), dimensions.y, dimensions.w/2, dimensions.h/2});
 	quads[2] = new ObjectTreeNode(SDL_Rect{dimensions.x, dimensions.y + (dimensions.h/2), dimensions.w/2, dimensions.h/2});
 	quads[3] = new ObjectTreeNode(SDL_Rect{dimensions.x + (dimensions.w/2), dimensions.y + (dimensions.h/2), dimensions.w/2, dimensions.h/2});
-	for (int i = 0; i < 4; i++) {
-		quads[i]->parent = this;
+}
+
+void ObjectTreeNode::Erase(int index) {
+	items.erase(items.begin() + index);
+	while (index < items.size()) {
+		items[index]->collider->item_index--;
+		index++;
 	}
 }

@@ -4,8 +4,8 @@
 
 //INCLUDE DEPENDENCIES
 #include "ButtonCommand.h"
-#include "SceneManager.h"
 
+//Create new game
 class ToNewGameCommand : public ButtonCommand {
 public:
 	ToNewGameCommand() {};

@@ -4,8 +4,8 @@
 
 //INCLUDE DEPENDENCIES
 #include "ButtonCommand.h"
-#include "SceneManager.h"
 
+//Continue game button command
 class ContinueGameCommand : public ButtonCommand {
 public:
 	ContinueGameCommand() {};

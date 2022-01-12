@@ -1,4 +1,5 @@
 #include "PhysicsComponent.h"
+
 //Constructor
 PhysicsComponent::PhysicsComponent(SDL_Point max_velocity, float _decell_x, float _decell_y) {
 	velocity_x = 0;
@@ -17,7 +18,7 @@ void PhysicsComponent::ApplyForce(int f_x, int f_y) {
 	acceleration_x += f_x;
 	acceleration_y += f_y;
 }
-
+//Reset the object's kinematics
 void PhysicsComponent::ResetKinematics() {
 	acceleration_x = 0;
 	acceleration_y = 0;

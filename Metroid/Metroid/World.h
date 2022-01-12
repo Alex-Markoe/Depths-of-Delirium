@@ -2,8 +2,11 @@
 #ifndef __WORLD_H_INCLUDED__
 #define __WORLD_H_INCLUDED__
 
+class Scene;
+
 //INCLUDE DEPENDENCIES
 #include "SceneManager.h"
+#include <SDL_image.h>
 
 //WORLD CLASS
 //UPDATES OBJECTS IN THE WORLD
@@ -17,6 +20,7 @@ public:
 	void Render();
 
 	Scene* active_scene;
+	bool exit;
 
 private:
 	SDL_Renderer* gRenderer;

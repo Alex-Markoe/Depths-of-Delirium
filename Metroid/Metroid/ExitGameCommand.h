@@ -5,6 +5,7 @@
 //INCLUDE DEPENDENCIES
 #include "ButtonCommand.h"
 
+//Exit game command 
 class ExitGameCommand : public ButtonCommand {
 public:
 	ExitGameCommand() {};

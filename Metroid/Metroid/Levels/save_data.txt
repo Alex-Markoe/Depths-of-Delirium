@@ -1,2 +1,2 @@
 Levels/room1.txt
-TTTT
+FFFF

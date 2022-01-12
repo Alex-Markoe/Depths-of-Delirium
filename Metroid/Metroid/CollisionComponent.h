@@ -1,15 +1,14 @@
-#pragma once
 //GUARD
 #ifndef __COLLISIONCOMPONENT_H_INCLUDED__
 #define __COLLISIONCOMPONENT_H_INCLUDED__
 
 //FORWARD DEPENDENCIES
 class GameObject;
+class ObjectTreeNode;
+class Handler;
 
 //INCLUDE DEPENDENCIES
 #include "Component.h"
-#include "ObjectTreeNode.h"
-#include "CollisionHandlers.h"
 
 //REPRESENTS THE TYPE OF OBJECT
 //FOR COLLISION HANDLING LOGIC
@@ -32,20 +31,19 @@ public:
 	void Update() override;
 	void UpdatePosition(SDL_Rect position);
 	void CollisionHandler(OBJECT_TYPE type, float f_x, float f_y);
+	void SetHandler(Handler* _handler);
+	void ResetQuad();
+	void SetQuad(int _index, ObjectTreeNode* _quad);
 
-	Handler* ObstacleCollision;
-	Handler* PlayerCollision;
-	Handler* BossCollision;
-	Handler* ZoneCollision;
-	Handler* ProjectileCollision;
-
-	ObjectTreeNode* quad;
 	SDL_Rect hitbox;
 	OBJECT_TYPE type;
 	bool out_of_quad;
+	int item_index;
 
 private:
 	GameObject* obj;
+	Handler* handler;
+	ObjectTreeNode* quad;
 	SDL_Point HITBOX_OFFSET;
 };
 

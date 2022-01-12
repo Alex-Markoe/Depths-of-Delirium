@@ -2,6 +2,11 @@
 #include "ToTitleCommand.h"
 #include "UnpauseCommand.h"
 
+//COMPONENTS
+#include "ButtonComponent.h"
+#include "RenderComponent.h"
+#include "CollisionComponent.h"
+
 //Constructor
 PauseScene::PauseScene() {
 	to_title_cmd = new ToTitleCommand();

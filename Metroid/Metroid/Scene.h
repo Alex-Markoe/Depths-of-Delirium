@@ -6,6 +6,8 @@
 #include "GameObject.h";
 #include "TextureDatabase.h";
 
+//BASE SCENE CLASS
+//UPDATES AND RENDERS THINGS
 class Scene{
 public:
 	Scene() {};

@@ -1,4 +1,7 @@
 #include "World.h"
+#include "TextureDatabase.h"
+#include "Scene.h"
+
 //Constructor, initialize all important variables
 World::World(SDL_Renderer* renderer) {
 	gRenderer = renderer;
@@ -7,6 +10,7 @@ World::World(SDL_Renderer* renderer) {
 	tick_time = SDL_GetPerformanceCounter();
 	last_tick_time = 0;
 	deltaTime = 0;
+	exit = false;
 
 	//Load visuals
 	TextureDatabase::instance().LoadAssets(gRenderer);
@@ -29,6 +33,7 @@ void World::Update(){
 	//std::cout << deltaTime << std::endl;
 	//Update active scene
 	active_scene->Update(deltaTime);
+	exit = SceneManager::instance().exit;
 }
 
 //Render all relevant objects

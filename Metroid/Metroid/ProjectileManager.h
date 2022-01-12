@@ -2,26 +2,42 @@
 #ifndef __PROJECTILEMANAGER_H_INCLUDED__
 #define __PROJECTILEMANAGER_H_INCLUDED__
 
+//FORWARD DEPENDENCIES
+class ObjectTree;
+class GameObject;
+class Handler;
+class ProjectileBehavior;
+
 //INCLUDE DEPENDENCIES
-#include "GameObject.h"
+#include <SDL.h>
+#include <SDL_image.h>
 #include <vector>
 
-class ProjectileManager
-{
+//ENUM TO REPRESENT THE TYPE OF
+//COLLISION HANDLER FOR THE PROJECTILE
+enum HANDLER_TYPE {
+	PLAYER_PROJ
+};
+
+//PROJECTILE MANAGER SINGLETON
+//UPDATES AND ADDS PROJECTILES
+//MAKES SURE TO UPDATE THEIR QUADRANT AS WELL AS
+//RENDERING THEM
+class ProjectileManager {
 public:
 	static ProjectileManager& instance() {
 		static ProjectileManager* instance = new ProjectileManager();
 		return *instance;
 	};
 	~ProjectileManager();
-	virtual void Update();
-	void Remove(GameObject* toRemove);
-	virtual void Add(SDL_Rect pos, SDL_Point force, bool playerOwned, float angle);
-	void Render();
-	std::vector<GameObject*> projectiles;
+	void Update(float deltaTime, ObjectTree* collision_space);
+	void Add(SDL_Rect pos, SDL_Rect source_rect, ProjectileBehavior* behavior, HANDLER_TYPE type, int lifeTime);
+	void Render(SDL_Renderer* gRenderer);
 
 private:
-	ProjectileManager(){};
+	ProjectileManager();
+	std::vector<GameObject*> projectiles; //Container for projectiles
+	Handler* handlers; //Array of collision handlers
 };
 
 #endif //__PROJECTILEMANAGER_H_INCLUDED__

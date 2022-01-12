@@ -3,9 +3,12 @@
 #define __BUTTONCOMPONENT_H_INCLUDED__
 
 //FORWARD DEPENDENCIES
+class CollisionComponent;
+class ButtonCommand;
+class ButtonComponent;
+
+//INCLUDE DEPENDENCIES
 #include "Component.h"
-#include "CollisionComponent.h"
-#include "ButtonCommand.h"
 
 bool Hover(SDL_Point mouse_pos, SDL_Rect hitbox);
 

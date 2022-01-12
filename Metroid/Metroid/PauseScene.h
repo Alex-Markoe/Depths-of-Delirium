@@ -8,7 +8,6 @@ class UnpauseCommand;
 
 //INCLUDE DEPENDENCIES
 #include "Scene.h"
-#include "ButtonComponent.h"
 
 class PauseScene : public Scene {
 public:

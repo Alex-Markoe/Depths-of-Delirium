@@ -4,8 +4,8 @@
 
 //INCLUDE DEPENDENCIES
 #include "ButtonCommand.h"
-#include "SceneManager.h"
 
+//Unpause the game
 class UnpauseCommand : public ButtonCommand {
 public:
 	UnpauseCommand() {};

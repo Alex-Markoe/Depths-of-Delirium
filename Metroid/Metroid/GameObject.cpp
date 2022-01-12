@@ -1,4 +1,8 @@
 #include "GameObject.h"
+#include "AnimationComponent.h"
+#include "PhysicsComponent.h"
+#include "CollisionComponent.h"
+#include "RenderComponent.h"
 
 //Constructor
 GameObject::GameObject(){
@@ -37,4 +41,13 @@ void GameObject::Update(float deltaTime){
 	//Check attachable components
 	for (unsigned i = 0; i < components.size(); i++) components[i]->Update();
 	if (animator != nullptr) animator->Update();
+}
+
+//Render the object
+void GameObject::Render(SDL_Renderer* gRenderer) {
+	renderer->Render(gRenderer, position);
+}
+//Add a new component to the object
+void GameObject::AddComponent(Component* component) {
+	components.emplace_back(component);
 }

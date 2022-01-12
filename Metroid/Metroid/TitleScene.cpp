@@ -1,7 +1,14 @@
 #include "TitleScene.h"
+
+//COMMANDS
 #include "ToNewGameCommand.h"
 #include "ContinueGameCommand.h"
 #include "ExitGameCommand.h"
+
+//COMPONENTS
+#include "ButtonComponent.h"
+#include "RenderComponent.h"
+#include "CollisionComponent.h"
 
 //Constructor
 TitleScene::TitleScene() {
