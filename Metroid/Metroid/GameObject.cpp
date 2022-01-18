@@ -21,6 +21,7 @@ GameObject::~GameObject(){
 		delete components[i];
 	}
 	components.clear();
+	children.clear(); //handle deletion in component
 }
 
 //Set initial variables
@@ -41,13 +42,24 @@ void GameObject::Update(float deltaTime){
 	//Check attachable components
 	for (unsigned i = 0; i < components.size(); i++) components[i]->Update();
 	if (animator != nullptr) animator->Update();
+	//Update children
+	for (int i = 0; i < children.size(); i++) {
+		children[i]->Update(deltaTime);
+	}
 }
 
 //Render the object
 void GameObject::Render(SDL_Renderer* gRenderer) {
 	renderer->Render(gRenderer, position);
+	for (int i = 0; i < children.size(); i++) {
+		children[i]->Render(gRenderer);
+	}
 }
 //Add a new component to the object
 void GameObject::AddComponent(Component* component) {
 	components.emplace_back(component);
+}
+//Add a child object to be rendered
+void GameObject::AddChild(GameObject* obj) {
+	children.push_back(obj);
 }

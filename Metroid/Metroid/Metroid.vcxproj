@@ -135,8 +135,11 @@
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="ContinueGameCommand.cpp" />
     <ClCompile Include="ExitGameCommand.cpp" />
+    <ClCompile Include="ParticleBehavior.cpp" />
+    <ClCompile Include="ParticleComponent.cpp" />
     <ClCompile Include="PlayerProjectileBehavior.cpp" />
     <ClCompile Include="PlayerProjectileCollisionHandler.cpp" />
+    <ClCompile Include="StraightParticleBehavior.cpp" />
     <ClCompile Include="ToNewGameCommand.cpp" />
     <ClCompile Include="ToTitleCommand.cpp" />
     <ClCompile Include="CollisionComponent.cpp" />
@@ -167,9 +170,12 @@
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="ContinueGameCommand.h" />
     <ClInclude Include="ExitGameCommand.h" />
+    <ClInclude Include="ParticleBehavior.h" />
+    <ClInclude Include="ParticleComponent.h" />
     <ClInclude Include="PlayerProjectileBehavior.h" />
     <ClInclude Include="PlayerProjectileCollisionHandler.h" />
     <ClInclude Include="ProjectileBehavior.h" />
+    <ClInclude Include="StraightParticleBehavior.h" />
     <ClInclude Include="ToNewGameCommand.h" />
     <ClInclude Include="ToTitleCommand.h" />
     <ClInclude Include="CollisionComponent.h" />

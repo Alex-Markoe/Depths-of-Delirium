@@ -25,6 +25,7 @@ public:
 	void Init(SDL_Rect _position, bool _dynamic); //set default variables
 	void Render(SDL_Renderer* gRenderer);
 	void AddComponent(Component* component);
+	void AddChild(GameObject* obj);
 
 	SDL_Rect position; //global position
 
@@ -36,6 +37,7 @@ public:
 	std::vector<Component*> components;
 
 private:
+	std::vector<GameObject*> children;
 	bool dynamic; //whether or not an object needs its physics updated
 };
 

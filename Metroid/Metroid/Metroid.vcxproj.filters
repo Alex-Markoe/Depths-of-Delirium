@@ -43,6 +43,12 @@
     <Filter Include="Header Files\ProjectileBehaviors">
       <UniqueIdentifier>{b78a9439-b093-4234-b1fd-02d87183f4e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ParticleBehaviors">
+      <UniqueIdentifier>{40c87fb6-7824-4317-acd6-d1f1cb2ad3d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ParticleBehaviors">
+      <UniqueIdentifier>{563a0524-c49f-4c57-b1c9-6ce5ce926160}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -128,6 +134,15 @@
     </ClCompile>
     <ClCompile Include="PlayerProjectileCollisionHandler.cpp">
       <Filter>Source Files\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleBehavior.cpp">
+      <Filter>Source Files\ParticleBehaviors</Filter>
+    </ClCompile>
+    <ClCompile Include="StraightParticleBehavior.cpp">
+      <Filter>Source Files\ParticleBehaviors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +244,15 @@
     </ClInclude>
     <ClInclude Include="PlayerProjectileCollisionHandler.h">
       <Filter>Header Files\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleBehavior.h">
+      <Filter>Header Files\ParticleBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="StraightParticleBehavior.h">
+      <Filter>Header Files\ParticleBehaviors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

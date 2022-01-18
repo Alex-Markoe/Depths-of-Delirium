@@ -16,6 +16,7 @@ CollisionComponent::CollisionComponent(GameObject* _obj, SDL_Rect _position, SDL
 CollisionComponent::~CollisionComponent() {
 	handler = nullptr;
 	obj = nullptr;
+	ResetQuad();
 }
 
 //Fire the collision handler

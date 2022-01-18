@@ -16,7 +16,12 @@ enum TEXTURE_NAME {
 	ELDRITCH_TILES_TXT,
 	PLAYER_TXT,
 	PROJECTILE_TXT,
-	BUTTON_TXT
+	BUTTON_TXT,
+	FIRE_PARTICLES_TXT,
+	ICE_PARTICLES_TXT,
+	GRAVEYARD_PARTICLES_TXT,
+	SHADOW_PARTICLES_TXT,
+	ELDRITCH_PARTICLES_TXT
 };
 
 class TextureDatabase{
@@ -33,8 +38,8 @@ private:
 	TextureDatabase(){};
 	void LoadTexture(SDL_Renderer* gRenderer, std::string path, int index);
 
-	SDL_Texture* textures[7];
-	const int TEXTURE_COUNT = 7;
+	SDL_Texture* textures[11];
+	const int TEXTURE_COUNT = 11;
 };
 
 #endif //__TEXTUREDATABASE_H_INCLUDED__
