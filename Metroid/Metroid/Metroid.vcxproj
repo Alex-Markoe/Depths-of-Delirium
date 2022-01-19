@@ -137,6 +137,7 @@
     <ClCompile Include="ExitGameCommand.cpp" />
     <ClCompile Include="ParticleBehavior.cpp" />
     <ClCompile Include="ParticleComponent.cpp" />
+    <ClCompile Include="ParticleSystemParams.cpp" />
     <ClCompile Include="PlayerProjectileBehavior.cpp" />
     <ClCompile Include="PlayerProjectileCollisionHandler.cpp" />
     <ClCompile Include="StraightParticleBehavior.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="ExitGameCommand.h" />
     <ClInclude Include="ParticleBehavior.h" />
     <ClInclude Include="ParticleComponent.h" />
+    <ClInclude Include="ParticleSystemParams.h" />
     <ClInclude Include="PlayerProjectileBehavior.h" />
     <ClInclude Include="PlayerProjectileCollisionHandler.h" />
     <ClInclude Include="ProjectileBehavior.h" />

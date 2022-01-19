@@ -7,6 +7,7 @@ class ObjectTree;
 class GameObject;
 class Handler;
 class ProjectileBehavior;
+class ParticleSystemParams;
 
 //INCLUDE DEPENDENCIES
 #include <SDL.h>
@@ -31,7 +32,7 @@ public:
 	};
 	~ProjectileManager();
 	void Update(float deltaTime, ObjectTree* collision_space);
-	void Add(SDL_Rect pos, SDL_Rect source_rect, ProjectileBehavior* behavior, HANDLER_TYPE type, int lifeTime);
+	void Add(SDL_Rect pos, SDL_Rect source_rect, ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, int lifeTime, int max_speed, float decell);
 	void Render(SDL_Renderer* gRenderer);
 
 private:

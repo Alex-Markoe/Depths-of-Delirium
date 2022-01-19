@@ -7,6 +7,9 @@
 //INCLUDE DEPENDENCIES
 #include "ParticleBehavior.h"
 
+//PARTICLE BEHAVIOR
+//Particle gradually accelerates along 
+//straight line with given velocity
 class StraightParticleBehavior : public ParticleBehavior {
 public:
 	StraightParticleBehavior();

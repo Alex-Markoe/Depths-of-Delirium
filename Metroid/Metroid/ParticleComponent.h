@@ -9,6 +9,8 @@ class ParticleBehavior;
 //INCLUDE DEPENDENCIES
 #include "Component.h"
 
+//PARTICLE COMPONENT CLASS
+//DEFINES GAMEOBJECT AS A PARTICLE WITH ATTACHABLE BEHAVIOR
 class ParticleComponent : public Component {
 public:
 	ParticleComponent(PhysicsComponent* _physics, ParticleBehavior* _behavior);

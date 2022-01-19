@@ -2,6 +2,7 @@
 #include "TextureDatabase.h"
 #include "ObjectTree.h"
 #include "GameObject.h"
+#include "ParticleSystemParams.h"
 
 //COMPONENTS
 #include "ProjectileComponent.h"
@@ -9,6 +10,7 @@
 #include "RenderComponent.h"
 #include "AnimationComponent.h"
 #include "PhysicsComponent.h"
+#include "ParticleSystemComponent.h"
 
 //COLLISION HANDLERS
 #include "PlayerProjectileCollisionHandler.h"
@@ -62,14 +64,17 @@ void ProjectileManager::Render(SDL_Renderer* gRenderer) {
 
 //Add a new projectile to the collection
 //and initialize their components
-void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, ProjectileBehavior* behavior, HANDLER_TYPE type, int lifeTime){
+void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, int lifeTime, int max_speed, float decell){
 	GameObject* proj = new GameObject();
 	proj->Init(pos, true);
 	proj->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PROJECTILE_TXT), source_rect, 0);
 	proj->collider = new CollisionComponent(proj, proj->position, {0, 0}, PROJECTILE);
-	proj->physics = new PhysicsComponent({50, 50}, 1.0f, 1.0f);
+	proj->physics = new PhysicsComponent({ max_speed, max_speed }, decell, decell);
 	proj->animator = new AnimationComponent(proj->renderer);
-	proj->AddComponent(new ProjectileComponent(lifeTime, proj->physics, proj->renderer, proj->animator, behavior));
+	ParticleSystemComponent* particles = nullptr;
+	if (params != nullptr) particles = new ParticleSystemComponent(*params, proj);
+	proj->AddComponent(new ProjectileComponent(lifeTime, proj->physics, proj->renderer, proj->animator, particles, behavior));
+	if (particles != nullptr) proj->AddComponent(particles);
 	proj->collider->out_of_quad = true;
 	proj->collider->SetHandler(&handlers[type]);
 	projectiles.emplace_back(proj);

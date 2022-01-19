@@ -144,6 +144,9 @@
     <ClCompile Include="StraightParticleBehavior.cpp">
       <Filter>Source Files\ParticleBehaviors</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystemParams.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -253,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="StraightParticleBehavior.h">
       <Filter>Header Files\ParticleBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemParams.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

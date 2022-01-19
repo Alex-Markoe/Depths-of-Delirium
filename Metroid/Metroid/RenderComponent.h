@@ -15,6 +15,7 @@ public:
 	void Render(SDL_Renderer* gRenderer, SDL_Rect position);
 	void SetFlip(SDL_RendererFlip _flip);
 	void SetAngle(float _angle);
+	float GetAngle();
 
 	SDL_Rect sourceRect;
 

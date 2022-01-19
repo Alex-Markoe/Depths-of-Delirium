@@ -12,6 +12,8 @@
 #include "AnimationComponent.h"
 #include "CollisionComponent.h"
 #include "PlayerComponent.h"
+#include "ParticleSystemComponent.h" //remove later
+#include "ParticleSystemParams.h" //remove later
 
 #include <fstream>
 
@@ -37,6 +39,11 @@ MainScene::MainScene() {
 	player->animator = new AnimationComponent(player->renderer);
 	player->AddComponent(new PlayerComponent(player->renderer, player->physics, player->animator, player));
 	player->collider->SetHandler(player_collision_handler);
+
+	particles_test = new GameObject();
+	particles_test->Init({ 300, 300, 0, 0 }, false);
+	ParticleSystemParams p(0, 10, 300, 100, 2, 0, 360, false, false, 0.7f, 150, 0.0f, { 0, 0 }, { 0, 0 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING);
+	particles_test->AddComponent(new ParticleSystemComponent(p, particles_test));
 }
 //Destructor
 MainScene::~MainScene() {
@@ -44,6 +51,8 @@ MainScene::~MainScene() {
 	delete collision_space;
 	delete player_collision_handler;
 	delete[] platforms;
+
+	delete particles_test;
 }
 //Update all objects in the level
 void MainScene::Update(float deltaTime) {
@@ -61,6 +70,7 @@ void MainScene::Update(float deltaTime) {
 		collision_space->Add(player);
 	}
 	ProjectileManager::instance().Update(deltaTime, collision_space);
+	particles_test->Update(deltaTime);
 }
 //Render all objects in the level
 void MainScene::Render(SDL_Renderer* gRenderer) {
@@ -69,6 +79,7 @@ void MainScene::Render(SDL_Renderer* gRenderer) {
 	}
 	player->Render(gRenderer);
 	ProjectileManager::instance().Render(gRenderer);
+	particles_test->Render(gRenderer);
 }
 
 //Initialize the level, and reset from the last level

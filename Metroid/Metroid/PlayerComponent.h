@@ -7,10 +7,11 @@ class ProjectileBehavior;
 class RenderComponent;
 class AnimationComponent;
 class PhysicsComponent;
+class ParticleSystemParams;
 
 //INCLUDE DEPENDENCIES
-#include "ProjectileManager.h"
 #include "Component.h"
+#include "ProjectileManager.h"
 
 //HANDLE PLAYER INPUT, STATE LOGIC
 //AND PROJECTILE CREATION
@@ -42,7 +43,7 @@ private:
 
 	void HandleInput();
 	void UpdateState();
-	void SpawnProjectile(ProjectileBehavior* behavior, HANDLER_TYPE type, SDL_Rect source_rect, int lifeTime, float speed);
+	void SpawnProjectile(ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, SDL_Rect source_rect, int lifeTime, int speed);
 };
 
 #endif //__PLAYERCOMPONENT_H_INCLUDED__

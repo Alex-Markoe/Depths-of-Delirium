@@ -5,32 +5,18 @@
 //FORWARD DEPENDENCIES
 class GameObject;
 class ParticleBehavior;
+class ParticleSystemParams;
 
 //INCLUDE DEPENDENCIES
 #include "Component.h"
 
-//ENUM TO REPRESENT TYPE
-//OF PARTICLE TO SPAWN
-enum PARTICLE_TYPE {
-	FIRE_PARTICLE = 7,
-	ICE_PARTICLE = 8,
-	GRAVEYARD_PARTICLE = 9,
-	SHADOW_PARTICLE = 10,
-	ELDRITCH_PARTICLE = 11
-};
-
-enum BEHAVIOR_TYPE {
-	STRAIGHT,
-	STRAIGHT_ACCELERATING
-};
-
 //ATTACHABLE PARTICLE SYSTEM
 class ParticleSystemComponent : public Component {
 public:
-	ParticleSystemComponent(int _system_lifetime, int _max_particles, int _particle_lifetime, int _spawn_interval, int _particle_spawn_rate, int _init_angle, int _angle_range, bool _random, float decell,
-							float _speed, SDL_Point _grav, SDL_Point _origin_offset, GameObject* _obj, PARTICLE_TYPE _type, BEHAVIOR_TYPE _behavior);
+	ParticleSystemComponent(ParticleSystemParams params, GameObject* _obj);
 	~ParticleSystemComponent();
 	void Update() override;
+	void SetAngle(int angle, int _angle_range);
 
 private:
 	void SpawnParticle();
@@ -41,11 +27,10 @@ private:
 	GameObject* obj;
 	SDL_Point origin_offset;
 	SDL_Point grav;
-	SDL_Point direction;
 	Uint32 spawn_timer;
 	Uint32 system_timer;
 	Uint32* timers;
-	BEHAVIOR_TYPE behavior;
+	int behavior;
 
 	int init_angle;
 	int angle_range;
@@ -57,8 +42,12 @@ private:
 	int particle_lifetime;
 	int spawn_interval;
 	int system_lifetime;
-	float speed;
+	int speed;
+	float rotation_rate;
+	float dir_x;
+	float dir_y;
 	bool random_spawn;
+	bool reverse;
 
 	int start_index;
 	int particle_count;

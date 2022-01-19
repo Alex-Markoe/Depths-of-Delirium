@@ -19,4 +19,5 @@ void RenderComponent::Render(SDL_Renderer* gRenderer, SDL_Rect position) {
 
 void RenderComponent::SetFlip(SDL_RendererFlip _flip) { flipType = _flip; }
 void RenderComponent::SetAngle(float _angle) { angle = _angle; }
+float RenderComponent::GetAngle() { return angle; }
 void RenderComponent::Update() {}

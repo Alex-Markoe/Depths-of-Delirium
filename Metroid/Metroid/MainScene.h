@@ -22,6 +22,7 @@ private:
 	GameObject* player;
 	GameObject* boss;
 	GameObject* platforms;
+	GameObject* particles_test;
 	int total_tile_count;
 	int active_tile_count;
 

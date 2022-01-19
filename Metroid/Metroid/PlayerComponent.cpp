@@ -1,5 +1,6 @@
 #include "PlayerComponent.h"
 #include "PlayerProjectileBehavior.h"
+#include "ParticleSystemParams.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
 
@@ -28,19 +29,19 @@ PlayerComponent::~PlayerComponent(){
 void PlayerComponent::UpdateState(){
 	switch (playerState) {
 	case IDLE:
-		animator->SetAnimationSource(0, 0, 0);
+		animator->SetAnimationSource(0, 0, 0, true);
 		break;
 	case RUN:
-		animator->SetAnimationSource(75, 0, 3);
+		animator->SetAnimationSource(75, 0, 3, true);
 		break;
 	case JUMP:
-		animator->SetAnimationSource(75, 156, 1);
+		animator->SetAnimationSource(75, 156, 1, true);
 		break;
 	case FIRING:
-		animator->SetAnimationSource(0, 78, 0);
+		animator->SetAnimationSource(0, 78, 0, true);
 		break;
 	case RUN_FIRING:
-		animator->SetAnimationSource(75, 78, 3);
+		animator->SetAnimationSource(75, 78, 3, true);
 		break;
 	}
 }
@@ -81,12 +82,12 @@ void PlayerComponent::HandleInput(){
 	//ACTION LOGIC
 	if (attack_Timer == 0) {
 		if (state[SDL_SCANCODE_SPACE]) { //Using the force push
-			//SpawnProjectile(PUSH);
 			//attack_Timer = SDL_GetTicks();
 			//inAction = true;
 		}
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1)) { //Firing a spell
-			SpawnProjectile(new PlayerProjectileBehavior(), PLAYER_PROJ, { 0, 21, 39, 39 }, 500, 500);
+			ParticleSystemParams params(0, 10, 50, 20, 1, 0, 50, true, false, 1.0f, 125, 0.0f, { 0, 0 }, { 0, 0 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING); //set angle in method
+			SpawnProjectile(new PlayerProjectileBehavior(), &params, PLAYER_PROJ, { 0, 21, 39, 39 }, 500, 500);
 			attack_Timer = SDL_GetTicks();
 			inAction = true;
 		}
@@ -136,13 +137,14 @@ void PlayerComponent::Grounded() {
 
 //Fire a projectile based on the player's position and the relative angle
 //towards the mouse
-void PlayerComponent::SpawnProjectile(ProjectileBehavior* behavior, HANDLER_TYPE type, SDL_Rect source_rect, int lifeTime, float speed) {
+void PlayerComponent::SpawnProjectile(ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, SDL_Rect source_rect, int lifeTime, int speed) {
 	SDL_Point mouse_pos = { 0,0 };
 	SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
 	float angle = atan2(mouse_pos.y - obj->position.y, mouse_pos.x - obj->position.x);
 	SDL_Point init_force = { speed * cos(angle), speed * sin(angle) };
 	behavior->SetForce(init_force.x, init_force.y);
-	ProjectileManager::instance().Add({obj->position.x, obj->position.y, source_rect.w, source_rect.h}, source_rect, behavior, type, lifeTime);
+	if (params != nullptr) params->init_angle = (int)(angle * 180 / M_PI) + 180;
+	ProjectileManager::instance().Add({obj->position.x, obj->position.y, source_rect.w, source_rect.h}, source_rect, behavior, params, type, lifeTime, 50, 1.0f);
 
 	spell_Anim_Timer = SDL_GetTicks();
 }

@@ -12,5 +12,5 @@ void PlayerProjectileBehavior::Update() {
 }
 //Setup animation
 void PlayerProjectileBehavior::InitAnim() {
-	animator->SetAnimationSource(0, 21, 1);
+	animator->SetAnimationSource(0, 21, 1, true);
 }

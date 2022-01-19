@@ -8,6 +8,7 @@
 #include "PhysicsComponent.h"
 #include "AnimationComponent.h"
 #include "RenderComponent.h"
+#include "ParticleSystemComponent.h"
 
 //PROJECTILE BEHAVIOR
 //HANDLES BEHAVIOR OF INDIVIDUAL 
@@ -15,7 +16,7 @@
 class ProjectileBehavior{
 public:
 	ProjectileBehavior(){};
-	~ProjectileBehavior(){ physics = nullptr; renderer = nullptr; };
+	~ProjectileBehavior() { physics = nullptr; renderer = nullptr; animator = nullptr; particles = nullptr; };
 	virtual void Update(){};
 	virtual void InitAnim(){};
 	void SetForce(int f_x, int f_y) { force_x = f_x; force_y = f_y; } //set intial force
@@ -24,6 +25,7 @@ public:
 	PhysicsComponent* physics;
 	RenderComponent* renderer;
 	AnimationComponent* animator;
+	ParticleSystemComponent* particles;
 
 protected:
 	void GetAngle() { //Visually update projectile to match trajectory

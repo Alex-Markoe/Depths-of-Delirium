@@ -7,6 +7,7 @@ class ProjectileBehavior;
 class PhysicsComponent;
 class RenderComponent;
 class AnimationComponent;
+class ParticleSystemComponent;
 
 //INCLUDE DEPENDENCIES
 #include "Component.h"
@@ -14,7 +15,7 @@ class AnimationComponent;
 //MODIFIABLE PROJECTILE BEHAVIOR
 class ProjectileComponent : public Component {
 public:
-	ProjectileComponent(int _lifeTime, PhysicsComponent* _physics, RenderComponent* _renderer, AnimationComponent* _animator, ProjectileBehavior* _behavior);
+	ProjectileComponent(int _lifeTime, PhysicsComponent* _physics, RenderComponent* _renderer, AnimationComponent* _animator, ParticleSystemComponent* _particles, ProjectileBehavior* _behavior);
 	~ProjectileComponent();
 	void Update() override;
 

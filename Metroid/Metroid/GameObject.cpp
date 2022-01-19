@@ -50,7 +50,7 @@ void GameObject::Update(float deltaTime){
 
 //Render the object
 void GameObject::Render(SDL_Renderer* gRenderer) {
-	renderer->Render(gRenderer, position);
+	if (renderer != nullptr) renderer->Render(gRenderer, position);
 	for (int i = 0; i < children.size(); i++) {
 		children[i]->Render(gRenderer);
 	}

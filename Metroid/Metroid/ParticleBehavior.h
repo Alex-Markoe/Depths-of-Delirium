@@ -8,6 +8,9 @@ class PhysicsComponent;
 //INCLUDE DEPENDENCIES
 #include <SDL.h>
 
+//PARTICLE BEHAVIOR
+//BASE CLASS THAT DEFINES THE WAY THAT PARTICLES MOVE
+//Has virtual update and reset methods for different behaviors
 class ParticleBehavior{
 public:
 	ParticleBehavior();
