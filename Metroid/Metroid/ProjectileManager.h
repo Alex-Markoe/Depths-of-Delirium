@@ -17,7 +17,8 @@ class ParticleSystemParams;
 //ENUM TO REPRESENT THE TYPE OF
 //COLLISION HANDLER FOR THE PROJECTILE
 enum HANDLER_TYPE {
-	PLAYER_PROJ
+	PLAYER_PROJ,
+	REBOUND
 };
 
 //PROJECTILE MANAGER SINGLETON
@@ -34,11 +35,12 @@ public:
 	void Update(float deltaTime, ObjectTree* collision_space);
 	void Add(SDL_Rect pos, SDL_Rect source_rect, ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, int lifeTime, int max_speed, float decell);
 	void Render(SDL_Renderer* gRenderer);
+	void GetPlayer(GameObject* player);
 
 private:
 	ProjectileManager();
 	std::vector<GameObject*> projectiles; //Container for projectiles
-	Handler* handlers; //Array of collision handlers
+	std::vector<Handler*> handlers; //Array of collision handlers
 };
 
 #endif //__PROJECTILEMANAGER_H_INCLUDED__

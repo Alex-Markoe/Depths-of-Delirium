@@ -39,10 +39,11 @@ MainScene::MainScene() {
 	player->animator = new AnimationComponent(player->renderer);
 	player->AddComponent(new PlayerComponent(player->renderer, player->physics, player->animator, player));
 	player->collider->SetHandler(player_collision_handler);
+	ProjectileManager::instance().GetPlayer(player);
 
 	particles_test = new GameObject();
 	particles_test->Init({ 300, 300, 0, 0 }, false);
-	ParticleSystemParams p(0, 10, 300, 100, 2, 0, 360, false, false, 0.7f, 150, 0.0f, { 0, 0 }, { 0, 0 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING);
+	ParticleSystemParams p(0, 10, 300, 100, 2, 0, 360, false, false, 0.7f, 150, 0.0f, { 0, 0 }, { 50, 50 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING);
 	particles_test->AddComponent(new ParticleSystemComponent(p, particles_test));
 }
 //Destructor

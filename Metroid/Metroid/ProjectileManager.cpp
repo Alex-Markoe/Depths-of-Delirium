@@ -14,12 +14,13 @@
 
 //COLLISION HANDLERS
 #include "PlayerProjectileCollisionHandler.h"
+#include "ReboundCollisionHandler.h"
 
 //Constructor
 //Initialize collision handlers
 ProjectileManager::ProjectileManager() {
-	handlers = new Handler[5];
-	handlers[0] = PlayerProjectileCollisionHandler();
+	handlers.push_back(new PlayerProjectileCollisionHandler());
+	handlers.push_back(new ReboundCollisionHandler());
 }
 //Destructor, remove any remaining projectiles
 //as well as getting rid of collision handlers
@@ -28,7 +29,10 @@ ProjectileManager::~ProjectileManager(){
 		delete projectiles.front();
 		projectiles.erase(projectiles.begin());
 	}
-	delete[] handlers;
+	while (handlers.size() > 0) {
+		delete handlers.front();
+		handlers.erase(handlers.begin());
+	}
 }
 
 //Update all projectiles contained in the manager
@@ -76,6 +80,10 @@ void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, ProjectileBehavi
 	proj->AddComponent(new ProjectileComponent(lifeTime, proj->physics, proj->renderer, proj->animator, particles, behavior));
 	if (particles != nullptr) proj->AddComponent(particles);
 	proj->collider->out_of_quad = true;
-	proj->collider->SetHandler(&handlers[type]);
+	proj->collider->SetHandler(handlers[type]);
 	projectiles.emplace_back(proj);
+}
+void ProjectileManager::GetPlayer(GameObject* player) {
+	ReboundCollisionHandler* r = (ReboundCollisionHandler*)handlers[1];
+	r->SetPlayer(player);
 }

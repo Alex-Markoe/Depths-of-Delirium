@@ -13,7 +13,7 @@ public:
 	~PlayerCollisionHandler() {};
 
 private:
-	void ObstacleCollision(GameObject* obj, int f_x, int f_y) override;
+	void ObstacleCollision(GameObject* other, GameObject* obj, int f_x, int f_y) override;
 };
 
 #endif //__PLAYERCOLLISIONHANDLER_H_INCLUDED__

@@ -1,0 +1,50 @@
+﻿
+Renamed 'attack_Timer' to 'attack_timer':
+-----------------------------------------
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(16, 2)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(89, 6)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(97, 4)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.h(38, 9)
+
+Renamed 'spell_Anim_Timer' to 'spell_anim_timer':
+-------------------------------------------------
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(106, 6)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(107, 7)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(107, 48)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(155, 2)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.h(37, 9)
+
+Renamed 'previousState' to 'previous_state':
+--------------------------------------------
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(14, 2)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(128, 6)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(136, 2)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.h(31, 15)
+
+Renamed 'playerState' to 'player_state':
+----------------------------------------
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(13, 2)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(32, 10)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(57, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(63, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(75, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(108, 12)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(109, 4)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(113, 4)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(120, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(128, 24)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(136, 19)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.h(30, 15)
+
+Renamed 'inAction' to 'in_action':
+----------------------------------
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(56, 7)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(63, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(69, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(74, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(80, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(90, 3)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(103, 4)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(115, 4)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(119, 4)
+C:\Repos\Depths-of-Delirium\Metroid\Metroid\PlayerComponent.cpp(124, 7)

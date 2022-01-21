@@ -147,6 +147,12 @@
     <ClCompile Include="ParticleSystemParams.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ReboundCollisionHandler.cpp">
+      <Filter>Source Files\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionHandlers.cpp">
+      <Filter>Source Files\CollisionHandlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -259,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystemParams.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ReboundCollisionHandler.h">
+      <Filter>Header Files\CollisionHandlers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

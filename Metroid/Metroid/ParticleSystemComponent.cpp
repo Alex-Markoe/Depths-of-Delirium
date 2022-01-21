@@ -45,7 +45,7 @@ ParticleSystemComponent::ParticleSystemComponent(ParticleSystemParams params, Ga
 		p_behavior = GetBehavior();
 		p_behavior->SetPhysics(particles[i].physics);
 		particles[i].AddComponent(new ParticleComponent(particles[i].physics, p_behavior));
-		particles[i].Init({obj->position.x + origin_offset.x, obj->position.y + origin_offset.y, 8, 8}, true);
+		particles[i].Init({obj->position.x, obj->position.y, 8, 8}, true);
 		timers[i] = 0;
 		obj->AddChild(&particles[i]);
 	}
@@ -99,7 +99,7 @@ void ParticleSystemComponent::SpawnParticle() {
 		if (timers[index] != 0) break;
 		GetNextSpawn();
 		//SETUP PARTICLE PHYSICS/ANIMATION
-		particles[index].position = { obj->position.x + origin_offset.x, obj->position.y + origin_offset.y, 8, 8 };
+		particles[index].position = { obj->position.x + (int)(origin_offset.x * dir_x), obj->position.y + (int)(origin_offset.y * dir_y), 8, 8 };
 		particles[index].animator->SetAnimationSource(0, particles[index].renderer->sourceRect.y, 2, false);
 		particles[index].animator->SetFrame(0);
 		p = (ParticleComponent*)particles[index].components[0];

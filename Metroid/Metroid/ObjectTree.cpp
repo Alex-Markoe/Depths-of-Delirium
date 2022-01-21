@@ -128,13 +128,13 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 			if (depth_descending + (accel_y + vel_y) > 0 && depth_descending + (accel_y + vel_y) < MAX_DEPTH_Y) { //descending
 				int force = GetForce(deltaTime, -depth_descending, -accel_y, -vel_y);
 				//depth_descending /= deltaTime;
-				reference->collider->CollisionHandler(quad->items[i]->collider->type, 0, force);
+				reference->collider->CollisionHandler(quad->items[i], 0, force);
 				collide_y = true;
 			}
 			else if (depth_ascending + (accel_y + vel_y) < 0 && depth_ascending + (accel_y + vel_y) > -MAX_DEPTH_Y) { //ascending
 				int force = GetForce(deltaTime, -depth_ascending, -accel_y, -vel_y);
 				//depth_ascending /= deltaTime;
-				reference->collider->CollisionHandler(quad->items[i]->collider->type, 0, force);
+				reference->collider->CollisionHandler(quad->items[i], 0, force);
 				collide_y = true;
 			}
 		}
@@ -155,11 +155,11 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 			//within range of a collision
 			if (depth_left + (accel_x + vel_x) < 0 && depth_left + (accel_x + vel_x) > -MAX_DEPTH_X) { //left
 				int force = GetForce(deltaTime, -depth_left, -accel_x, -vel_x);
-				reference->collider->CollisionHandler(quad->items[i]->collider->type, force, 0);
+				reference->collider->CollisionHandler(quad->items[i], force, 0);
 			}
 			else if (depth_right + (accel_x + vel_x) > 0 && depth_right + (accel_x + vel_x) < MAX_DEPTH_X) { //right
 				int force = GetForce(deltaTime, -depth_right, -accel_x, -vel_x);
-				reference->collider->CollisionHandler(quad->items[i]->collider->type, force, 0);
+				reference->collider->CollisionHandler(quad->items[i], force, 0);
 			}
 		}
 	}
@@ -204,7 +204,7 @@ void ObjectTree::CircleCollisionDetector(GameObject* reference, ObjectTreeNode* 
 		float distance_total = sqrt(pow(hitbox.w + half_width, 2) + pow(hitbox.h + half_height, 2));
 
 		if (distance < distance_total){
-			reference->collider->CollisionHandler(quad->items[i]->collider->type, 0, 0);
+			reference->collider->CollisionHandler(quad->items[i], 0, 0);
 		}
 	}
 

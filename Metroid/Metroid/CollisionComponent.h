@@ -30,7 +30,7 @@ public:
 	~CollisionComponent();
 	void Update() override;
 	void UpdatePosition(SDL_Rect position);
-	void CollisionHandler(OBJECT_TYPE type, float f_x, float f_y);
+	void CollisionHandler(GameObject* other, float f_x, float f_y);
 	void SetHandler(Handler* _handler);
 	void ResetQuad();
 	void SetQuad(int _index, ObjectTreeNode* _quad);

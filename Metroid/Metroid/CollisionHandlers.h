@@ -15,32 +15,14 @@ class Handler {
 public:
 	Handler(){};
 	~Handler(){};
-	void Execute(int type, GameObject* obj, int f_x, int f_y){
-		switch (type) {
-		case 0:
-			PlayerCollision(obj, f_x, f_y);
-			break;
-		case 1:
-			BossCollision(obj, f_x, f_y);
-			break;
-		case 2:
-			ProjectileCollision(obj, f_x, f_y);
-			break;
-		case 3:
-			ObstacleCollision(obj, f_x, f_y);
-			break;
-		case 4:
-			ZoneCollision(obj, f_x, f_y);
-			break;
-		}
-	};
+	void Execute(GameObject* other, GameObject* obj, int f_x, int f_y);
 
 protected:
-	virtual void ObstacleCollision(GameObject* obj, int f_x, int f_y){};
-	virtual void ProjectileCollision(GameObject* obj, int f_x, int f_y){};
-	virtual void PlayerCollision(GameObject* obj, int f_x, int f_y){};
-	virtual void BossCollision(GameObject* obj, int f_x, int f_y){};
-	virtual void ZoneCollision(GameObject* obj, int f_x, int f_y){};
+	virtual void ObstacleCollision(GameObject* other, GameObject* obj, int f_x, int f_y){};
+	virtual void ProjectileCollision(GameObject* other, GameObject* obj, int f_x, int f_y){};
+	virtual void PlayerCollision(GameObject* other, GameObject* obj, int f_x, int f_y){};
+	virtual void BossCollision(GameObject* other, GameObject* obj, int f_x, int f_y){};
+	virtual void ZoneCollision(GameObject* other, GameObject* obj, int f_x, int f_y){};
 };
 
 #endif //__HANDLER_H_INCLUDED__

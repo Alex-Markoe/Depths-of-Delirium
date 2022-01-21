@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="ButtonComponent.cpp" />
+    <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="ContinueGameCommand.cpp" />
     <ClCompile Include="ExitGameCommand.cpp" />
     <ClCompile Include="ParticleBehavior.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="ParticleSystemParams.cpp" />
     <ClCompile Include="PlayerProjectileBehavior.cpp" />
     <ClCompile Include="PlayerProjectileCollisionHandler.cpp" />
+    <ClCompile Include="ReboundCollisionHandler.cpp" />
     <ClCompile Include="StraightParticleBehavior.cpp" />
     <ClCompile Include="ToNewGameCommand.cpp" />
     <ClCompile Include="ToTitleCommand.cpp" />
@@ -177,6 +179,7 @@
     <ClInclude Include="PlayerProjectileBehavior.h" />
     <ClInclude Include="PlayerProjectileCollisionHandler.h" />
     <ClInclude Include="ProjectileBehavior.h" />
+    <ClInclude Include="ReboundCollisionHandler.h" />
     <ClInclude Include="StraightParticleBehavior.h" />
     <ClInclude Include="ToNewGameCommand.h" />
     <ClInclude Include="ToTitleCommand.h" />

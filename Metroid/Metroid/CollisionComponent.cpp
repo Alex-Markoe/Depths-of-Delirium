@@ -20,8 +20,8 @@ CollisionComponent::~CollisionComponent() {
 }
 
 //Fire the collision handler
-void CollisionComponent::CollisionHandler(OBJECT_TYPE type, float f_x, float f_y) {
-	if (handler != nullptr) handler->Execute(type, obj, f_x, f_y);
+void CollisionComponent::CollisionHandler(GameObject* other, float f_x, float f_y) {
+	if (handler != nullptr) handler->Execute(other, obj, f_x, f_y);
 }
 //Setup the collision handler
 void CollisionComponent::SetHandler(Handler* _handler) {
