@@ -32,12 +32,12 @@ MainScene::MainScene() {
 	//player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 });
 	//INITIALIZE PLAYER
 	player = new GameObject();
-	player->Init(SDL_Rect{ 0, 0, 75, 78 }, true);
-	player->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PLAYER_TXT), SDL_Rect{ 0, 0, 75, 78 }, 0);
-	player->collider = new CollisionComponent(player, player->position, SDL_Point{ 12, 3 }, PLAYER);
+	player->Init(SDL_Rect{ 0, 0, 135, 144 }, true);
+	player->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PLAYER_TXT), SDL_Rect{ 0, 0, 135, 144 }, 0);
+	player->collider = new CollisionComponent(player, player->position, SDL_Point{ 20, 33 }, PLAYER);
 	player->physics = new PhysicsComponent(SDL_Point{ 40, 40 }, 0.8f, 1.0f);
 	player->animator = new AnimationComponent(player->renderer);
-	player->AddComponent(new PlayerComponent(player->renderer, player->physics, player->animator, player));
+	player->AddComponent(new PlayerComponent(player->renderer, player->physics, player->animator, player->collider, player));
 	player->collider->SetHandler(player_collision_handler);
 	ProjectileManager::instance().GetPlayer(player);
 

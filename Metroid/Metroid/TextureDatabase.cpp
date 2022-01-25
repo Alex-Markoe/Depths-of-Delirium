@@ -40,7 +40,7 @@ void TextureDatabase::LoadAssets(SDL_Renderer* gRenderer) {
 	for (unsigned i = 0; i < TEXTURE_COUNT; i++) {
 		textures[i] = nullptr;
 	}
-	LoadTexture(gRenderer, "Assets/WizardSpriteSheet.png", PLAYER_TXT);
+	LoadTexture(gRenderer, "Assets/Phoenix_SpriteSheet.png", PLAYER_TXT);
 	LoadTexture(gRenderer, "Assets/TileSheet.png", ICE_TILES_TXT);
 	LoadTexture(gRenderer, "Assets/Buttons.png", BUTTON_TXT);
 	LoadTexture(gRenderer, "Assets/Fireball.png", PROJECTILE_TXT);

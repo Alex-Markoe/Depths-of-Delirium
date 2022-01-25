@@ -3,12 +3,14 @@
 #include "ParticleSystemParams.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
+#include "CollisionComponent.h"
 
 //Constructor
-PlayerComponent::PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _physics, AnimationComponent* _animator, GameObject* _obj){
+PlayerComponent::PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _physics, AnimationComponent* _animator, CollisionComponent* _collider, GameObject* _obj){
 	renderer = _renderer;
 	physics = _physics;
 	animator = _animator;
+	collider = _collider;
 	obj = _obj;
 	player_state = IDLE;
 	previous_state = IDLE;
@@ -34,20 +36,19 @@ PlayerComponent::~PlayerComponent(){
 void PlayerComponent::UpdateState(){
 	switch (player_state) {
 	case IDLE:
-		animator->SetAnimationSource(0, 0, 0, true);
+		animator->SetAnimationSource(0, 0, 4, true);
 		break;
 	case RUN:
-		animator->SetAnimationSource(75, 0, 3, true);
+		animator->SetAnimationSource(0, 144, 7, true);
 		break;
 	case SWIFT:
+		animator->SetAnimationSource(675, 0, 2, true);
+		break;
 	case JUMP:
-		animator->SetAnimationSource(75, 156, 1, true);
+		animator->SetAnimationSource(405, 288, 2, true);
 		break;
 	case FIRING:
-		animator->SetAnimationSource(0, 78, 0, true);
-		break;
-	case RUN_FIRING:
-		animator->SetAnimationSource(75, 78, 3, true);
+		animator->SetAnimationSource(0, 288, 2, true);
 		break;
 	}
 }
@@ -99,6 +100,7 @@ void PlayerComponent::HandleInput(){
 			swift_timer = SDL_GetTicks();
 			physics->ResetKinematics();
 			renderer->SetFlip(SDL_FLIP_NONE);
+			collider->SetHitbox({72, 54, 42, 27});
 		}
 		in_action = true;
 	}
@@ -130,20 +132,15 @@ void PlayerComponent::HandleInput(){
 	}
 	if (spell_anim_timer > 0) {
 		if (spell_anim_timer + 250 < SDL_GetTicks()) spell_anim_timer = 0;
-		else if (player_state == RUN) {
-			player_state = RUN_FIRING;
-			in_action = true;
-		}
-		else {
-			player_state = FIRING;
-			in_action = true;
-		}
+		player_state = FIRING;
+		in_action = true;
 	}
 	//Start swift cooldown
 	if (swift_timer > 0 && !swift_form) {
 		swift_timer = 0;
 		swift_cooldown = SDL_GetTicks();
 		renderer->SetAngle(0);
+		collider->SetHitbox({ 20, 33, 95, 111 });
 	}
 	if (swift_cooldown > 0 && swift_cooldown + 750 < SDL_GetTicks()) {
 		swift_cooldown = 0;

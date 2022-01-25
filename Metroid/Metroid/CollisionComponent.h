@@ -34,6 +34,7 @@ public:
 	void SetHandler(Handler* _handler);
 	void ResetQuad();
 	void SetQuad(int _index, ObjectTreeNode* _quad);
+	void SetHitbox(SDL_Rect _hitbox);
 
 	SDL_Rect hitbox;
 	OBJECT_TYPE type;

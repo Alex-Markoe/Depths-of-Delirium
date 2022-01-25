@@ -7,6 +7,7 @@ class ProjectileBehavior;
 class RenderComponent;
 class AnimationComponent;
 class PhysicsComponent;
+class CollisionComponent;
 class ParticleSystemParams;
 
 //INCLUDE DEPENDENCIES
@@ -20,7 +21,6 @@ enum PLAYER_STATE {
 	JUMP,
 	RUN,
 	FIRING,
-	RUN_FIRING,
 	SWIFT
 };
 
@@ -28,7 +28,7 @@ enum PLAYER_STATE {
 //AND PROJECTILE CREATION
 class PlayerComponent : public Component {
 public:
-	PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _physics, AnimationComponent* _animator, GameObject* _obj);
+	PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _physics, AnimationComponent* _animator, CollisionComponent* _collider, GameObject* _obj);
 	~PlayerComponent();
 	void Update() override;
 	void ResetJump();
@@ -37,6 +37,7 @@ private:
 	RenderComponent* renderer;
 	PhysicsComponent* physics;
 	AnimationComponent* animator;
+	CollisionComponent* collider;
 	GameObject* obj;
 	PLAYER_STATE player_state;
 	PLAYER_STATE previous_state;
@@ -52,7 +53,7 @@ private:
 	Uint32 swift_cooldown;
 	int TERMINAL_VELOCITY = 75;
 	int HORIZONTAL_VELOCITY = 300;
-	int JUMP_VELOCITY = -1000;
+	int JUMP_VELOCITY = -1500;
 	int SWIFT_VELOCITY = 1300;
 	bool on_ground;
 	bool swift_form;

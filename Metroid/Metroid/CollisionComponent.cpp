@@ -51,4 +51,10 @@ void CollisionComponent::ResetQuad() {
 		quad->Erase(item_index);
 	quad = nullptr;
 }
+//Set a new hitbox
+//Offset is x, y, width and height are normal
+void CollisionComponent::SetHitbox(SDL_Rect _hitbox) {
+	hitbox = { hitbox.x - HITBOX_OFFSET.x + _hitbox.x, hitbox.y - HITBOX_OFFSET.y + _hitbox.y, hitbox.w, hitbox.h};
+	HITBOX_OFFSET = { _hitbox.x, _hitbox.y };
+}
 void CollisionComponent::Update() {}
