@@ -19,7 +19,7 @@ PlayerComponent::PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _
 	rebound_timer = 0;
 	swift_timer = 0;
 	swift_cooldown = 0;
-	jump_count = 1;
+	can_jump = true;
 	on_ground = false;
 	swift_form = false;
 	active = false;
@@ -71,13 +71,13 @@ void PlayerComponent::HandleInput(){
 			physics->ApplyForce(-HORIZONTAL_VELOCITY, 0);
 			in_action = true;
 		}
-		if (state[SDL_SCANCODE_W] && jump_count > 0) { //Jumping
+		if (state[SDL_SCANCODE_W] && can_jump) { //Jumping
 			if (!on_ground) {
 				physics->velocity_y = 0;
 				physics->acceleration_y = 0;
 			}
 			physics->ApplyForce(0, JUMP_VELOCITY);
-			jump_count--;
+			can_jump = false;
 			in_action = true;
 		}
 		//Check to see if the player is in the air
@@ -100,7 +100,7 @@ void PlayerComponent::HandleInput(){
 			swift_timer = SDL_GetTicks();
 			physics->ResetKinematics();
 			renderer->SetFlip(SDL_FLIP_NONE);
-			collider->SetHitbox({72, 54, 42, 27});
+			collider->SetHitbox({81, 54, 30, 30});
 		}
 		in_action = true;
 	}
@@ -141,6 +141,7 @@ void PlayerComponent::HandleInput(){
 		swift_cooldown = SDL_GetTicks();
 		renderer->SetAngle(0);
 		collider->SetHitbox({ 20, 33, 95, 111 });
+		physics->ResetKinematics();
 	}
 	if (swift_cooldown > 0 && swift_cooldown + 750 < SDL_GetTicks()) {
 		swift_cooldown = 0;
@@ -173,7 +174,7 @@ void PlayerComponent::Update(){
 }
 
 void PlayerComponent::ResetJump() {
-	jump_count = 1;
+	can_jump = true;
 }
 SDL_Point PlayerComponent::GetMousePosition() {
 	SDL_Point mouse_pos = { 0,0 };
@@ -181,7 +182,7 @@ SDL_Point PlayerComponent::GetMousePosition() {
 	return mouse_pos;
 }
 float PlayerComponent::GetAngle(SDL_Point point) {
-	return atan2(point.y - obj->position.y, point.x - obj->position.x);
+	return atan2(point.y - (obj->position.y + (obj->position.h / 2)), point.x - (obj->position.x + (obj->position.w / 2)));
 }
 
 //Fire a projectile based on the player's position and the relative angle
@@ -191,15 +192,18 @@ void PlayerComponent::SpawnProjectile(ProjectileBehavior* behavior, ParticleSyst
 	SDL_Point init_force = { speed * cos(angle), speed * sin(angle) };
 	behavior->SetForce(init_force.x, init_force.y);
 	if (params != nullptr) params->init_angle = (int)(angle * 180 / M_PI) + 180;
-	ProjectileManager::instance().Add({obj->position.x, obj->position.y, source_rect.w, source_rect.h}, source_rect, behavior, params, type, lifeTime, 50, 1.0f);
+	ProjectileManager::instance().Add({obj->position.x + (obj->position.w / 2), obj->position.y + (obj->position.h / 2), source_rect.w, source_rect.h}, source_rect, behavior, params, type, lifeTime, 50, 1.0f);
 
 	spell_anim_timer = SDL_GetTicks();
 }
-
+//Calculate swift movement
+//Follows cursor
 void PlayerComponent::SwiftMovement() {
 	SDL_Point mouse_pos = GetMousePosition();
 	float angle = GetAngle(mouse_pos);
+	int dist_x = (mouse_pos.x - (obj->position.x + (obj->position.w / 2))) * SWIFT_VELOCITY;
+	int dist_y = (mouse_pos.y - (obj->position.y + (obj->position.h / 2))) * SWIFT_VELOCITY;
 	physics->ResetKinematics();
-	physics->ApplyForce(cos(angle) * SWIFT_VELOCITY, sin(angle) * SWIFT_VELOCITY);
+	physics->ApplyForce(dist_x, dist_y);
 	renderer->SetAngle(angle * 180 / M_PI);
 }

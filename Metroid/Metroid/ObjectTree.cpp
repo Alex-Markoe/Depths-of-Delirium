@@ -100,7 +100,6 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, float deltaTime) {
 //determine if the referenced object is colliding with any objects in its relevant quads
 void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* quad, SDL_Rect collisionSpace, SDL_Rect hitbox, float deltaTime){
 	SDL_Rect item_hitbox;
-	bool collide_y;
 
 	//Iterate through each gameobject in the quad and 
 	//check to see if it is colliding with the 
@@ -109,7 +108,6 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 		//Don't check item with itself
 		if (reference == quad->items[i]) continue;
 		item_hitbox = quad->items[i]->collider->hitbox;
-		collide_y = false;
 
 		//Check the y direction
 		//See if the references's x dimensions are within
@@ -127,15 +125,11 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 			//are within range of a collision
 			if (depth_descending + (accel_y + vel_y) > 0 && depth_descending + (accel_y + vel_y) < MAX_DEPTH_Y) { //descending
 				int force = GetForce(deltaTime, -depth_descending, -accel_y, -vel_y);
-				//depth_descending /= deltaTime;
 				reference->collider->CollisionHandler(quad->items[i], 0, force);
-				collide_y = true;
 			}
 			else if (depth_ascending + (accel_y + vel_y) < 0 && depth_ascending + (accel_y + vel_y) > -MAX_DEPTH_Y) { //ascending
 				int force = GetForce(deltaTime, -depth_ascending, -accel_y, -vel_y);
-				//depth_ascending /= deltaTime;
 				reference->collider->CollisionHandler(quad->items[i], 0, force);
-				collide_y = true;
 			}
 		}
 		//if (collide_y) continue;
@@ -200,8 +194,8 @@ void ObjectTree::CircleCollisionDetector(GameObject* reference, ObjectTreeNode* 
 		item_centerX = item_hitbox.x + half_width;
 		item_centerY = item_hitbox.y + half_height;
 		//Check distance between centers
-		float distance = sqrt(pow(hitbox.x - item_centerX, 2) + pow(hitbox.y - item_centerY, 2));
-		float distance_total = sqrt(pow(hitbox.w + half_width, 2) + pow(hitbox.h + half_height, 2));
+		float distance = pow(hitbox.x - item_centerX, 2) + pow(hitbox.y - item_centerY, 2);
+		float distance_total = pow(hitbox.w + half_width, 2) + pow(hitbox.h + half_height, 2);
 
 		if (distance < distance_total){
 			reference->collider->CollisionHandler(quad->items[i], 0, 0);

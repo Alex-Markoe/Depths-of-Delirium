@@ -44,7 +44,6 @@ private:
 
 	const Uint8 *state;
 	int previous_yVelocity;
-	int jump_count;
 
 	Uint32 spell_anim_timer;
 	Uint32 attack_timer;
@@ -54,7 +53,9 @@ private:
 	int TERMINAL_VELOCITY = 75;
 	int HORIZONTAL_VELOCITY = 300;
 	int JUMP_VELOCITY = -1500;
-	int SWIFT_VELOCITY = 1300;
+	int SWIFT_VELOCITY_MAX = 500;
+	int SWIFT_VELOCITY = 15;
+	bool can_jump;
 	bool on_ground;
 	bool swift_form;
 	bool active;
