@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "CollisionComponent.h"
 #include "PhysicsComponent.h"
+#include <algorithm>
 
 //Constructor
 void ObjectTree::Init(int levelWidth, int levelHeight) {
@@ -120,19 +121,24 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 			int vel_y = reference->physics->velocity_y;
 			int depth_ascending = hitbox.y - (item_hitbox.h + item_hitbox.y);
 			int depth_descending = hitbox.h - item_hitbox.y;
+			int possible_overlap = (hitbox.h - hitbox.y) + item_hitbox.h;
 
 			//Check if the descending and ascending depths
 			//are within range of a collision
-			if (depth_descending + (accel_y + vel_y) > 0 && depth_descending + (accel_y + vel_y) < MAX_DEPTH_Y) { //descending
-				int force = GetForce(deltaTime, -depth_descending, -accel_y, -vel_y);
-				reference->collider->CollisionHandler(quad->items[i], 0, force);
+			if (abs(depth_ascending) < depth_descending) {
+				if (depth_ascending + (accel_y + vel_y) < 0 && depth_ascending + (accel_y + vel_y) > -possible_overlap) { //ascending
+					int force = GetForce(deltaTime, -depth_ascending, -accel_y, -vel_y);
+					reference->collider->CollisionHandler(quad->items[i], 0, force);
+				}
 			}
-			else if (depth_ascending + (accel_y + vel_y) < 0 && depth_ascending + (accel_y + vel_y) > -MAX_DEPTH_Y) { //ascending
-				int force = GetForce(deltaTime, -depth_ascending, -accel_y, -vel_y);
-				reference->collider->CollisionHandler(quad->items[i], 0, force);
+			else {
+				if (depth_descending + (accel_y + vel_y) > 0 && depth_descending + (accel_y + vel_y) < possible_overlap) { //descending
+					int force = GetForce(deltaTime, -depth_descending, -accel_y, -vel_y);
+					reference->collider->CollisionHandler(quad->items[i], 0, force);
+				}
 			}
 		}
-		//if (collide_y) continue;
+		
 		//Check the x direction
 		//Check if the reference's y dimensions are within
 		//the item's y dimensions
@@ -144,16 +150,21 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 			int vel_x = reference->physics->velocity_x;
 			int depth_left = hitbox.x - (item_hitbox.w + item_hitbox.x);
 			int depth_right = hitbox.w - item_hitbox.x;
+			int possible_overlap = (hitbox.w - hitbox.x) + item_hitbox.w;
 
 			//Check if the left and right depths are 
 			//within range of a collision
-			if (depth_left + (accel_x + vel_x) < 0 && depth_left + (accel_x + vel_x) > -MAX_DEPTH_X) { //left
-				int force = GetForce(deltaTime, -depth_left, -accel_x, -vel_x);
-				reference->collider->CollisionHandler(quad->items[i], force, 0);
+			if (abs(depth_left) < depth_right) {
+				if (depth_left + (accel_x + vel_x) < 0 && depth_left + (accel_x + vel_x) > -possible_overlap) { //left
+					int force = GetForce(deltaTime, -depth_left, -accel_x, -vel_x);
+					reference->collider->CollisionHandler(quad->items[i], force, 0);
+				}
 			}
-			else if (depth_right + (accel_x + vel_x) > 0 && depth_right + (accel_x + vel_x) < MAX_DEPTH_X) { //right
-				int force = GetForce(deltaTime, -depth_right, -accel_x, -vel_x);
-				reference->collider->CollisionHandler(quad->items[i], force, 0);
+			else {
+				if (depth_right + (accel_x + vel_x) > 0 && depth_right + (accel_x + vel_x) < possible_overlap) { //right
+					int force = GetForce(deltaTime, -depth_right, -accel_x, -vel_x);
+					reference->collider->CollisionHandler(quad->items[i], force, 0);
+				}
 			}
 		}
 	}

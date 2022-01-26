@@ -28,8 +28,6 @@ private:
 
 	const int MAX_COLLISION_DIST_X = 15;
 	const int MAX_COLLISION_DIST_Y = 15;
-	const int MAX_DEPTH_X = 45;
-	const int MAX_DEPTH_Y = 45;
 
 	void Init(int levelWidth, int levelHeight);
 	void Divide(int iterations, ObjectTreeNode* quad);
