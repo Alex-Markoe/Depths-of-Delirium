@@ -46,7 +46,7 @@ void ProjectileManager::Update(float deltaTime, ObjectTree* collision_space) {
 			projectiles[i]->collider->ResetQuad();
 			collision_space->Add(projectiles[i]);
 		}
-		collision_space->CircleCollisionDetector(projectiles[i], deltaTime);
+		collision_space->BoxCollisionDetector(projectiles[i], deltaTime);
 
 		//Check if the projectile is no
 		//longer active

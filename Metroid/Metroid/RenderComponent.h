@@ -9,19 +9,20 @@
 //HANDLES RENDERING OBJECT TEXTURE
 class RenderComponent : public Component {
 public:
-	RenderComponent(SDL_Texture* _texture, SDL_Rect _sourceRect, float _angle);
+	RenderComponent(SDL_Texture* _texture, SDL_Rect _source_rect, float _angle);
 	~RenderComponent();
 	void Update() override;
 	void Render(SDL_Renderer* gRenderer, SDL_Rect position);
 	void SetFlip(SDL_RendererFlip _flip);
 	void SetAngle(float _angle);
+	void Init(SDL_Texture* _texture, SDL_Rect _source_rect, float _angle);
 	float GetAngle();
 
-	SDL_Rect sourceRect;
+	SDL_Rect source_rect;
 
 private:
 	SDL_Texture* texture;
-	SDL_RendererFlip flipType;
+	SDL_RendererFlip flip_type;
 
 	float angle;
 };

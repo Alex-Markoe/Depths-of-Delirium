@@ -20,15 +20,15 @@ void AnimationComponent::Update() {
 		if (loop) frame = 0;
 		else frame--;
 	}
-	renderer->sourceRect.x = ANIM_SOURCE_X + ((frame / frame_rate) * renderer->sourceRect.w);
+	renderer->source_rect.x = ANIM_SOURCE_X + ((frame / frame_rate) * renderer->source_rect.w);
 }
 
 //Funtion to set the source rectangle in the case of changing states
 void AnimationComponent::SetAnimationSource(int sourceX, int sourceY, int maxFrame, bool _loop) {
 	ANIM_SOURCE_X = sourceX;
 	MAX_FRAME = maxFrame;
-	renderer->sourceRect.x = sourceX;
-	renderer->sourceRect.y = sourceY;
+	renderer->source_rect.x = sourceX;
+	renderer->source_rect.y = sourceY;
 	loop = _loop;
 }
 

@@ -21,6 +21,7 @@
 MainScene::MainScene() {
 	//INITIALIZE PLATFORMS
 	platforms = new GameObject[200];
+	collidables = new GameObject[20];
 	key_state = SDL_GetKeyboardState(NULL);
 
 	//CREATE COLLISION HANDLERS
@@ -43,7 +44,7 @@ MainScene::MainScene() {
 
 	particles_test = new GameObject();
 	particles_test->Init({ 300, 300, 0, 0 }, false);
-	ParticleSystemParams p(0, 10, 300, 100, 2, 0, 360, false, false, 0.7f, 150, 0.0f, { 0, 0 }, { 50, 50 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING);
+	ParticleSystemParams p(0, 10, 300, 150, 10, 0, 360, false, false, 0.7f, 150, 10.0f, { 0, 0 }, { 50, 50 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING);
 	particles_test->AddComponent(new ParticleSystemComponent(p, particles_test));
 }
 //Destructor
@@ -52,6 +53,7 @@ MainScene::~MainScene() {
 	delete collision_space;
 	delete player_collision_handler;
 	delete[] platforms;
+	delete[] collidables;
 
 	delete particles_test;
 }
@@ -64,12 +66,12 @@ void MainScene::Update(float deltaTime) {
 
 	//Check collision, and check if player is outside 
 	//of their quadrant
-	collision_space->BoxCollisionDetector(player, deltaTime);
 	player->Update(deltaTime);
 	if (player->collider->out_of_quad) {
 		player->collider->ResetQuad();
 		collision_space->Add(player);
 	}
+	collision_space->BoxCollisionDetector(player, deltaTime);
 	ProjectileManager::instance().Update(deltaTime, collision_space);
 	particles_test->Update(deltaTime);
 }
@@ -90,126 +92,129 @@ void MainScene::LoadLevel() {
 	}
 	SDL_Point ppos = FileManager::instance().enter_position;
 	player->position = SDL_Rect{ppos.x, ppos.y, player->position.w, player->position.h};
-	player->physics->ResetKinematics();
+	player->physics->ResetKinematics(true, true);
 	player->physics->ApplyForce(0, 500);
 	player->collider->UpdatePosition(player->position);
-	std::ifstream fileRead(FileManager::instance().room_file_name, std::ios::in | std::ios::binary | std::ios::beg);
+	std::ifstream file_read(FileManager::instance().room_file_name, std::ios::in | std::ios::beg);
 
-	if (fileRead.is_open()) {
-		//Reset all data structs and read in the level dimensions
-		fileRead.read(reinterpret_cast<char*>(&LEVEL_HEIGHT), sizeof(LEVEL_HEIGHT));
-		fileRead.read(reinterpret_cast<char*>(&LEVEL_WIDTH), sizeof(LEVEL_WIDTH));
+	if (file_read.is_open()) {
 		collision_space->Clear();
-		//if (platforms != NULL) delete[] platforms;
 		total_tile_count = 0;
 		active_tile_count = 0;
+		total_colliders_count = 0;
+		active_colliders_count = 0;
 
-		//Read in all the level information
-		std::streampos lvl_Begin, lvl_End;
-		lvl_Begin = fileRead.tellg();
-		fileRead.seekg(0, std::ios::end);
-		lvl_End = fileRead.tellg();
-		fileRead.seekg(lvl_Begin);
-		int size = lvl_End - lvl_Begin;
-		char * lvl_Data = new char[size];
-		fileRead.read(lvl_Data, size);
-
-		//GameObject* tile = nullptr;
-		RenderComponent* _renderer = nullptr;
-		CollisionComponent* _collider = nullptr;
 		SDL_Texture* txt = TextureDatabase::instance().GetTexture(FileManager::instance().setting);
-		int x = -1, y = 0, sourceX, sourceY;
+		int x = 0, i_x = 0, y = 0, width, height, sourceX, sourceY;
+		std::string data = "";
+		std::string plat_data[6];
+		size_t pos = 0;
+
 		//Loop through the entire level and add the tiles
-		for (unsigned i = 0; i < size; i++) {
-			x++;
-			if (x >= LEVEL_WIDTH) {
-				x = 0;
-				y++;
+		while (std::getline(file_read, data)) {
+			for (int i = 0; i < 6; i++) {
+				pos = data.find(',');
+				plat_data[i] = data.substr(0, pos);
+				data.erase(0, pos + 1);
 			}
+			//X
+			x = std::stoi(plat_data[0]);
+			//Y
+			y = std::stoi(plat_data[1]);
+			//WIDTH
+			width = std::stoi(plat_data[2]);
+			//HEIGHT
+			height = std::stoi(plat_data[3]);
+			//CREATE COLLIDER
+			collidables[total_colliders_count].Init({ x * TILE_SIZE, y * TILE_SIZE, width * TILE_SIZE, height * TILE_SIZE }, false);
+			if (collidables[total_colliders_count].collider == nullptr) 
+				collidables[total_colliders_count].collider = new CollisionComponent(&collidables[total_colliders_count], collidables[total_colliders_count].position, {0, 0}, OBSTACLE);
+			else collidables[total_colliders_count].collider->SetHitbox({ x * TILE_SIZE, y * TILE_SIZE, width * TILE_SIZE, height * TILE_SIZE }, {0, 0});
+			if (plat_data[5] == "T") {
+				collision_space->Add(&collidables[total_colliders_count]);
+				active_colliders_count++;
+			}
+			total_colliders_count++;
 
-			//BACKGROUND
-			if (lvl_Data[i] == 'B') {
-				continue;
-			}
+			i_x = x;
+			//READ VISUALS
+			for (unsigned i = 0; i < plat_data[4].size(); i++) {
+				//TOP PLATFORM
+				if (plat_data[4][i] == 'F') {
+					sourceX = 0;
+					sourceY = 0;
+				}
+				//TOP RIGHT PLATFORM
+				else if (plat_data[4][i] == 'O') {
+					sourceX = 60;
+					sourceY = 0;
+				}
+				//TOP LEFT PLATFORM
+				else if (plat_data[4][i] == 'W') {
+					sourceX = 30;
+					sourceY = 0;
+				}
+				//CENTER PLATFORM
+				else if (plat_data[4][i] == 'G') {
+					sourceX = 60;
+					sourceY = 60;
+				}
+				//BOTTOM PLATFORM
+				else if (plat_data[4][i] == 'P') {
+					sourceX = 30;
+					sourceY = 60;
+				}
+				//LEFT PLATFORM
+				else if (plat_data[4][i] == 'T') {
+					sourceX = 60;
+					sourceY = 30;
+				}
+				//RIGHT PLATFORM
+				else if (plat_data[4][i] == 'Y') {
+					sourceX = 30;
+					sourceY = 30;
+				}
+				//PLATFORM
+				else if (plat_data[4][i] == 'Q') {
+					sourceX = 0;
+					sourceY = 90;
+				}
+				//LEFT CORNER PLATFORM
+				else if (plat_data[4][i] == 'A') {
+					sourceX = 30;
+					sourceY = 90;
+				}
+				//RIGHT CORNER PLATFORM
+				else if (plat_data[4][i] == 'K') {
+					sourceX = 60;
+					sourceY = 90;
+				}
+				//TRANSITION TILE
+				else if (plat_data[4][i] == 'L') {
+					sourceX = -1;
+					sourceY = -1;
+				}
+				//SLOW PLATFORM
+				else if (plat_data[4][i] == 'S') {
+					sourceX = 0;
+					sourceY = 0;
+				}
 
-			//TOP PLATFORM
-			else if (lvl_Data[i] == 'F') {
-				sourceX = 0;
-				sourceY = 0;
-			}
-			//TOP RIGHT PLATFORM
-			else if (lvl_Data[i] == 'O') {
-				sourceX = 60;
-				sourceY = 0;
-			}
-			//TOP LEFT PLATFORM
-			else if (lvl_Data[i] == 'W') {
-				sourceX = 30;
-				sourceY = 0;
-			}
-			//CENTER PLATFORM
-			else if (lvl_Data[i] == 'G') {
-				sourceX = 60;
-				sourceY = 60;
-			}
-			//BOTTOM PLATFORM
-			else if (lvl_Data[i] == 'P') {
-				sourceX = 30;
-				sourceY = 60;
-			}
-			//LEFT PLATFORM
-			else if (lvl_Data[i] == 'T') {
-				sourceX = 60;
-				sourceY = 30;
-			}
-			//RIGHT PLATFORM
-			else if (lvl_Data[i] == 'Y') {
-				sourceX = 30;
-				sourceY = 30;
-			}
-			//PLATFORM
-			else if (lvl_Data[i] == 'Q') {
-				sourceX = 0;
-				sourceY = 90;
-			}
-			//LEFT CORNER PLATFORM
-			else if (lvl_Data[i] == 'A') {
-				sourceX = 30;
-				sourceY = 90;
-			}
-			//RIGHT CORNER PLATFORM
-			else if (lvl_Data[i] == 'K') {
-				sourceX = 60;
-				sourceY = 90;
-			}
-			//TRANSITION TILE
-			else if (lvl_Data[i] == 'L') {
-				sourceX = -1;
-				sourceY = -1;
-			}
-			//SLOW PLATFORM
-			else if (lvl_Data[i] == 'S') {
-				sourceX = 0;
-				sourceY = 0;
-			}
+				platforms[total_tile_count].Init({ x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE }, false);
+				if (platforms[total_tile_count].renderer == nullptr) platforms[total_tile_count].renderer = new RenderComponent(txt, { sourceX, sourceY, TILE_SIZE / 2, TILE_SIZE / 2 }, 0.0f);
+				else platforms[total_tile_count].renderer->Init(txt, { sourceX, sourceY, TILE_SIZE / 2, TILE_SIZE / 2 }, 0.0f);
+				total_tile_count++;
+				if (plat_data[5] == "T") active_tile_count++;
 
-			_renderer = nullptr;
-			_collider = nullptr;
-
-			//CREATE TILE AND ADD ITS COMPONENTS
-			platforms[total_tile_count].Init(SDL_Rect{ x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE }, false);
-			_renderer = new RenderComponent(txt, SDL_Rect{ sourceX, sourceY, TILE_SIZE / 2, TILE_SIZE / 2 }, 0.0f);
-			_collider = new CollisionComponent(&platforms[total_tile_count], platforms[total_tile_count].position, SDL_Point{ 0, 0 }, OBSTACLE);
-			platforms[total_tile_count].renderer = _renderer;
-			platforms[total_tile_count].collider = _collider;
-
-			collision_space->Add(&platforms[total_tile_count]);
-			total_tile_count++;
-			active_tile_count++;
+				x++;
+				if (x >= width) {
+					x = i_x;
+					y++;
+				}
+			}
 		}
+
 		collision_space->Add(player);
-		//CLEANUP
-		delete[] lvl_Data;
-		fileRead.close();
+		file_read.close();
 	}
 }

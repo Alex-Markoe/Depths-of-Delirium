@@ -74,8 +74,8 @@ void ParticleSystemComponent::Update(){
 		//particle is dead
 		if (SDL_GetTicks() >= timers[index] + particle_lifetime) {
 			//RESET PARTICLE POSITION/PHYSICS/ANIMATION
-			particles[index].physics->ResetKinematics();
-			particles[index].animator->SetAnimationSource(24, particles[index].renderer->sourceRect.y, 0, false);
+			particles[index].physics->ResetKinematics(true, true);
+			particles[index].animator->SetAnimationSource(24, particles[index].renderer->source_rect.y, 0, false);
 			timers[index] = 0;
 			to_destroy++;
 			next_start++;
@@ -100,7 +100,7 @@ void ParticleSystemComponent::SpawnParticle() {
 		GetNextSpawn();
 		//SETUP PARTICLE PHYSICS/ANIMATION
 		particles[index].position = { obj->position.x + (int)(origin_offset.x * dir_x), obj->position.y + (int)(origin_offset.y * dir_y), 8, 8 };
-		particles[index].animator->SetAnimationSource(0, particles[index].renderer->sourceRect.y, 2, false);
+		particles[index].animator->SetAnimationSource(0, particles[index].renderer->source_rect.y, 2, false);
 		particles[index].animator->SetFrame(0);
 		p = (ParticleComponent*)particles[index].components[0];
 		p->SetVelocity({ (int)(dir_x * speed), (int)(dir_y * speed) });

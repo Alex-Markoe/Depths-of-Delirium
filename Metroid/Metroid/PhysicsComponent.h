@@ -14,7 +14,7 @@ public:
 	void Update() override;
 	void ApplyForce(int f_x, int f_y);
 	void UpdatePosition(SDL_Rect& position, float deltaTime);
-	void ResetKinematics();
+	void ResetKinematics(bool x, bool y);
 
 	int acceleration_x;
 	int acceleration_y;

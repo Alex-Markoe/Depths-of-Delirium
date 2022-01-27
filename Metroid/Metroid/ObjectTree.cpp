@@ -81,26 +81,14 @@ void ObjectTree::Add(GameObject* item, ObjectTreeNode* quad){
 
 //Detect collision based on box collider
 void ObjectTree::BoxCollisionDetector(GameObject* reference, float deltaTime) {
-	//Bounds of possible collision quadrants
-	int collX = reference->collider->hitbox.x - MAX_COLLISION_DIST_X;
-	int collY = reference->collider->hitbox.y - MAX_COLLISION_DIST_Y;
-	int collW = reference->collider->hitbox.w + reference->collider->hitbox.x + MAX_COLLISION_DIST_X;
-	int collH = reference->collider->hitbox.h + reference->collider->hitbox.y + MAX_COLLISION_DIST_Y;
-
-	//reference hitbox
-	int x = reference->collider->hitbox.x;
-	int y = reference->collider->hitbox.y;
-	int width = reference->collider->hitbox.x + reference->collider->hitbox.w;
-	int height = reference->collider->hitbox.y + reference->collider->hitbox.h;
-
-	//reference type
-
-	if (head != NULL)
-		BoxCollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Rect{ x, y, width, height }, deltaTime);
+	if (head != NULL) {
+		BoxCollisionDetector(reference, head, deltaTime);
+	}
 }
 //determine if the referenced object is colliding with any objects in its relevant quads
-void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* quad, SDL_Rect collisionSpace, SDL_Rect hitbox, float deltaTime){
+void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* quad, float deltaTime){
 	SDL_Rect item_hitbox;
+	SDL_Rect hitbox = reference->collider->hitbox;
 
 	//Iterate through each gameobject in the quad and 
 	//check to see if it is colliding with the 
@@ -109,71 +97,26 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 		//Don't check item with itself
 		if (reference == quad->items[i]) continue;
 		item_hitbox = quad->items[i]->collider->hitbox;
+		hitbox = reference->collider->hitbox;
 
-		//Check the y direction
-		//See if the references's x dimensions are within
-		//the item's x dimensions
-		if ((hitbox.x > item_hitbox.x && hitbox.x < item_hitbox.x + item_hitbox.w)
-			|| (hitbox.w < item_hitbox.x + item_hitbox.w && hitbox.w > item_hitbox.x)) {
-			//Get the speed of the reference and then see how far it is going
-			//to be in the current item
-			int accel_y =  reference->physics->acceleration_y * deltaTime;
-			int vel_y = reference->physics->velocity_y;
+		//Check if colliding, and get the depth
+		if (item_hitbox.x < hitbox.x + hitbox.w && item_hitbox.x + item_hitbox.w > hitbox.x && item_hitbox.y < hitbox.y + hitbox.h && item_hitbox.y + item_hitbox.h > hitbox.y) {
 			int depth_ascending = hitbox.y - (item_hitbox.h + item_hitbox.y);
-			int depth_descending = hitbox.h - item_hitbox.y;
-			int possible_overlap = (hitbox.h - hitbox.y) + item_hitbox.h;
-
-			//Check if the descending and ascending depths
-			//are within range of a collision
-			if (abs(depth_ascending) < depth_descending) {
-				if (depth_ascending + (accel_y + vel_y) < 0 && depth_ascending + (accel_y + vel_y) > -possible_overlap) { //ascending
-					int force = GetForce(deltaTime, -depth_ascending, -accel_y, -vel_y);
-					reference->collider->CollisionHandler(quad->items[i], 0, force);
-				}
-			}
-			else {
-				if (depth_descending + (accel_y + vel_y) > 0 && depth_descending + (accel_y + vel_y) < possible_overlap) { //descending
-					int force = GetForce(deltaTime, -depth_descending, -accel_y, -vel_y);
-					reference->collider->CollisionHandler(quad->items[i], 0, force);
-				}
-			}
-		}
-		
-		//Check the x direction
-		//Check if the reference's y dimensions are within
-		//the item's y dimensions
-		if ((hitbox.y < item_hitbox.y && hitbox.h > item_hitbox.y)
-			|| (hitbox.y < item_hitbox.y + item_hitbox.h && hitbox.h > item_hitbox.y + item_hitbox.h)) {
-			//Get the speed of the reference and then see how far it is going
-			// to be in the current item
-			int accel_x = reference->physics->acceleration_x * deltaTime;
-			int vel_x = reference->physics->velocity_x;
+			int depth_descending = (hitbox.h + hitbox.y) - item_hitbox.y;
+			int depth_y = abs(depth_ascending) < depth_descending ? depth_ascending : depth_descending;
 			int depth_left = hitbox.x - (item_hitbox.w + item_hitbox.x);
-			int depth_right = hitbox.w - item_hitbox.x;
-			int possible_overlap = (hitbox.w - hitbox.x) + item_hitbox.w;
-
-			//Check if the left and right depths are 
-			//within range of a collision
-			if (abs(depth_left) < depth_right) {
-				if (depth_left + (accel_x + vel_x) < 0 && depth_left + (accel_x + vel_x) > -possible_overlap) { //left
-					int force = GetForce(deltaTime, -depth_left, -accel_x, -vel_x);
-					reference->collider->CollisionHandler(quad->items[i], force, 0);
-				}
-			}
-			else {
-				if (depth_right + (accel_x + vel_x) > 0 && depth_right + (accel_x + vel_x) < possible_overlap) { //right
-					int force = GetForce(deltaTime, -depth_right, -accel_x, -vel_x);
-					reference->collider->CollisionHandler(quad->items[i], force, 0);
-				}
-			}
+			int depth_right = (hitbox.w + hitbox.x) - item_hitbox.x;
+			int depth_x = abs(depth_left) < depth_right ? depth_left : depth_right;
+			reference->collider->CollisionHandler(quad->items[i], depth_x, depth_y);
 		}
 	}
 
 	//Check the next quadrant
 	if (quad->quads[0] != NULL){
 		for (int i = 0; i < 4; i++) {
-			if (InBounds(collisionSpace, quad->quads[i]->dimensions)) {
-				BoxCollisionDetector(reference, quad->quads[i], collisionSpace, hitbox, deltaTime);
+			if (InBounds({hitbox.x - MAX_COLLISION_DIST_X, hitbox.y - MAX_COLLISION_DIST_Y, 
+						  hitbox.x + hitbox.w + MAX_COLLISION_DIST_X, hitbox.y + hitbox.h + MAX_COLLISION_DIST_Y }, quad->quads[i]->dimensions)) {
+				BoxCollisionDetector(reference, quad->quads[i], deltaTime);
 			}
 		}
 	}
@@ -181,32 +124,27 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 
 //Detect collision based on hitbox center
 void ObjectTree::CircleCollisionDetector(GameObject* reference, float deltaTime) {
-	int width = reference->collider->hitbox.w / 2;
-	int height = reference->collider->hitbox.h / 2;
-	int centerX = reference->collider->hitbox.x + width;
-	int centerY = reference->collider->hitbox.y + height;
-
-	int collX = centerX - width - MAX_COLLISION_DIST_X;
-	int collY = centerY - height - MAX_COLLISION_DIST_Y;
-	int collW = centerX + width + MAX_COLLISION_DIST_X;
-	int collH = centerY + height + MAX_COLLISION_DIST_Y;
-
-	if (head != NULL)
-		CircleCollisionDetector(reference, head, SDL_Rect{ collX, collY, collW, collH }, SDL_Rect{ centerX, centerY, width, height }, deltaTime);
+	if (head != NULL) {
+		CircleCollisionDetector(reference, head, deltaTime);
+	}
 }
 //Determine if a projectile is currently colliding with a wall
-void ObjectTree::CircleCollisionDetector(GameObject* reference, ObjectTreeNode* quad, SDL_Rect collisionSpace, SDL_Rect hitbox, float deltaTime) {
+void ObjectTree::CircleCollisionDetector(GameObject* reference, ObjectTreeNode* quad, float deltaTime) {
 	SDL_Rect item_hitbox;
+	SDL_Rect hitbox = { reference->collider->hitbox.x + (reference->collider->hitbox.w / 2), reference->collider->hitbox.y + (reference->collider->hitbox.h / 2), 
+						reference->collider->hitbox.w / 2, reference->collider->hitbox.h / 2 };
 	int item_centerX, item_centerY, half_width, half_height;
+
 	for (unsigned i = 0; i < quad->items.size(); i++) {
 		item_hitbox = quad->items[i]->collider->hitbox;
 		half_width = item_hitbox.w / 2;
 		half_height = item_hitbox.h / 2;
 		item_centerX = item_hitbox.x + half_width;
 		item_centerY = item_hitbox.y + half_height;
-		//Check distance between centers
+
+		//Check distance between centers (squared)
 		float distance = pow(hitbox.x - item_centerX, 2) + pow(hitbox.y - item_centerY, 2);
-		float distance_total = pow(hitbox.w + half_width, 2) + pow(hitbox.h + half_height, 2);
+		float distance_total = pow(hitbox.w + half_width, 2);
 
 		if (distance < distance_total){
 			reference->collider->CollisionHandler(quad->items[i], 0, 0);
@@ -216,8 +154,9 @@ void ObjectTree::CircleCollisionDetector(GameObject* reference, ObjectTreeNode* 
 	//Check the next quadrant
 	if (quad->quads[0] != NULL) {
 		for (int i = 0; i < 4; i++) {
-			if (InBounds(collisionSpace, quad->quads[i]->dimensions)) {
-				CircleCollisionDetector(reference, quad->quads[i], collisionSpace, hitbox, deltaTime);
+			if (InBounds({hitbox.x - hitbox.w - MAX_COLLISION_DIST_X, hitbox.y - hitbox.h - MAX_COLLISION_DIST_Y, 
+						  hitbox.x + hitbox.w + MAX_COLLISION_DIST_X, hitbox.y + hitbox.h + MAX_COLLISION_DIST_Y}, quad->quads[i]->dimensions)) {
+				CircleCollisionDetector(reference, quad->quads[i], deltaTime);
 			}
 		}
 	}
@@ -238,11 +177,4 @@ bool InQuad(SDL_Rect hitbox, SDL_Rect quad) {
 		   hitbox.x + hitbox.w <= quad.w + quad.x &&
 		   hitbox.y >= quad.y &&
 		   hitbox.y + hitbox.h <= quad.h + quad.y;
-}
-//Helper function
-//Return the force required to resolve
-//a collision
-int GetForce(float deltaTime, int depth, int accel, int vel) {
-	int speed = (accel + vel) / deltaTime;
-	return (depth / deltaTime) + speed;
 }

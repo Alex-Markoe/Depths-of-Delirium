@@ -22,14 +22,17 @@ private:
 	GameObject* player;
 	GameObject* boss;
 	GameObject* platforms;
+	GameObject* collidables;
 	GameObject* particles_test;
 	int total_tile_count;
 	int active_tile_count;
+	int total_colliders_count;
+	int active_colliders_count;
 
 	//IMPORTANT VARIABLES
 	const int TILE_SIZE = 60;
-	uint32_t LEVEL_WIDTH;
-	uint32_t LEVEL_HEIGHT;
+	const int LEVEL_WIDTH = 32;
+	const int LEVEL_HEIGHT = 18;
 
 	ObjectTree* collision_space;
 	const Uint8* key_state;

@@ -72,23 +72,16 @@ void PlayerComponent::HandleInput(){
 			in_action = true;
 		}
 		if (state[SDL_SCANCODE_W] && can_jump) { //Jumping
-			if (!on_ground) {
-				physics->velocity_y = 0;
-				physics->acceleration_y = 0;
-			}
+			physics->ResetKinematics(false, true);
 			physics->ApplyForce(0, JUMP_VELOCITY);
 			can_jump = false;
 			in_action = true;
+			on_ground = false;
 		}
 		//Check to see if the player is in the air
-		if (physics->velocity_y < 0 || physics->velocity_y > 0 || previous_yVelocity != 0) {
+		if (!on_ground) {
 			player_state = JUMP;
-			on_ground = false;
 			in_action = true;
-		}
-		else {
-			ResetJump();
-			on_ground = true;
 		}
 	}
 	
@@ -98,9 +91,9 @@ void PlayerComponent::HandleInput(){
 		swift_form = true;
 		if (swift_timer == 0) {
 			swift_timer = SDL_GetTicks();
-			physics->ResetKinematics();
+			physics->ResetKinematics(true, true);
 			renderer->SetFlip(SDL_FLIP_NONE);
-			collider->SetHitbox({81, 54, 30, 30});
+			collider->SetHitbox({ obj->position.x, obj->position.y, 30, 30 }, { 61, 60 });
 		}
 		in_action = true;
 	}
@@ -140,8 +133,9 @@ void PlayerComponent::HandleInput(){
 		swift_timer = 0;
 		swift_cooldown = SDL_GetTicks();
 		renderer->SetAngle(0);
-		collider->SetHitbox({ 20, 33, 95, 111 });
-		physics->ResetKinematics();
+		collider->SetHitbox({ obj->position.x, obj->position.y, 95, 111 }, { 20, 33 });
+		physics->ResetKinematics(true, true);
+		on_ground = false;
 	}
 	if (swift_cooldown > 0 && swift_cooldown + 750 < SDL_GetTicks()) {
 		swift_cooldown = 0;
@@ -169,13 +163,12 @@ void PlayerComponent::Update(){
 	}
 
 	//Update the position and previous state
-	previous_yVelocity = physics->velocity_y;
+	previous_y_velocity = obj->position.y;
 	previous_state = player_state;
 }
 
-void PlayerComponent::ResetJump() {
-	can_jump = true;
-}
+void PlayerComponent::ResetJump() { can_jump = true; }
+void PlayerComponent::OnGround() { on_ground = true; ResetJump(); }
 SDL_Point PlayerComponent::GetMousePosition() {
 	SDL_Point mouse_pos = { 0,0 };
 	SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
@@ -203,7 +196,7 @@ void PlayerComponent::SwiftMovement() {
 	float angle = GetAngle(mouse_pos);
 	int dist_x = (mouse_pos.x - (obj->position.x + (obj->position.w / 2))) * SWIFT_VELOCITY;
 	int dist_y = (mouse_pos.y - (obj->position.y + (obj->position.h / 2))) * SWIFT_VELOCITY;
-	physics->ResetKinematics();
+	physics->ResetKinematics(true, true);
 	physics->ApplyForce(dist_x, dist_y);
 	renderer->SetAngle(angle * 180 / M_PI);
 }

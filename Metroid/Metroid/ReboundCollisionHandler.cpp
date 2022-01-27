@@ -18,7 +18,7 @@ void ReboundCollisionHandler::ApplyBounce(GameObject* obj) {
 	ProjectileComponent* p = (ProjectileComponent*)obj->components[0];
 	p->active = false;
 	if (player != nullptr) {
-		player->physics->ResetKinematics();
+		player->physics->ResetKinematics(true, true);
 		player->physics->ApplyForce(-obj->physics->velocity_x * 40, -obj->physics->velocity_y * 40);
 		PlayerComponent* p_c = (PlayerComponent*)player->components[0];
 		p_c->ResetJump();

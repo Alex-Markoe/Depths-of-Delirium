@@ -19,11 +19,15 @@ void PhysicsComponent::ApplyForce(int f_x, int f_y) {
 	acceleration_y += f_y;
 }
 //Reset the object's kinematics
-void PhysicsComponent::ResetKinematics() {
-	acceleration_x = 0;
-	acceleration_y = 0;
-	velocity_x = 0;
-	velocity_y = 0;
+void PhysicsComponent::ResetKinematics(bool x, bool y) {
+	if (x) {
+		acceleration_x = 0;
+		velocity_x = 0;
+	}
+	if (y) {
+		acceleration_y = 0;
+		velocity_y = 0;
+	}
 }
 
 //Update the object's position based on any recently applied forces

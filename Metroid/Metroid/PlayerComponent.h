@@ -32,6 +32,7 @@ public:
 	~PlayerComponent();
 	void Update() override;
 	void ResetJump();
+	void OnGround();
 
 private:
 	RenderComponent* renderer;
@@ -43,7 +44,7 @@ private:
 	PLAYER_STATE previous_state;
 
 	const Uint8 *state;
-	int previous_yVelocity;
+	int previous_y_velocity;
 
 	Uint32 spell_anim_timer;
 	Uint32 attack_timer;
@@ -52,7 +53,7 @@ private:
 	Uint32 swift_cooldown;
 	int TERMINAL_VELOCITY = 75;
 	int HORIZONTAL_VELOCITY = 300;
-	int JUMP_VELOCITY = -1500;
+	int JUMP_VELOCITY = -2000;
 	int SWIFT_VELOCITY_MAX = 500;
 	int SWIFT_VELOCITY = 15;
 	bool can_jump;
