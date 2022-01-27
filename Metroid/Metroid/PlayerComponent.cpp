@@ -1,5 +1,6 @@
 #include "PlayerComponent.h"
 #include "PlayerProjectileBehavior.h"
+#include "ReboundProjectileBehavior.h"
 #include "ParticleSystemParams.h"
 #include "GameObject.h"
 #include "RenderComponent.h"
@@ -104,13 +105,13 @@ void PlayerComponent::HandleInput(){
 	//ACTION LOGIC
 	if (!swift_form) {
 		if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(3) && rebound_timer == 0) { //Using the force push
-			SpawnProjectile(new PlayerProjectileBehavior(), nullptr, REBOUND, { 0, 21, 39, 39 }, 500, 300);
+			SpawnProjectile(new ReboundProjectileBehavior(), nullptr, REBOUND, { 0, 36, 39, 39 }, {5, 5}, 500, 300);
 			rebound_timer = SDL_GetTicks();
 			in_action = true;
 		}
 		else if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1) && attack_timer == 0) { //Firing a spell
-			ParticleSystemParams params(0, 10, 50, 20, 1, 0, 50, true, false, 1.0f, 125, 0.0f, { 0, 0 }, { 20, 0 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING); //set angle in method
-			SpawnProjectile(new PlayerProjectileBehavior(), &params, PLAYER_PROJ, { 0, 21, 39, 39 }, 500, 300);
+			ParticleSystemParams params(0, 50, 500, 6, 2, 0, 50, true, false, 0.5f, 200, 0.0f, { 0, 0 }, { 18, 18 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING); //set angle in method
+			SpawnProjectile(new PlayerProjectileBehavior(), &params, PLAYER_PROJ, { 0, 0, 36, 36 }, {4, 4}, 500, 300);
 			attack_timer = SDL_GetTicks();
 			in_action = true;
 		}
@@ -135,6 +136,7 @@ void PlayerComponent::HandleInput(){
 		renderer->SetAngle(0);
 		collider->SetHitbox({ obj->position.x, obj->position.y, 95, 111 }, { 20, 33 });
 		physics->ResetKinematics(true, true);
+		ResetJump();
 		on_ground = false;
 	}
 	if (swift_cooldown > 0 && swift_cooldown + 750 < SDL_GetTicks()) {
@@ -180,12 +182,13 @@ float PlayerComponent::GetAngle(SDL_Point point) {
 
 //Fire a projectile based on the player's position and the relative angle
 //towards the mouse
-void PlayerComponent::SpawnProjectile(ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, SDL_Rect source_rect, int lifeTime, int speed) {
+void PlayerComponent::SpawnProjectile(ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, SDL_Rect source_rect, SDL_Point hitbox_offset, int lifeTime, int speed) {
 	float angle = GetAngle(GetMousePosition());
 	SDL_Point init_force = { speed * cos(angle), speed * sin(angle) };
 	behavior->SetForce(init_force.x, init_force.y);
 	if (params != nullptr) params->init_angle = (int)(angle * 180 / M_PI) + 180;
-	ProjectileManager::instance().Add({obj->position.x + (obj->position.w / 2), obj->position.y + (obj->position.h / 2), source_rect.w, source_rect.h}, source_rect, behavior, params, type, lifeTime, 50, 1.0f);
+	ProjectileManager::instance().Add({obj->position.x + (obj->position.w / 2), obj->position.y + (obj->position.h / 2), source_rect.w, source_rect.h}, 
+									  source_rect, hitbox_offset, behavior, params, type, lifeTime, 50, 1.0f);
 
 	spell_anim_timer = SDL_GetTicks();
 }

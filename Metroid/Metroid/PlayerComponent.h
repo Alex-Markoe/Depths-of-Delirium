@@ -66,7 +66,7 @@ private:
 	void HandleInput();
 	void UpdateState();
 	void SwiftMovement();
-	void SpawnProjectile(ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, SDL_Rect source_rect, int lifeTime, int speed);
+	void SpawnProjectile(ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, SDL_Rect source_rect, SDL_Point hitbox_offset, int lifeTime, int speed);
 };
 
 #endif //__PLAYERCOMPONENT_H_INCLUDED__

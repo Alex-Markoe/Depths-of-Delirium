@@ -68,11 +68,12 @@ void ProjectileManager::Render(SDL_Renderer* gRenderer) {
 
 //Add a new projectile to the collection
 //and initialize their components
-void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, int lifeTime, int max_speed, float decell){
+void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, SDL_Point hitbox_offset, ProjectileBehavior* behavior, 
+							ParticleSystemParams* params, HANDLER_TYPE type, int lifeTime, int max_speed, float decell){
 	GameObject* proj = new GameObject();
 	proj->Init(pos, true);
 	proj->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PROJECTILE_TXT), source_rect, 0);
-	proj->collider = new CollisionComponent(proj, proj->position, {0, 0}, PROJECTILE);
+	proj->collider = new CollisionComponent(proj, proj->position, hitbox_offset, PROJECTILE);
 	proj->physics = new PhysicsComponent({ max_speed, max_speed }, decell, decell);
 	proj->animator = new AnimationComponent(proj->renderer);
 	ParticleSystemComponent* particles = nullptr;

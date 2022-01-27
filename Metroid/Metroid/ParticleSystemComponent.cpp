@@ -40,8 +40,8 @@ ParticleSystemComponent::ParticleSystemComponent(ParticleSystemParams params, Ga
 		particles[i].physics = new PhysicsComponent({ 50, 50 }, params.decell, params.decell);
 		particles[i].renderer = new RenderComponent(TextureDatabase::instance().GetTexture(params.type), {0, src_y * 8, 8, 8}, 0); //SRCERECT/TEXTURE
 		particles[i].animator = new AnimationComponent(particles[i].renderer);
-		particles[i].animator->SetFrameRate(14);
-		//particles[i].animator->SetAnimationSource(24, particles[i].renderer->sourceRect.y, 0, false);
+		//particles[i].animator->SetFrameRate(14);
+		particles[i].animator->SetAnimationSource(24, particles[i].renderer->source_rect.y, 0, false);
 		p_behavior = GetBehavior();
 		p_behavior->SetPhysics(particles[i].physics);
 		particles[i].AddComponent(new ParticleComponent(particles[i].physics, p_behavior));
@@ -99,7 +99,7 @@ void ParticleSystemComponent::SpawnParticle() {
 		if (timers[index] != 0) break;
 		GetNextSpawn();
 		//SETUP PARTICLE PHYSICS/ANIMATION
-		particles[index].position = { obj->position.x + (int)(origin_offset.x * dir_x), obj->position.y + (int)(origin_offset.y * dir_y), 8, 8 };
+		particles[index].position = { obj->position.x + (obj->position.w / 2) + (int)(origin_offset.x * dir_x), obj->position.y + (obj->position.h / 2) + (int)(origin_offset.y * dir_y), 8, 8 };
 		particles[index].animator->SetAnimationSource(0, particles[index].renderer->source_rect.y, 2, false);
 		particles[index].animator->SetFrame(0);
 		p = (ParticleComponent*)particles[index].components[0];

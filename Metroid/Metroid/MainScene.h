@@ -23,7 +23,7 @@ private:
 	GameObject* boss;
 	GameObject* platforms;
 	GameObject* collidables;
-	GameObject* particles_test;
+	//GameObject* particles_test;
 	int total_tile_count;
 	int active_tile_count;
 	int total_colliders_count;

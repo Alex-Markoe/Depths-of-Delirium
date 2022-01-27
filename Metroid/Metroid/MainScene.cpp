@@ -42,10 +42,10 @@ MainScene::MainScene() {
 	player->collider->SetHandler(player_collision_handler);
 	ProjectileManager::instance().GetPlayer(player);
 
-	particles_test = new GameObject();
-	particles_test->Init({ 300, 300, 0, 0 }, false);
-	ParticleSystemParams p(0, 10, 300, 150, 10, 0, 360, false, false, 0.7f, 150, 10.0f, { 0, 0 }, { 50, 50 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING);
-	particles_test->AddComponent(new ParticleSystemComponent(p, particles_test));
+	//particles_test = new GameObject();
+	//particles_test->Init({ 300, 300, 0, 0 }, false);
+	//ParticleSystemParams p(0, 10, 300, 150, 10, 0, 360, false, false, 0.7f, 150, 10.0f, { 0, 0 }, { 50, 50 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING);
+	//particles_test->AddComponent(new ParticleSystemComponent(p, particles_test));
 }
 //Destructor
 MainScene::~MainScene() {
@@ -55,7 +55,7 @@ MainScene::~MainScene() {
 	delete[] platforms;
 	delete[] collidables;
 
-	delete particles_test;
+	//delete particles_test;
 }
 //Update all objects in the level
 void MainScene::Update(float deltaTime) {
@@ -73,7 +73,7 @@ void MainScene::Update(float deltaTime) {
 	}
 	collision_space->BoxCollisionDetector(player, deltaTime);
 	ProjectileManager::instance().Update(deltaTime, collision_space);
-	particles_test->Update(deltaTime);
+	//particles_test->Update(deltaTime);
 }
 //Render all objects in the level
 void MainScene::Render(SDL_Renderer* gRenderer) {
@@ -82,7 +82,7 @@ void MainScene::Render(SDL_Renderer* gRenderer) {
 	}
 	player->Render(gRenderer);
 	ProjectileManager::instance().Render(gRenderer);
-	particles_test->Render(gRenderer);
+	//particles_test->Render(gRenderer);
 }
 
 //Initialize the level, and reset from the last level

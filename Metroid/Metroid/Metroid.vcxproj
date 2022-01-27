@@ -142,6 +142,7 @@
     <ClCompile Include="PlayerProjectileBehavior.cpp" />
     <ClCompile Include="PlayerProjectileCollisionHandler.cpp" />
     <ClCompile Include="ReboundCollisionHandler.cpp" />
+    <ClCompile Include="ReboundProjectileBehavior.cpp" />
     <ClCompile Include="StraightParticleBehavior.cpp" />
     <ClCompile Include="ToNewGameCommand.cpp" />
     <ClCompile Include="ToTitleCommand.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="PlayerProjectileCollisionHandler.h" />
     <ClInclude Include="ProjectileBehavior.h" />
     <ClInclude Include="ReboundCollisionHandler.h" />
+    <ClInclude Include="ReboundProjectileBehavior.h" />
     <ClInclude Include="StraightParticleBehavior.h" />
     <ClInclude Include="ToNewGameCommand.h" />
     <ClInclude Include="ToTitleCommand.h" />

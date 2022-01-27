@@ -153,6 +153,9 @@
     <ClCompile Include="CollisionHandlers.cpp">
       <Filter>Source Files\CollisionHandlers</Filter>
     </ClCompile>
+    <ClCompile Include="ReboundProjectileBehavior.cpp">
+      <Filter>Source Files\ProjectileBehaviors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -268,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="ReboundCollisionHandler.h">
       <Filter>Header Files\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="ReboundProjectileBehavior.h">
+      <Filter>Header Files\ProjectileBehaviors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

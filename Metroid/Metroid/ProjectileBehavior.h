@@ -30,7 +30,7 @@ public:
 protected:
 	void GetAngle() { //Visually update projectile to match trajectory
 		float angle = atan2(physics->velocity_y, physics->velocity_x);
-		renderer->SetAngle(angle);
+		renderer->SetAngle(angle * 180 / M_PI);
 	};
 	int force_x;
 	int force_y;
