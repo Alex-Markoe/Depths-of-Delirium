@@ -43,6 +43,7 @@ void TextureDatabase::LoadAssets(SDL_Renderer* gRenderer) {
 	LoadTexture(gRenderer, "Assets/Phoenix_SpriteSheet.png", PLAYER_TXT);
 	LoadTexture(gRenderer, "Assets/TileSheet.png", ICE_TILES_TXT);
 	LoadTexture(gRenderer, "Assets/Buttons.png", BUTTON_TXT);
-	LoadTexture(gRenderer, "Assets/Fireball.png", PROJECTILE_TXT);
+	LoadTexture(gRenderer, "Assets/Fireball.png", PLAYER_PROJECTILE_TXT);
 	LoadTexture(gRenderer, "Assets/Fire_Particles.png", FIRE_PARTICLES_TXT);
+	LoadTexture(gRenderer, "Assets/IceProjectiles.png", ICE_PROJECTILE_TXT);
 }

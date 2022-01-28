@@ -18,7 +18,8 @@ class ParticleSystemParams;
 //COLLISION HANDLER FOR THE PROJECTILE
 enum HANDLER_TYPE {
 	PLAYER_PROJ,
-	REBOUND
+	REBOUND,
+	ICE_WHEEL
 };
 
 //PROJECTILE MANAGER SINGLETON
@@ -33,7 +34,8 @@ public:
 	};
 	~ProjectileManager();
 	void Update(float deltaTime, ObjectTree* collision_space);
-	void Add(SDL_Rect pos, SDL_Rect source_rect, SDL_Point hitbox_offset, ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, int lifeTime, int max_speed, float decell);
+	void Add(SDL_Rect pos, SDL_Rect source_rect, SDL_Point hitbox_offset, ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, int txt, 
+		     int lifeTime, int max_speed, float decell);
 	void Render(SDL_Renderer* gRenderer);
 	void GetPlayer(GameObject* player);
 

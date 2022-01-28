@@ -15,12 +15,14 @@
 //COLLISION HANDLERS
 #include "PlayerProjectileCollisionHandler.h"
 #include "ReboundCollisionHandler.h"
+#include "IceWheelCollisionHandler.h"
 
 //Constructor
 //Initialize collision handlers
 ProjectileManager::ProjectileManager() {
 	handlers.push_back(new PlayerProjectileCollisionHandler());
 	handlers.push_back(new ReboundCollisionHandler());
+	handlers.push_back(new IceWheelCollisionHandler());
 }
 //Destructor, remove any remaining projectiles
 //as well as getting rid of collision handlers
@@ -69,10 +71,10 @@ void ProjectileManager::Render(SDL_Renderer* gRenderer) {
 //Add a new projectile to the collection
 //and initialize their components
 void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, SDL_Point hitbox_offset, ProjectileBehavior* behavior, 
-							ParticleSystemParams* params, HANDLER_TYPE type, int lifeTime, int max_speed, float decell){
+							ParticleSystemParams* params, HANDLER_TYPE type, int txt, int lifeTime, int max_speed, float decell){
 	GameObject* proj = new GameObject();
 	proj->Init(pos, true);
-	proj->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PROJECTILE_TXT), source_rect, 0);
+	proj->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(txt), source_rect, 0);
 	proj->collider = new CollisionComponent(proj, proj->position, hitbox_offset, PROJECTILE);
 	proj->physics = new PhysicsComponent({ max_speed, max_speed }, decell, decell);
 	proj->animator = new AnimationComponent(proj->renderer);

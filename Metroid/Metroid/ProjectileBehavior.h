@@ -20,6 +20,7 @@ public:
 	virtual void Update(){};
 	virtual void InitAnim(){};
 	void SetForce(int f_x, int f_y) { force_x = f_x; force_y = f_y; } //set intial force
+	SDL_Point GetForce() { return { force_x, force_y }; }
 
 	//Manage components
 	PhysicsComponent* physics;

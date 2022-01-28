@@ -188,7 +188,7 @@ void PlayerComponent::SpawnProjectile(ProjectileBehavior* behavior, ParticleSyst
 	behavior->SetForce(init_force.x, init_force.y);
 	if (params != nullptr) params->init_angle = (int)(angle * 180 / M_PI) + 180;
 	ProjectileManager::instance().Add({obj->position.x + (obj->position.w / 2), obj->position.y + (obj->position.h / 2), source_rect.w, source_rect.h}, 
-									  source_rect, hitbox_offset, behavior, params, type, lifeTime, 50, 1.0f);
+									  source_rect, hitbox_offset, behavior, params, type, 5, lifeTime, 50, 1.0f);
 
 	spell_anim_timer = SDL_GetTicks();
 }

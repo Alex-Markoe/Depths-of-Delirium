@@ -12,10 +12,14 @@
 #include "AnimationComponent.h"
 #include "CollisionComponent.h"
 #include "PlayerComponent.h"
-#include "ParticleSystemComponent.h" //remove later
-#include "ParticleSystemParams.h" //remove later
 
 #include <fstream>
+
+//FOR TEST
+#include "ParticleSystemComponent.h" //remove later
+#include "ParticleSystemParams.h" //remove later
+#include "IceWheelProjectileBehavior.h"
+//REMOVE LATER
 
 //Constructor
 MainScene::MainScene() {
@@ -46,6 +50,9 @@ MainScene::MainScene() {
 	//particles_test->Init({ 300, 300, 0, 0 }, false);
 	//ParticleSystemParams p(0, 10, 300, 150, 10, 0, 360, false, false, 0.7f, 150, 10.0f, { 0, 0 }, { 50, 50 }, FIRE_PARTICLE, STRAIGHT_ACCELERATING);
 	//particles_test->AddComponent(new ParticleSystemComponent(p, particles_test));
+	IceWheelProjectileBehavior* behavior = new IceWheelProjectileBehavior();
+	behavior->SetForce(-200, 0);
+	ProjectileManager::instance().Add({ 300, 300, 63, 63 }, { 0, 0, 63, 63 }, { 5, 5 }, behavior, nullptr, ICE_WHEEL, ICE_PROJECTILE_TXT, 10000, 20, 1.0f);
 }
 //Destructor
 MainScene::~MainScene() {

@@ -18,6 +18,8 @@ public:
 	ProjectileComponent(int _lifeTime, PhysicsComponent* _physics, RenderComponent* _renderer, AnimationComponent* _animator, ParticleSystemComponent* _particles, ProjectileBehavior* _behavior);
 	~ProjectileComponent();
 	void Update() override;
+	void SetForce(int f_x, int f_y);
+	SDL_Point GetForce();
 
 	bool active;
 

@@ -156,6 +156,12 @@
     <ClCompile Include="ReboundProjectileBehavior.cpp">
       <Filter>Source Files\ProjectileBehaviors</Filter>
     </ClCompile>
+    <ClCompile Include="IceWheelCollisionHandler.cpp">
+      <Filter>Source Files\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="IceWheelProjectileBehavior.cpp">
+      <Filter>Source Files\ProjectileBehaviors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -273,6 +279,12 @@
       <Filter>Header Files\CollisionHandlers</Filter>
     </ClInclude>
     <ClInclude Include="ReboundProjectileBehavior.h">
+      <Filter>Header Files\ProjectileBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="IceWheelCollisionHandler.h">
+      <Filter>Header Files\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="IceWheelProjectileBehavior.h">
       <Filter>Header Files\ProjectileBehaviors</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,3 +24,9 @@ void ProjectileComponent::Update(){
 	if (activeTimer < SDL_GetTicks()) active = false;
 	behavior->Update();
 }
+void ProjectileComponent::SetForce(int f_x, int f_y) {
+	behavior->SetForce(f_x, f_y);
+}
+SDL_Point ProjectileComponent::GetForce() {
+	return behavior->GetForce();
+}

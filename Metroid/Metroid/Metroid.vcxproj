@@ -136,6 +136,8 @@
     <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="ContinueGameCommand.cpp" />
     <ClCompile Include="ExitGameCommand.cpp" />
+    <ClCompile Include="IceWheelCollisionHandler.cpp" />
+    <ClCompile Include="IceWheelProjectileBehavior.cpp" />
     <ClCompile Include="ParticleBehavior.cpp" />
     <ClCompile Include="ParticleComponent.cpp" />
     <ClCompile Include="ParticleSystemParams.cpp" />
@@ -174,6 +176,8 @@
     <ClInclude Include="ButtonComponent.h" />
     <ClInclude Include="ContinueGameCommand.h" />
     <ClInclude Include="ExitGameCommand.h" />
+    <ClInclude Include="IceWheelCollisionHandler.h" />
+    <ClInclude Include="IceWheelProjectileBehavior.h" />
     <ClInclude Include="ParticleBehavior.h" />
     <ClInclude Include="ParticleComponent.h" />
     <ClInclude Include="ParticleSystemParams.h" />
