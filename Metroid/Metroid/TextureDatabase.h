@@ -9,7 +9,7 @@
 //ENUM REPRESENTING WHERE IN THE 
 //TEXTURE ARRAY A TEXTURE IS FOR A 
 //PARTICULAR GAME OBJECT
-enum TEXTURE_NAME {
+enum TEXTURE_NAME { //REMEMBER TO UPDATE TEXTURE COUNT
 	ICE_TILES_TXT,
 	GRAVEYARD_TILES_TXT,
 	SHADOW_TILES_TXT,
@@ -39,8 +39,8 @@ private:
 	TextureDatabase(){};
 	void LoadTexture(SDL_Renderer* gRenderer, std::string path, int index);
 
-	SDL_Texture* textures[11];
-	const int TEXTURE_COUNT = 11;
+	SDL_Texture* textures[20];
+	const int TEXTURE_COUNT = 20;
 };
 
 #endif //__TEXTUREDATABASE_H_INCLUDED__

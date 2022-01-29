@@ -13,6 +13,9 @@ SDL_Texture* TextureDatabase::GetTexture(int index) {
 
 //Function that handles loading in textures
 void TextureDatabase::LoadTexture(SDL_Renderer* gRenderer, std::string path, int index) {
+	//Error handling
+	if (index >= TEXTURE_COUNT) return;
+
 	//Load the image
 	if (textures[index] != nullptr) {
 		SDL_DestroyTexture(textures[index]);
