@@ -81,7 +81,7 @@ void ObjectTree::Add(GameObject* item, ObjectTreeNode* quad){
 
 //Detect collision based on box collider
 void ObjectTree::BoxCollisionDetector(GameObject* reference, float deltaTime) {
-	if (head != NULL) {
+	if (head != NULL || reference->collider == nullptr || reference->collider->inactive) {
 		BoxCollisionDetector(reference, head, deltaTime);
 	}
 }
@@ -95,7 +95,7 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 	//referenced object
 	for (unsigned i = 0; i < quad->items.size(); i++) {
 		//Don't check item with itself
-		if (reference == quad->items[i]) continue;
+		if (reference == quad->items[i] || quad->items[i]->collider == nullptr || quad->items[i]->collider->inactive) continue;
 		item_hitbox = quad->items[i]->collider->hitbox;
 		hitbox = reference->collider->hitbox;
 

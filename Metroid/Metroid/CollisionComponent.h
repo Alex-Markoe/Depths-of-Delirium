@@ -35,10 +35,13 @@ public:
 	void ResetQuad();
 	void SetQuad(int _index, ObjectTreeNode* _quad);
 	void SetHitbox(SDL_Rect _hitbox, SDL_Point _offset);
+	void SetInactive();
+	void SetActive();
 
 	SDL_Rect hitbox;
 	OBJECT_TYPE type;
 	bool out_of_quad;
+	bool inactive;
 	int item_index;
 
 private:

@@ -5,6 +5,8 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "CollisionComponent.h"
+#include "AnimationComponent.h"
+#include "PhysicsComponent.h"
 
 //Constructor
 PlayerComponent::PlayerComponent(RenderComponent* _renderer, PhysicsComponent* _physics, AnimationComponent* _animator, CollisionComponent* _collider, GameObject* _obj){

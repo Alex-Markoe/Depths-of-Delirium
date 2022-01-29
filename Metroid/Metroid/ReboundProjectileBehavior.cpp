@@ -1,4 +1,6 @@
 #include "ReboundProjectileBehavior.h"
+#include "PhysicsComponent.h"
+#include "AnimationComponent.h"
 
 //Constructor
 ReboundProjectileBehavior::ReboundProjectileBehavior() {}
@@ -12,4 +14,8 @@ void ReboundProjectileBehavior::Update() {
 //Setup animation
 void ReboundProjectileBehavior::InitAnim() {
 	animator->SetAnimationSource(0, 36, 1, true);
+}
+void ReboundProjectileBehavior::BeginDeath() {
+	animator->SetAnimationSource(78, 0, 2, false);
+	ProjectileBehavior::BeginDeath();
 }

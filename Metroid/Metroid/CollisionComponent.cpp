@@ -10,6 +10,7 @@ CollisionComponent::CollisionComponent(GameObject* _obj, SDL_Rect _position, SDL
 	obj = _obj;
 	type = _type;
 	out_of_quad = false;
+	inactive = false;
 	item_index = -1;
 }
 //Destructor
@@ -27,6 +28,8 @@ void CollisionComponent::CollisionHandler(GameObject* other, float f_x, float f_
 void CollisionComponent::SetHandler(Handler* _handler) {
 	handler = _handler;
 }
+void CollisionComponent::SetInactive() { inactive = true; }
+void CollisionComponent::SetActive() { inactive = false; }
 
 //Update the position of the hitbox,
 //and check if the object has moved outside of its quadrant

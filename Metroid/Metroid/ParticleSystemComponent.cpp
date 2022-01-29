@@ -16,17 +16,8 @@
 ParticleSystemComponent::ParticleSystemComponent(ParticleSystemParams params, GameObject* _obj) {
 	max_particles = params.max_particles;
 	system_lifetime = params.system_lifetime;
-	particle_lifetime = params.particle_lifetime;
-	spawn_interval = params.spawn_interval;
-	particle_spawn_rate = params.particle_spawn_rate;
-	random_spawn = params.random;
-	reverse = params.reverse;
-	grav = params.grav;
-	origin_offset = params.origin_offset;
-	speed = params.speed;
+	Modify(params);
 	behavior = params.behavior;
-	rotation_rate = params.rotation_rate;
-	SetAngle(params.init_angle, params.angle_range);
 	obj = _obj;
 	start_index = 0;
 	particle_count = 0;
@@ -35,7 +26,7 @@ ParticleSystemComponent::ParticleSystemComponent(ParticleSystemParams params, Ga
 	timers = new Uint32[max_particles];
 	int src_y = 0;
 	ParticleBehavior* p_behavior;
-	for (int i = 0; i < max_particles; i++) {
+	for (unsigned i = 0; i < max_particles; i++) {
 		src_y = rand() % 3;
 		particles[i].physics = new PhysicsComponent({ 50, 50 }, params.decell, params.decell);
 		particles[i].renderer = new RenderComponent(TextureDatabase::instance().GetTexture(params.type), {0, src_y * 8, 8, 8}, 0); //SRCERECT/TEXTURE
@@ -59,6 +50,26 @@ ParticleSystemComponent::~ParticleSystemComponent() {
 	delete[] timers;
 	obj = nullptr;
 }
+void ParticleSystemComponent::Reset() {
+	for (unsigned i = 0; i < max_particles; i++) {
+		timers[i] = 0;
+	}
+	start_index = 0;
+	particle_count = 0;
+	spawn_timer = 0;
+}
+void ParticleSystemComponent::Modify(ParticleSystemParams params) {
+	particle_lifetime = params.particle_lifetime;
+	spawn_interval = params.spawn_interval;
+	particle_spawn_rate = params.particle_spawn_rate;
+	random_spawn = params.random;
+	reverse = params.reverse;
+	grav = params.grav;
+	origin_offset = params.origin_offset;
+	speed = params.speed;
+	rotation_rate = params.rotation_rate;
+	SetAngle(params.init_angle, params.angle_range);
+}
 
 //Override of update specific for particle systems
 void ParticleSystemComponent::Update(){
@@ -69,7 +80,7 @@ void ParticleSystemComponent::Update(){
 
 	int to_destroy = 0;
 	int next_start = start_index;
-	for (int i = 0; i < particle_count; i++) {
+	for (unsigned i = 0; i < particle_count; i++) {
 		int index = (i + start_index + particle_count) % max_particles;
 		//particle is dead
 		if (SDL_GetTicks() >= timers[index] + particle_lifetime) {
@@ -94,7 +105,7 @@ void ParticleSystemComponent::Update(){
 void ParticleSystemComponent::SpawnParticle() {
 	int to_add = 0;
 	ParticleComponent* p = nullptr;
-	for (int i = 0; i < particle_spawn_rate; i++) {
+	for (unsigned i = 0; i < particle_spawn_rate; i++) {
 		int index = (i + start_index + particle_count) % max_particles;
 		if (timers[index] != 0) break;
 		GetNextSpawn();
@@ -117,7 +128,7 @@ void ParticleSystemComponent::GetNextSpawn() {
 		current_angle = rand() % angle_range + init_angle;
 	}
 	else {
-		int interval = angle_range / max_particles;
+		int interval = angle_range / particle_spawn_rate;
 		current_angle += interval * angle_range_sign;
 		if (current_angle >= init_angle + angle_range || current_angle <= init_angle) {
 			if (reverse) angle_range_sign *= -1;

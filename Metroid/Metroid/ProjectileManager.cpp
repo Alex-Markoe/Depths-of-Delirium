@@ -42,21 +42,22 @@ void ProjectileManager::Update(float deltaTime, ObjectTree* collision_space) {
 	for (unsigned i = 0; i < projectiles.size(); i++){
 		projectiles[i]->Update(deltaTime);
 
-		//Check if the projectile has moved out of its
-		//quadrant, and update if needed
-		if (projectiles[i]->collider->out_of_quad) {
-			projectiles[i]->collider->ResetQuad();
-			collision_space->Add(projectiles[i]);
-		}
-		collision_space->BoxCollisionDetector(projectiles[i], deltaTime);
-
 		//Check if the projectile is no
 		//longer active
 		ProjectileComponent* p = (ProjectileComponent*)projectiles[i]->components[0];
-		if (!p->active) {
+		if (p->dead) {
 			delete projectiles[i];
 			projectiles.erase(projectiles.begin() + i);
 			i--;
+		}
+		else if (p->active) {
+			//Check if the projectile has moved out of its
+			//quadrant, and update if needed
+			if (projectiles[i]->collider->out_of_quad) {
+				projectiles[i]->collider->ResetQuad();
+				collision_space->Add(projectiles[i]);
+			}
+			collision_space->BoxCollisionDetector(projectiles[i], deltaTime);
 		}
 	}
 }
@@ -80,7 +81,7 @@ void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, SDL_Point hitbox
 	proj->animator = new AnimationComponent(proj->renderer);
 	ParticleSystemComponent* particles = nullptr;
 	if (params != nullptr) particles = new ParticleSystemComponent(*params, proj);
-	proj->AddComponent(new ProjectileComponent(lifeTime, proj->physics, proj->renderer, proj->animator, particles, behavior));
+	proj->AddComponent(new ProjectileComponent(lifeTime, proj->physics, proj->collider, proj->renderer, proj->animator, particles, behavior));
 	if (particles != nullptr) proj->AddComponent(particles);
 	proj->collider->out_of_quad = true;
 	proj->collider->SetHandler(handlers[type]);

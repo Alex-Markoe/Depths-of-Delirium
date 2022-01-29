@@ -11,6 +11,7 @@ public:
 	~ReboundProjectileBehavior();
 	void Update() override;
 	void InitAnim() override;
+	void BeginDeath() override;
 
 private:
 };

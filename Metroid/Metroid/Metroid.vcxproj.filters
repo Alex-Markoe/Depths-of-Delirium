@@ -162,6 +162,9 @@
     <ClCompile Include="IceWheelProjectileBehavior.cpp">
       <Filter>Source Files\ProjectileBehaviors</Filter>
     </ClCompile>
+    <ClCompile Include="ProjectileBehavior.cpp">
+      <Filter>Source Files\ProjectileBehaviors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">

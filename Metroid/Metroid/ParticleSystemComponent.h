@@ -16,7 +16,9 @@ public:
 	ParticleSystemComponent(ParticleSystemParams params, GameObject* _obj);
 	~ParticleSystemComponent();
 	void Update() override;
+	void Reset();
 	void SetAngle(int angle, int _angle_range);
+	void Modify(ParticleSystemParams params);
 
 private:
 	void SpawnParticle();

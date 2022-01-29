@@ -143,6 +143,7 @@
     <ClCompile Include="ParticleSystemParams.cpp" />
     <ClCompile Include="PlayerProjectileBehavior.cpp" />
     <ClCompile Include="PlayerProjectileCollisionHandler.cpp" />
+    <ClCompile Include="ProjectileBehavior.cpp" />
     <ClCompile Include="ReboundCollisionHandler.cpp" />
     <ClCompile Include="ReboundProjectileBehavior.cpp" />
     <ClCompile Include="StraightParticleBehavior.cpp" />

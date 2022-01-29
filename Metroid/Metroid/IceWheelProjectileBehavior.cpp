@@ -1,4 +1,6 @@
 #include "IceWheelProjectileBehavior.h"
+#include "PhysicsComponent.h"
+#include "AnimationComponent.h"
 
 IceWheelProjectileBehavior::IceWheelProjectileBehavior() {}
 IceWheelProjectileBehavior::~IceWheelProjectileBehavior() {}
