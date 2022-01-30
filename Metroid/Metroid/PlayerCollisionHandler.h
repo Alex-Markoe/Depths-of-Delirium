@@ -5,7 +5,7 @@
 //INCLUDE DEPENDENCIES
 #include "CollisionHandlers.h"
 
-int GetForce(float deltaTime, int depth, int accel, int vel);
+//int GetForce(float deltaTime, int depth, int accel, int vel);
 
 //HANDLE PLAYER ON OBSTACLE INTERACTIONS
 //MAKE THE PLAYER STOP WHEN HITTING AN OBSTACLE

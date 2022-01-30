@@ -35,6 +35,7 @@ public:
 	void OnGround();
 
 private:
+	//References 
 	RenderComponent* renderer;
 	PhysicsComponent* physics;
 	AnimationComponent* animator;
@@ -46,16 +47,19 @@ private:
 	const Uint8 *state;
 	int previous_y_velocity;
 
+	//Timers
 	Uint32 spell_anim_timer;
 	Uint32 attack_timer;
 	Uint32 rebound_timer;
 	Uint32 swift_timer;
 	Uint32 swift_cooldown;
+	//Variables
 	int TERMINAL_VELOCITY = 75;
 	int HORIZONTAL_VELOCITY = 300;
 	int JUMP_VELOCITY = -2000;
 	int SWIFT_VELOCITY_MAX = 500;
 	int SWIFT_VELOCITY = 15;
+	//State based stuff
 	bool can_jump;
 	bool on_ground;
 	bool swift_form;
@@ -66,6 +70,7 @@ private:
 	void HandleInput();
 	void UpdateState();
 	void SwiftMovement();
+	void UpdateTimers();
 	void SpawnProjectile(ProjectileBehavior* behavior, ParticleSystemParams* params, HANDLER_TYPE type, SDL_Rect source_rect, SDL_Point hitbox_offset, int lifeTime, int speed);
 };
 

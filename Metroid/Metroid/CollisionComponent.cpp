@@ -28,6 +28,7 @@ void CollisionComponent::CollisionHandler(GameObject* other, float f_x, float f_
 void CollisionComponent::SetHandler(Handler* _handler) {
 	handler = _handler;
 }
+//Setters/Getters
 void CollisionComponent::SetInactive() { inactive = true; }
 void CollisionComponent::SetActive() { inactive = false; }
 

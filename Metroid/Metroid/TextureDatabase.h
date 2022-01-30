@@ -25,6 +25,9 @@ enum TEXTURE_NAME { //REMEMBER TO UPDATE TEXTURE COUNT
 	ICE_PROJECTILE_TXT
 };
 
+//TEXTURE DATABASE
+//LOADS AND STORES ALL TEXTURES
+//SINGLETON
 class TextureDatabase{
 public:
 	static TextureDatabase& instance() {
@@ -39,6 +42,7 @@ private:
 	TextureDatabase(){};
 	void LoadTexture(SDL_Renderer* gRenderer, std::string path, int index);
 
+	//CHANGE AT WILL
 	SDL_Texture* textures[20];
 	const int TEXTURE_COUNT = 20;
 };

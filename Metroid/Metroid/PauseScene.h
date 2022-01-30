@@ -5,10 +5,14 @@
 //FORWARD DEPENDENCIES
 class ToTitleCommand;
 class UnpauseCommand;
+class GameObject;
 
 //INCLUDE DEPENDENCIES
 #include "Scene.h"
 
+//PAUSE SCENE
+//HAS BUTTONS CAN GO TO 
+//TITLE OR BACK TO GAME
 class PauseScene : public Scene {
 public:
 	PauseScene();

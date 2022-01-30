@@ -7,14 +7,14 @@ RenderComponent::RenderComponent(SDL_Texture* _texture, SDL_Rect _source_rect, f
 }
 //Destructor
 RenderComponent::~RenderComponent() {
-	texture = nullptr;
+	texture = nullptr; //Texture is destroyed later 
 }
 
 //Simple function to render the object to the screen
 void RenderComponent::Render(SDL_Renderer* gRenderer, SDL_Rect position) {
 	SDL_RenderCopyEx(gRenderer, texture, &source_rect, &position, angle, NULL, flip_type);
 }
-
+//Setters/Getters
 void RenderComponent::SetFlip(SDL_RendererFlip _flip) { flip_type = _flip; }
 void RenderComponent::SetAngle(float _angle) { angle = _angle; }
 float RenderComponent::GetAngle() { return angle; }

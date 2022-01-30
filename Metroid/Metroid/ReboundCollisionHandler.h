@@ -5,6 +5,8 @@
 //INCLUDE DEPENDENCIES
 #include "CollisionHandlers.h"
 
+//COLLISION HANDLER SPECIFIC TO THE PLAYER 
+//REBOUND PROJECTILE
 class ReboundCollisionHandler : public Handler {
 public:
 	ReboundCollisionHandler() {};

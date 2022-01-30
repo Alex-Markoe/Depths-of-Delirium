@@ -1,4 +1,8 @@
 #include "PauseScene.h"
+#include "GameObject.h"
+#include "TextureDatabase.h"
+
+//COMMANDS
 #include "ToTitleCommand.h"
 #include "UnpauseCommand.h"
 
@@ -9,26 +13,22 @@
 
 //Constructor
 PauseScene::PauseScene() {
+	//INITIALIZE COMMANDS
 	to_title_cmd = new ToTitleCommand();
 	unpause_cmd = new UnpauseCommand();
 
+	//CREATE THE BUTTONS
 	buttons = new GameObject[2]; 
-	RenderComponent* _renderer = nullptr;
-	CollisionComponent* _collider = nullptr;
 	int off_y = 450;
 	for (unsigned i = 0; i < 2; i++) {
 		buttons[i].Init(SDL_Rect{ 300, 100 + (off_y), BUTTON_SIZE_X, BUTTON_SIZE_Y }, false);
-		_renderer = new RenderComponent(TextureDatabase::instance().GetTexture(BUTTON_TXT), SDL_Rect{ 0, 0 + off_y, BUTTON_SIZE_X, BUTTON_SIZE_Y }, 0);
-		_collider = new CollisionComponent(&buttons[i], buttons[i].position, SDL_Point{ 0, 0 }, OBSTACLE);
-		buttons[i].renderer = _renderer;
-		buttons[i].collider = _collider;
+		buttons[i].renderer = new RenderComponent(TextureDatabase::instance().GetTexture(BUTTON_TXT), SDL_Rect{ 0, 0 + off_y, BUTTON_SIZE_X, BUTTON_SIZE_Y }, 0);
+		buttons[i].collider = new CollisionComponent(&buttons[i], buttons[i].position, SDL_Point{ 0, 0 }, OBSTACLE);
 
 		off_y += BUTTON_SIZE_Y;
-		_renderer = nullptr;
-		_collider = nullptr;
 	}
-	buttons[0].components.emplace_back(new ButtonComponent(buttons[0].collider, to_title_cmd)); //RETURN TO TITLE BUTTON
-	buttons[1].components.emplace_back(new ButtonComponent(buttons[1].collider, unpause_cmd)); //RETURN TO GAME BUTTON
+	buttons[0].AddComponent(new ButtonComponent(buttons[0].collider, to_title_cmd)); //RETURN TO TITLE BUTTON
+	buttons[1].AddComponent(new ButtonComponent(buttons[1].collider, unpause_cmd)); //RETURN TO GAME BUTTON
 }
 //Destructor
 PauseScene::~PauseScene() {
@@ -36,13 +36,13 @@ PauseScene::~PauseScene() {
 	delete to_title_cmd;
 	delete unpause_cmd;
 }
-
+//UPDATE BUTTONS
 void PauseScene::Update(float deltaTime) {
 	for (unsigned i = 0; i < 2; i++) {
 		buttons[i].Update(deltaTime);
 	}
 }
-
+//RENDER BUTTONS
 void PauseScene::Render(SDL_Renderer* gRenderer) {
 	for (unsigned i = 0; i < 2; i++) {
 		buttons[i].renderer->Render(gRenderer, buttons[i].position);

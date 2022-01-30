@@ -1,4 +1,6 @@
 #include "FileManager.h"
+#include <fstream>
+#include <iostream>
 
 //Constructor
 FileManager::FileManager(){}
@@ -14,8 +16,8 @@ void FileManager::CreateSave() {
 	std::ofstream save_file_create;
 	save_file_create.open("Levels/save_data.txt", std::ios::out | std::ios::beg);
 	if (save_file_create.is_open()) {
-		save_file_create << "Levels/room1.txt\n";
-		save_file_create << "TTTT";
+		save_file_create << "Levels/room1.txt\n"; //FIRST ROOM
+		save_file_create << "TTTT"; //IF BOSS HAS BEEN DEFEATED OR NOT T FOR YES
 		save_file_create.close();
 	}
 }
@@ -55,6 +57,7 @@ void FileManager::WriteSave() {
 			save_file_create << to_open;
 		}
 
+		//CHECK HOW MANY BOSSES HAVE BEEN DEFEATED/UNDEFEATED
 		save_file_create << "\n";
 		for (unsigned i = 0; i < 4; i++) {
 			if (boss_data[i] == nullptr) {
@@ -67,7 +70,6 @@ void FileManager::WriteSave() {
 		save_file_create.close();
 	}
 }
-
 //READ ROOM DATA IN 
 bool FileManager::ReadFile() {
 	std::ifstream room_file_read;
@@ -123,6 +125,7 @@ bool FileManager::ReadFile() {
 	return boss_room;
 }
 
+//CHANGE ROOMS/GET BOSS DATA
 BossComponent* FileManager::GetBossData() { return boss_data[setting]; }
 void FileManager::ToNext() { to_open = next_room; }
 void FileManager::ToPrevious() { to_open = previous_room; }

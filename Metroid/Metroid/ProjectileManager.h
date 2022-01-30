@@ -38,6 +38,7 @@ public:
 		     int lifeTime, int max_speed, float decell);
 	void Render(SDL_Renderer* gRenderer);
 	void GetPlayer(GameObject* player);
+	void Clear();
 
 private:
 	ProjectileManager();

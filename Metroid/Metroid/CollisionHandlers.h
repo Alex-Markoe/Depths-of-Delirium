@@ -18,6 +18,7 @@ public:
 	void Execute(GameObject* other, GameObject* obj, int f_x, int f_y);
 
 protected:
+	//OVERRIDE THESE METHODS FOR SPECIFIC INTERACTIONS
 	virtual void ObstacleCollision(GameObject* other, GameObject* obj, int f_x, int f_y){};
 	virtual void ProjectileCollision(GameObject* other, GameObject* obj, int f_x, int f_y){};
 	virtual void PlayerCollision(GameObject* other, GameObject* obj, int f_x, int f_y){};

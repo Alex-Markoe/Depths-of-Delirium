@@ -22,6 +22,9 @@ enum BEHAVIOR_TYPE {
 	STRAIGHT_ACCELERATING
 };
 
+//Simple class that holds data to be
+//passed into a particle system for initialization
+//variables are self-explanatory
 class ParticleSystemParams {
 public:
 	ParticleSystemParams(int _system_lifetime, int _max_particles, int _particle_lifetime, int _spawn_interval, int _particle_spawn_rate, int _init_angle, int _angle_range, bool _random, bool _reverse,

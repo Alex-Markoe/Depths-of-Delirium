@@ -4,6 +4,8 @@
 #include "CollisionComponent.h"
 #include "ProjectileComponent.h"
 
+//CHANGE DIRECTION TO RIGHT PERPENDICULAR 
+//WHEN COLLIDING WITH OBSTACLE
 void IceWheelCollisionHandler::ObstacleCollision(GameObject* other, GameObject* obj, int f_x, int f_y) {
 	if (abs(f_x) < abs(f_y)) {
 		obj->position.x -= f_x;

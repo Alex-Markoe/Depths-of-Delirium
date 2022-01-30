@@ -8,6 +8,8 @@ class Scene;
 
 //INCLUDE DEPENDENCIES
 
+//ENUM REPRESENTING SCENES
+//SELF-EXPLANATORY
 enum SCENE {
 	TITLE,
 	GAME,
@@ -29,7 +31,7 @@ public:
 	void LoadGameData();
 	void Quit();
 
-	bool exit;
+	bool exit; //WETHER OR NOT THE GAME SHOULD BE EXITED
 
 private:
 	SceneManager();

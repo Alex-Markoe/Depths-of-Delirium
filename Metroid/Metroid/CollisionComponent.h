@@ -41,7 +41,7 @@ public:
 	SDL_Rect hitbox;
 	OBJECT_TYPE type;
 	bool out_of_quad;
-	bool inactive;
+	bool inactive; //Will not be checked for collision
 	int item_index;
 
 private:

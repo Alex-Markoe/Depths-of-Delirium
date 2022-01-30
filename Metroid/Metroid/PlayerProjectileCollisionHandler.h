@@ -5,6 +5,8 @@
 //INCLUDE DEPENDENCIES
 #include "CollisionHandlers.h"
 
+//Collision HANDLER FOR 
+//PLAYER BASIC PROJECTILE
 class PlayerProjectileCollisionHandler : public Handler {
 public:
 	PlayerProjectileCollisionHandler() {};

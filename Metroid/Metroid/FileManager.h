@@ -8,8 +8,6 @@ class BossComponent;
 //INCLUDE DEPENDENCIES
 #include <SDL.h>
 #include <string>
-#include <fstream>
-#include <iostream>
 
 //REPRESENTATION OF THE SETTING FOR
 //USE WHEN LOADING TEXTURES AND BOSS DATA
@@ -27,8 +25,8 @@ enum SETTING {
 class FileManager{
 public:
 	static FileManager& instance() {
-	static FileManager* instance = new FileManager();
-	return *instance;
+		static FileManager* instance = new FileManager();
+		return *instance;
 	};
 	~FileManager();
 	void CreateSave();

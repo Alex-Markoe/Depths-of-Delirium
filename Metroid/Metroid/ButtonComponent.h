@@ -10,8 +10,11 @@ class ButtonComponent;
 //INCLUDE DEPENDENCIES
 #include "Component.h"
 
+//HELPER METHOD
 bool Hover(SDL_Point mouse_pos, SDL_Rect hitbox);
 
+//BUTTON COMPONENT
+//DOES SOMETHING WHEN CLICKED
 class ButtonComponent : public Component {
 public:
 	ButtonComponent(CollisionComponent* _collider, ButtonCommand* _onclick_cmd);

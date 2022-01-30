@@ -27,20 +27,25 @@ void ProjectileComponent::Update(){
 	behavior->Update();
 }
 void ProjectileComponent::SetForce(int f_x, int f_y) { behavior->SetForce(f_x, f_y); }
+//Deactivate the projectile
+//Update the behavior as well
 void ProjectileComponent::Deactivate() { 
 	if (!active) return;
 	active = false;
 	behavior->BeginDeath();
 	death_timer = SDL_GetTicks();
-	lifetime = 300;
-	timer = &ProjectileComponent::UpdateDeathTimer;
+	lifetime = 300; //All projectiles have same death time, for consistency
+	timer = &ProjectileComponent::UpdateDeathTimer; //change function
 }
+//Getters/Setters
 SDL_Point ProjectileComponent::GetForce() { return behavior->GetForce(); }
+//Update for the active timer, deactivate upon completion
 void ProjectileComponent::UpdateActiveTimer() {
 	if (active_timer + lifetime < SDL_GetTicks()) {
 		Deactivate();
 	}
 }
+//Update for the death timer, die upon completion
 void ProjectileComponent::UpdateDeathTimer() {
 	if (death_timer + lifetime < SDL_GetTicks()) {
 		dead = true;

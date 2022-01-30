@@ -5,6 +5,8 @@
 //INCLUDE DEPENDENCIES
 #include "CollisionHandlers.h"
 
+//COLLISION HANDLER FOR ICE WHEEL
+//BOSS PROJECTILE
 class IceWheelCollisionHandler : public Handler {
 public:
 	IceWheelCollisionHandler() {};

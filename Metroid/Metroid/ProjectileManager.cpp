@@ -27,19 +27,25 @@ ProjectileManager::ProjectileManager() {
 //Destructor, remove any remaining projectiles
 //as well as getting rid of collision handlers
 ProjectileManager::~ProjectileManager(){
-	while (projectiles.size() > 0){
-		delete projectiles.front();
-		projectiles.erase(projectiles.begin());
-	}
+	Clear();
 	while (handlers.size() > 0) {
 		delete handlers.front();
 		handlers.erase(handlers.begin());
+	}
+}
+//Clear all projectiles
+//currently in the manager
+void ProjectileManager::Clear() {
+	while (projectiles.size() > 0) {
+		delete projectiles.front();
+		projectiles.erase(projectiles.begin());
 	}
 }
 
 //Update all projectiles contained in the manager
 void ProjectileManager::Update(float deltaTime, ObjectTree* collision_space) {
 	for (unsigned i = 0; i < projectiles.size(); i++){
+		//Update
 		projectiles[i]->Update(deltaTime);
 
 		//Check if the projectile is no
@@ -87,6 +93,8 @@ void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, SDL_Point hitbox
 	proj->collider->SetHandler(handlers[type]);
 	projectiles.emplace_back(proj);
 }
+//Get the player for particular
+//collision handlers
 void ProjectileManager::GetPlayer(GameObject* player) {
 	ReboundCollisionHandler* r = (ReboundCollisionHandler*)handlers[1];
 	r->SetPlayer(player);

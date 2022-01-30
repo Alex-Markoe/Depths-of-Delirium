@@ -7,11 +7,12 @@
 //Helper function
 //Return the force required to resolve
 //a collision
-int GetForce(float deltaTime, int depth, int accel, int vel) {
-	int speed = (accel + vel) / deltaTime;
-	return (depth / deltaTime) + speed;
-}
+//int GetForce(float deltaTime, int depth, int accel, int vel) {
+//	int speed = (accel + vel) / deltaTime;
+//	return (depth / deltaTime) + speed;
+//}
 
+//ADJUST POSITION WHEN COLLIDING WITH OBSTACLE
 void PlayerCollisionHandler::ObstacleCollision(GameObject* other, GameObject* obj, int f_x, int f_y) {
 	if (abs(f_x) < abs(f_y)) {
 		obj->position.x -= f_x;

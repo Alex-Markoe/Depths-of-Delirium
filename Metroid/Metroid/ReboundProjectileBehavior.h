@@ -5,6 +5,8 @@
 //INCLUDE DEPENDENCIES
 #include "ProjectileBehavior.h"
 
+//BEHAVIOR FOR THE 
+//PLAYER REBOUND PROJECTILE
 class ReboundProjectileBehavior : public ProjectileBehavior{
 public:
 	ReboundProjectileBehavior();
@@ -12,8 +14,6 @@ public:
 	void Update() override;
 	void InitAnim() override;
 	void BeginDeath() override;
-
-private:
 };
 
 #endif //__REBOUNDPROJECTILEBEHAVIOR_H_INCLUDED__

@@ -26,23 +26,25 @@ private:
 	ParticleBehavior* GetBehavior();
 
 	GameObject* particles; //particle array
-	GameObject* obj;
-	SDL_Point origin_offset;
-	SDL_Point grav;
-	Uint32 spawn_timer;
+	GameObject* obj; //Parent object
+	SDL_Point origin_offset; //Range of position from origin
+	SDL_Point grav; //gravity to be applied
+	Uint32 spawn_timer; //timer between spawns
 	Uint32 system_timer;
 	Uint32* timers;
-	int behavior;
+	int behavior; //enum for behavior
 
+	//ANGLE BASED VARIABLES
 	int init_angle;
 	int angle_range;
 	int angle_range_sign;
 	int current_angle;
 
+	//system variable
 	int max_particles;
-	int particle_spawn_rate;
-	int particle_lifetime;
-	int spawn_interval;
+	int particle_spawn_rate; //particles spawned per spawn interval
+	int particle_lifetime; 
+	int spawn_interval; //time between particle spawn
 	int system_lifetime;
 	int speed;
 	float rotation_rate;
@@ -51,6 +53,7 @@ private:
 	bool random_spawn;
 	bool reverse;
 
+	//For iterating through particle/timer array
 	int start_index;
 	int particle_count;
 };

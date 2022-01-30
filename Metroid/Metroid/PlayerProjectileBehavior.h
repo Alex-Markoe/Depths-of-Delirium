@@ -14,9 +14,6 @@ public:
 	void Update() override;
 	void InitAnim() override;
 	void BeginDeath() override;
-
-private:
-
 };
 
 #endif //__PLAYERPROJECTILEBEHAVIOR_H_INCLUDED__

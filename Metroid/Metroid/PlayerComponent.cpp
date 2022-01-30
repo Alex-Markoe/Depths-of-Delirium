@@ -118,18 +118,27 @@ void PlayerComponent::HandleInput(){
 			in_action = true;
 		}
 	}
-	//ACTION END
+	//Check if firing a spell
+	if (spell_anim_timer > 0) {
+		if (spell_anim_timer + 250 < SDL_GetTicks()) spell_anim_timer = 0;
+		player_state = FIRING;
+		in_action = true;
+	}
+	
+	//Determine whether or not the player is currently idle
+	if (!in_action) {
+		player_state = IDLE;
+	}
+}
+//Update all the player's
+//cooldowns and timers
+void PlayerComponent::UpdateTimers() {
 	//Update Timers
 	if (attack_timer > 0 && attack_timer + 500 < SDL_GetTicks()) {
 		attack_timer = 0;
 	}
 	if (rebound_timer > 0 && rebound_timer + 500 < SDL_GetTicks()) {
 		rebound_timer = 0;
-	}
-	if (spell_anim_timer > 0) {
-		if (spell_anim_timer + 250 < SDL_GetTicks()) spell_anim_timer = 0;
-		player_state = FIRING;
-		in_action = true;
 	}
 	//Start swift cooldown
 	if (swift_timer > 0 && !swift_form) {
@@ -141,13 +150,9 @@ void PlayerComponent::HandleInput(){
 		ResetJump();
 		on_ground = false;
 	}
+	//Reset swift cooldown
 	if (swift_cooldown > 0 && swift_cooldown + 750 < SDL_GetTicks()) {
 		swift_cooldown = 0;
-	}
-	
-	//Determine whether or not the player is currently idle
-	if (!in_action) {
-		player_state = IDLE;
 	}
 }
 
@@ -155,6 +160,7 @@ void PlayerComponent::HandleInput(){
 void PlayerComponent::Update(){
 	//Call the other update methods
 	HandleInput();
+	UpdateTimers();
 	if (previous_state != player_state) {
 		animator->SetFrame(0);
 		UpdateState();
@@ -171,13 +177,16 @@ void PlayerComponent::Update(){
 	previous_state = player_state;
 }
 
+//Setters
 void PlayerComponent::ResetJump() { can_jump = true; }
 void PlayerComponent::OnGround() { on_ground = true; ResetJump(); }
+//Get mouse position
 SDL_Point PlayerComponent::GetMousePosition() {
 	SDL_Point mouse_pos = { 0,0 };
 	SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
 	return mouse_pos;
 }
+//Get angle between the player and a given point
 float PlayerComponent::GetAngle(SDL_Point point) {
 	return atan2(point.y - (obj->position.y + (obj->position.h / 2)), point.x - (obj->position.x + (obj->position.w / 2)));
 }
@@ -201,6 +210,7 @@ void PlayerComponent::SwiftMovement() {
 	float angle = GetAngle(mouse_pos);
 	int dist_x = (mouse_pos.x - (obj->position.x + (obj->position.w / 2))) * SWIFT_VELOCITY;
 	int dist_y = (mouse_pos.y - (obj->position.y + (obj->position.h / 2))) * SWIFT_VELOCITY;
+	//Does not accelerate, constant speed
 	physics->ResetKinematics(true, true);
 	physics->ApplyForce(dist_x, dist_y);
 	renderer->SetAngle(angle * 180 / M_PI);

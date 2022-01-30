@@ -5,7 +5,6 @@
 class Scene;
 
 //INCLUDE DEPENDENCIES
-#include "SceneManager.h"
 #include <SDL_image.h>
 
 //WORLD CLASS
@@ -23,6 +22,7 @@ public:
 	bool exit;
 
 private:
+	//reference to renderer
 	SDL_Renderer* gRenderer;
 
 	//CLOCK VARIABLES

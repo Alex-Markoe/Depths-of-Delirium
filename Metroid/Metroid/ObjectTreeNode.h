@@ -18,6 +18,7 @@ public:
 	~ObjectTreeNode();
 	void Divide();
 	void Erase(int index);
+	void Add(GameObject* item);
 
 	std::vector<GameObject*> items;
 	ObjectTreeNode* quads[4];

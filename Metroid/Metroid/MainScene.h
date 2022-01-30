@@ -5,10 +5,14 @@
 //FORWARD DEPENDENCIES
 class ObjectTree;
 class PlayerCollisionHandler;
+class GameObject;
 
 //INCLUDE DEPENDENCIES
 #include "Scene.h"
 
+//THE MAIN SCENE
+//LOAD IN LEVELS AND STUFF, ALSO MANAGE
+//LEVEL BASED OBJECTS 
 class MainScene : public Scene{
 public:
 	MainScene();

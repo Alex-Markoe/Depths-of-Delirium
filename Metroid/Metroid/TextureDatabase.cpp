@@ -1,15 +1,14 @@
 #include "TextureDatabase.h"
 
 //Destructor
+//DESTROY ALL THE TEXTURES
 TextureDatabase::~TextureDatabase() {
 	for (int i = 0; i < TEXTURE_COUNT; i++) {
 		SDL_DestroyTexture(textures[i]);
 	}
 }
-
-SDL_Texture* TextureDatabase::GetTexture(int index) {
-	return textures[index];
-}
+//PRETTY SIMPLE
+SDL_Texture* TextureDatabase::GetTexture(int index) { return textures[index]; }
 
 //Function that handles loading in textures
 void TextureDatabase::LoadTexture(SDL_Renderer* gRenderer, std::string path, int index) {
@@ -39,6 +38,7 @@ void TextureDatabase::LoadTexture(SDL_Renderer* gRenderer, std::string path, int
 }
 
 //Load in all of the assets
+//AND ASSIGN THEM
 void TextureDatabase::LoadAssets(SDL_Renderer* gRenderer) {
 	for (unsigned i = 0; i < TEXTURE_COUNT; i++) {
 		textures[i] = nullptr;

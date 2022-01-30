@@ -1,6 +1,7 @@
 #include "World.h"
-#include "TextureDatabase.h"
 #include "Scene.h"
+#include "SceneManager.h"
+#include "TextureDatabase.h"
 
 //Constructor, initialize all important variables
 World::World(SDL_Renderer* renderer) {
@@ -14,13 +15,13 @@ World::World(SDL_Renderer* renderer) {
 
 	//Load visuals
 	TextureDatabase::instance().LoadAssets(gRenderer);
-
+	//Set the world for the scene manager
 	SceneManager::instance().SetWorld(this);
 }
 //Destructor
 World::~World(){
-	gRenderer = nullptr;
-	active_scene = nullptr;
+	gRenderer = nullptr; //renderer is deleted in source
+	active_scene = nullptr; //scenes are deleted in scene manager
 }
 
 //Call all update methods of any objects in the level
@@ -30,9 +31,10 @@ void World::Update(){
 	tick_time = SDL_GetPerformanceCounter();
 	deltaTime = (float)((tick_time - last_tick_time) * 1000 / (float)SDL_GetPerformanceFrequency());
 	deltaTime *= 0.001f;
-	//std::cout << deltaTime << std::endl;
+	
 	//Update active scene
 	active_scene->Update(deltaTime);
+	//Check if game needs to be exited
 	exit = SceneManager::instance().exit;
 }
 

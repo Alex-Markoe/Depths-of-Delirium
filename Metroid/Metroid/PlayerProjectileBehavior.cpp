@@ -19,6 +19,8 @@ void PlayerProjectileBehavior::Update() {
 void PlayerProjectileBehavior::InitAnim() {
 	animator->SetAnimationSource(0, 0, 2, true);
 }
+//Begin death for player,
+//Modify particles and change animation
 void PlayerProjectileBehavior::BeginDeath() {
 	particles->Modify(ParticleSystemParams(0, 0, 400, 400, 20, 0, 360, false, false, 1.0f, 200, 0.0f, { 0, 100 }, {0, 0}, FIRE_PARTICLE, STRAIGHT_ACCELERATING));
 	animator->SetAnimationSource(108, 0, 2, false);

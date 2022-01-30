@@ -3,8 +3,7 @@
 #define __SCENE_H_INCLUDED__
 
 //INCLUDE DEPENDENCIES
-#include "GameObject.h";
-#include "TextureDatabase.h";
+#include <SDL.h>
 
 //BASE SCENE CLASS
 //UPDATES AND RENDERS THINGS

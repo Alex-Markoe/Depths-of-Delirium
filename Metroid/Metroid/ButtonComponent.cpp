@@ -13,14 +13,13 @@ ButtonComponent::~ButtonComponent() {
 	collider = nullptr;
 	onclick_cmd = nullptr;
 }
-
+//CHECK IF BUTTON WAS CLICKED
 void ButtonComponent::Update() {
 	SDL_GetMouseState(&mouse_pos.x, &mouse_pos.y);
 	if (Hover(mouse_pos, collider->hitbox) && SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1)) {
 		onclick_cmd->Execute();
 	}
 }
-
 //HELPER METHODS
 bool Hover(SDL_Point mouse_pos, SDL_Rect hitbox) {
 	return mouse_pos.x >= hitbox.x && mouse_pos.x <= hitbox.x + hitbox.w &&
