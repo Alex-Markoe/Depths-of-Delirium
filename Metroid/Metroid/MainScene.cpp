@@ -7,6 +7,7 @@
 
 //COLLISION HANDLERS
 #include "PlayerCollisionHandler.h"
+#include "TransitionCollisionHandler.h"
 
 //COMPONENTS
 #include "RenderComponent.h"
@@ -32,6 +33,8 @@ MainScene::MainScene() {
 
 	//CREATE COLLISION HANDLERS
 	player_collision_handler = new PlayerCollisionHandler();
+	to_next_handler = new TransitionCollisionHandler(this, true);
+	to_previous_handler = new TransitionCollisionHandler(this, false);
 
 	//CREATE MANAGERS
 	collision_space = new ObjectTree(32 * TILE_SIZE, 18 * TILE_SIZE);
@@ -41,11 +44,10 @@ MainScene::MainScene() {
 	player = new GameObject();
 	player->Init(SDL_Rect{ 0, 0, 135, 144 }, true);
 	player->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PLAYER_TXT), SDL_Rect{ 0, 0, 135, 144 }, 0);
-	player->collider = new CollisionComponent(player, player->position, SDL_Point{ 20, 33 }, PLAYER);
+	player->collider = new CollisionComponent(player, player->position, SDL_Point{ 20, 33 }, PLAYER, player_collision_handler);
 	player->physics = new PhysicsComponent(SDL_Point{ 40, 40 }, 0.8f, 1.0f);
 	player->animator = new AnimationComponent(player->renderer);
 	player->AddComponent(new PlayerComponent(player->renderer, player->physics, player->animator, player->collider, player));
-	player->collider->SetHandler(player_collision_handler);
 	ProjectileManager::instance().GetPlayer(player);
 
 	//particles_test = new GameObject();
@@ -58,6 +60,8 @@ MainScene::~MainScene() {
 	delete player;
 	delete collision_space;
 	delete player_collision_handler;
+	delete to_next_handler;
+	delete to_previous_handler;
 	delete[] platforms;
 	delete[] collidables;
 
@@ -148,7 +152,7 @@ void MainScene::LoadLevel() {
 			//CREATE NEW COMPONENT, OR ADJUST IF IT ALREADY EXISTS
 			collidables[total_colliders_count].Init({ x * TILE_SIZE, y * TILE_SIZE, width * TILE_SIZE, height * TILE_SIZE }, false);
 			if (collidables[total_colliders_count].collider == nullptr) 
-				collidables[total_colliders_count].collider = new CollisionComponent(&collidables[total_colliders_count], collidables[total_colliders_count].position, {0, 0}, OBSTACLE);
+				collidables[total_colliders_count].collider = new CollisionComponent(&collidables[total_colliders_count], collidables[total_colliders_count].position, {0, 0}, OBSTACLE, nullptr);
 			else collidables[total_colliders_count].collider->SetHitbox({ x * TILE_SIZE, y * TILE_SIZE, width * TILE_SIZE, height * TILE_SIZE }, {0, 0});
 			if (plat_data[5] == "T") { //IF THE PLATFORM IS TO BE LOADED IN NOW, ADD IT, OTHERWISE MARK IT
 				collision_space->Add(&collidables[total_colliders_count]);
@@ -156,6 +160,14 @@ void MainScene::LoadLevel() {
 			}
 			total_colliders_count++;
 
+			if (plat_data[4][0] == 'L') {
+				collidables[total_colliders_count - 1].collider->SetHandler(to_next_handler);
+				continue;
+			}
+			if (plat_data[4][0] == 'Z') {
+				collidables[total_colliders_count - 1].collider->SetHandler(to_previous_handler);
+				continue;
+			}
 			i_x = x;
 			//READ VISUALS
 			for (unsigned i = 0; i < plat_data[4].size(); i++) {
@@ -208,11 +220,6 @@ void MainScene::LoadLevel() {
 				else if (plat_data[4][i] == 'K') {
 					sourceX = 60;
 					sourceY = 90;
-				}
-				//TRANSITION TILE
-				else if (plat_data[4][i] == 'L') {
-					sourceX = -1;
-					sourceY = -1;
 				}
 				//SLOW PLATFORM
 				else if (plat_data[4][i] == 'S') {

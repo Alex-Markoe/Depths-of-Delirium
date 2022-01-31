@@ -116,6 +116,7 @@ void ObjectTree::BoxCollisionDetector(GameObject* reference, ObjectTreeNode* qua
 			int depth_right = (hitbox.w + hitbox.x) - item_hitbox.x;
 			int depth_x = abs(depth_left) < depth_right ? depth_left : depth_right; //Get the shallow axis in the x
 			reference->collider->CollisionHandler(quad->items[i], depth_x, depth_y);
+			quad->items[i]->collider->CollisionHandler(reference, -depth_x, -depth_y);
 		}
 	}
 
@@ -186,4 +187,9 @@ bool InQuad(SDL_Rect hitbox, SDL_Rect quad) {
 		   hitbox.x + hitbox.w <= quad.w + quad.x &&
 		   hitbox.y >= quad.y &&
 		   hitbox.y + hitbox.h <= quad.h + quad.y;
+}
+//Helper function
+//Return the depth of the first hitbox into the second
+SDL_Point GetDepth(SDL_Rect hitbox, SDL_Rect item_hitbox) {
+	return {};
 }

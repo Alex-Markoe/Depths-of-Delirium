@@ -3,7 +3,9 @@
 #include <iostream>
 
 //Constructor
-FileManager::FileManager(){}
+FileManager::FileManager(){
+	next = true;
+}
 //Destructor
 FileManager::~FileManager(){
 	for (unsigned i = 0; i < 4; i++) {
@@ -89,13 +91,13 @@ bool FileManager::ReadFile() {
 		x = std::stoi(data);
 		std::getline(room_file_read, data);
 		y = std::stoi(data);
-		enter_position = SDL_Point{ x, y };
+		if (next) enter_position = SDL_Point{ x, y };
 		//READ EXIT POSITION
 		std::getline(room_file_read, data);
 		x = std::stoi(data);
 		std::getline(room_file_read, data);
 		y = std::stoi(data);
-		exit_position = SDL_Point{ x, y };
+		if (!next) enter_position = SDL_Point{ x, y };
 		//READ ROOM FILE NAME
 		std::getline(room_file_read, data);
 		room_file_name = data;
@@ -127,5 +129,11 @@ bool FileManager::ReadFile() {
 
 //CHANGE ROOMS/GET BOSS DATA
 BossComponent* FileManager::GetBossData() { return boss_data[setting]; }
-void FileManager::ToNext() { to_open = next_room; }
-void FileManager::ToPrevious() { to_open = previous_room; }
+void FileManager::ToNext() { 
+	to_open = next_room; 
+	next = true;
+}
+void FileManager::ToPrevious() { 
+	to_open = previous_room; 
+	next = false;
+}

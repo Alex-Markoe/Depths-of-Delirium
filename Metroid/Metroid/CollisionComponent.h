@@ -26,7 +26,7 @@ enum OBJECT_TYPE {
 //BETWEEN COLLISION QUADS
 class CollisionComponent : public Component {
 public:
-	CollisionComponent(GameObject* _obj, SDL_Rect _position, SDL_Point hitboxOffset, OBJECT_TYPE _type);
+	CollisionComponent(GameObject* _obj, SDL_Rect _position, SDL_Point hitboxOffset, OBJECT_TYPE _type, Handler* _handler);
 	~CollisionComponent();
 	void Update() override;
 	void UpdatePosition(SDL_Rect position);

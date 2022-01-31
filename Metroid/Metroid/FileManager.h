@@ -38,7 +38,6 @@ public:
 	BossComponent* GetBossData();
 
 	SDL_Point enter_position;
-	SDL_Point exit_position;
 	std::string room_file_name; //file to be loaded by the world
 	std::string previous_room; //room file name of previous
 	std::string next_room; //room file name of next
@@ -48,6 +47,7 @@ private:
 	FileManager();
 
 	bool boss_room;
+	bool next;
 	std::string to_open; //next room file to open
 	BossComponent* boss_data[4];
 };

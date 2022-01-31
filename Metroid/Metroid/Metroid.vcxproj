@@ -159,6 +159,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="TextureDatabase.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TransitionCollisionHandler.cpp" />
     <ClCompile Include="UnpauseCommand.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="ObjectTree.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="TextureDatabase.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TransitionCollisionHandler.h" />
     <ClInclude Include="UnpauseCommand.h" />
     <ClInclude Include="World.h" />
     <ClInclude Include="ObjectTree.h" />

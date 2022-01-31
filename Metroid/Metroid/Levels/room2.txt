@@ -1,9 +1,9 @@
-NONE
+Levels/room1.txt
 Levels/room2.txt
 150
 150
 1000
 150
-Levels/test.level
+Levels/test2.level
 I
 F

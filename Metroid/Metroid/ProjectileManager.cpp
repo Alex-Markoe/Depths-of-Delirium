@@ -82,7 +82,7 @@ void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, SDL_Point hitbox
 	GameObject* proj = new GameObject();
 	proj->Init(pos, true);
 	proj->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(txt), source_rect, 0);
-	proj->collider = new CollisionComponent(proj, proj->position, hitbox_offset, PROJECTILE);
+	proj->collider = new CollisionComponent(proj, proj->position, hitbox_offset, PROJECTILE, handlers[type]);
 	proj->physics = new PhysicsComponent({ max_speed, max_speed }, decell, decell);
 	proj->animator = new AnimationComponent(proj->renderer);
 	ParticleSystemComponent* particles = nullptr;
@@ -90,7 +90,6 @@ void ProjectileManager::Add(SDL_Rect pos, SDL_Rect source_rect, SDL_Point hitbox
 	proj->AddComponent(new ProjectileComponent(lifeTime, proj->physics, proj->collider, proj->renderer, proj->animator, particles, behavior));
 	if (particles != nullptr) proj->AddComponent(particles);
 	proj->collider->out_of_quad = true;
-	proj->collider->SetHandler(handlers[type]);
 	projectiles.emplace_back(proj);
 }
 //Get the player for particular

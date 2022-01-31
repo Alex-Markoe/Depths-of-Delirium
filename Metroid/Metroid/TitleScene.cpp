@@ -25,7 +25,7 @@ TitleScene::TitleScene() {
 	for (unsigned i = 0; i < 3; i++) {
 		buttons[i].Init(SDL_Rect{ 600, 100 + (off_y + 100), BUTTON_SIZE_X, BUTTON_SIZE_Y }, false);
 		buttons[i].renderer = new RenderComponent(TextureDatabase::instance().GetTexture(BUTTON_TXT), SDL_Rect{ 0, 0 + off_y, BUTTON_SIZE_X, BUTTON_SIZE_Y }, 0);;
-		buttons[i].collider = new CollisionComponent(&buttons[i], buttons[i].position, SDL_Point{ 0, 0 }, OBSTACLE);
+		buttons[i].collider = new CollisionComponent(&buttons[i], buttons[i].position, SDL_Point{ 0, 0 }, OBSTACLE, nullptr);
 
 		off_y += BUTTON_SIZE_Y;
 	}

@@ -4,11 +4,12 @@
 
 //Constructor
 //Initialize variables and hitbox
-CollisionComponent::CollisionComponent(GameObject* _obj, SDL_Rect _position, SDL_Point hitboxOffset, OBJECT_TYPE _type) {
+CollisionComponent::CollisionComponent(GameObject* _obj, SDL_Rect _position, SDL_Point hitboxOffset, OBJECT_TYPE _type, Handler* _handler) {
 	HITBOX_OFFSET = hitboxOffset;
 	hitbox = { _position.x + HITBOX_OFFSET.x, _position.y + HITBOX_OFFSET.y, _position.w - (HITBOX_OFFSET.x * 2), _position.h - HITBOX_OFFSET.y };
 	obj = _obj;
 	type = _type;
+	handler = _handler;
 	out_of_quad = false;
 	inactive = false;
 	item_index = -1;

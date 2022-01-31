@@ -5,6 +5,7 @@
 //FORWARD DEPENDENCIES
 class ObjectTree;
 class PlayerCollisionHandler;
+class TransitionCollisionHandler;
 class GameObject;
 
 //INCLUDE DEPENDENCIES
@@ -43,6 +44,8 @@ private:
 
 	//COLLISION HANDLERS
 	PlayerCollisionHandler* player_collision_handler;
+	TransitionCollisionHandler* to_next_handler;
+	TransitionCollisionHandler* to_previous_handler;
 };
 
 #endif //__MAINSCENE_H_INCLUDED__

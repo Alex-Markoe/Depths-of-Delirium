@@ -165,6 +165,9 @@
     <ClCompile Include="ProjectileBehavior.cpp">
       <Filter>Source Files\ProjectileBehaviors</Filter>
     </ClCompile>
+    <ClCompile Include="TransitionCollisionHandler.cpp">
+      <Filter>Source Files\CollisionHandlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -289,6 +292,9 @@
     </ClInclude>
     <ClInclude Include="IceWheelProjectileBehavior.h">
       <Filter>Header Files\ProjectileBehaviors</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionCollisionHandler.h">
+      <Filter>Header Files\CollisionHandlers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

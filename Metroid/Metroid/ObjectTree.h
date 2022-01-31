@@ -8,6 +8,7 @@
 //HELPER FUNCTION FORWARD DEFINITIONS
 bool InBounds(SDL_Rect in_rect, SDL_Rect encapsulating_rect);
 bool InQuad(SDL_Rect hitbox, SDL_Rect quad);
+SDL_Point GetDepth(SDL_Rect hitbox, SDL_Rect item_hitbox);
 
 //SPATIAL PARTITIONING TREE THAT DIVIDES
 //THE SCREEN INTO DIFFERENT QUADRANTS
