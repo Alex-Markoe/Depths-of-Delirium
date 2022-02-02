@@ -15,6 +15,7 @@
 #include "AnimationComponent.h"
 #include "CollisionComponent.h"
 #include "PlayerComponent.h"
+#include "BossComponent.h"
 
 #include <fstream>
 
@@ -42,13 +43,22 @@ MainScene::MainScene() {
 	//player = new Player(SDL_Rect{ 0,0,75,78 }, SDL_Rect{ 0, 0, 75, 78 }, SDL_Point{ 12, 3 });
 	//INITIALIZE PLAYER
 	player = new GameObject();
-	player->Init(SDL_Rect{ 0, 0, 135, 144 }, true);
-	player->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PLAYER_TXT), SDL_Rect{ 0, 0, 135, 144 }, 0);
-	player->collider = new CollisionComponent(player, player->position, SDL_Point{ 20, 33 }, PLAYER, player_collision_handler);
-	player->physics = new PhysicsComponent(SDL_Point{ 40, 40 }, 0.8f, 1.0f);
+	player->Init({ 0, 0, 135, 144 }, true);
+	player->renderer = new RenderComponent(TextureDatabase::instance().GetTexture(PLAYER_TXT), { 0, 0, 135, 144 }, 0);
+	player->collider = new CollisionComponent(player, player->position, { 20, 33 }, PLAYER, player_collision_handler);
+	player->physics = new PhysicsComponent({ 40, 40 }, 0.8f, 1.0f);
 	player->animator = new AnimationComponent(player->renderer);
 	player->AddComponent(new PlayerComponent(player->renderer, player->physics, player->animator, player->collider, player));
 	ProjectileManager::instance().GetPlayer(player);
+
+	//INITIALIZE BOSS
+	boss = new GameObject();
+	boss->Init({ 0, 0, 0, 0 }, true);
+	boss->renderer = new RenderComponent(nullptr, { 0, 0, 0, 0 }, 0);
+	boss->collider = new CollisionComponent(boss, boss->position, { 0, 0 }, BOSS, nullptr);
+	boss->physics = new PhysicsComponent({ 0, 0 }, 1.0f, 1.0f);
+	boss->animator = new AnimationComponent(boss->renderer);
+	boss->AddComponent(new BossComponent());
 
 	//particles_test = new GameObject();
 	//particles_test->Init({ 300, 300, 0, 0 }, false);
@@ -58,6 +68,7 @@ MainScene::MainScene() {
 //Destructor
 MainScene::~MainScene() {
 	delete player;
+	delete boss;
 	delete collision_space;
 	delete player_collision_handler;
 	delete to_next_handler;

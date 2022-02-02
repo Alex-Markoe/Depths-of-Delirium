@@ -5,12 +5,11 @@
 //Constructor
 FileManager::FileManager(){
 	next = true;
+	boss_data = new bool[4];
 }
 //Destructor
 FileManager::~FileManager(){
-	for (unsigned i = 0; i < 4; i++) {
-		if (boss_data[i] != nullptr) delete boss_data[i];
-	}
+	delete[] boss_data;
 }
 
 //CREATE SAVED DATA
@@ -39,7 +38,7 @@ void FileManager::ReadSave(){
 				//CREATE BOSS DATA
 			}
 			else {
-				boss_data[i] = nullptr;
+				boss_data[i] = false;
 			}
 		}
 
@@ -52,7 +51,7 @@ void FileManager::WriteSave() {
 	save_file_create.open("Levels/save_data.txt", std::ios::out | std::ios::beg);
 	if (save_file_create.is_open()) {
 		//CHECK IF IN UNFINISHED BOSS
-		if (boss_room && boss_data[setting] != nullptr) {
+		if (boss_room && boss_data[setting]) {
 			save_file_create << previous_room;
 		}
 		else {
@@ -62,7 +61,7 @@ void FileManager::WriteSave() {
 		//CHECK HOW MANY BOSSES HAVE BEEN DEFEATED/UNDEFEATED
 		save_file_create << "\n";
 		for (unsigned i = 0; i < 4; i++) {
-			if (boss_data[i] == nullptr) {
+			if (!boss_data[i]) {
 				save_file_create << "F";
 			}
 			else {
@@ -128,7 +127,7 @@ bool FileManager::ReadFile() {
 }
 
 //CHANGE ROOMS/GET BOSS DATA
-BossComponent* FileManager::GetBossData() { return boss_data[setting]; }
+int FileManager::GetBossData() { return setting; }
 void FileManager::ToNext() { 
 	to_open = next_room; 
 	next = true;

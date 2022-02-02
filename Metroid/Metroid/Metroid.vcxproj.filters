@@ -49,6 +49,12 @@
     <Filter Include="Source Files\ParticleBehaviors">
       <UniqueIdentifier>{563a0524-c49f-4c57-b1c9-6ce5ce926160}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\BossBehaviors">
+      <UniqueIdentifier>{60913902-c2d0-4b49-b1f4-3dd27ba24c31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\BossBehaviors">
+      <UniqueIdentifier>{09aa9888-9821-45c6-b980-75b5c76d063c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -167,6 +173,12 @@
     </ClCompile>
     <ClCompile Include="TransitionCollisionHandler.cpp">
       <Filter>Source Files\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="BossComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BossBehavior.cpp">
+      <Filter>Source Files\BossBehaviors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="TransitionCollisionHandler.h">
       <Filter>Header Files\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="BossBehavior.h">
+      <Filter>Header Files\BossBehaviors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

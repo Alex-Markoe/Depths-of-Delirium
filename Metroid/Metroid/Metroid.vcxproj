@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimationComponent.cpp" />
+    <ClCompile Include="BossBehavior.cpp" />
+    <ClCompile Include="BossComponent.cpp" />
     <ClCompile Include="ButtonComponent.cpp" />
     <ClCompile Include="CollisionHandlers.cpp" />
     <ClCompile Include="ContinueGameCommand.cpp" />
@@ -173,6 +175,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
+    <ClInclude Include="BossBehavior.h" />
     <ClInclude Include="BossComponent.h" />
     <ClInclude Include="ButtonCommand.h" />
     <ClInclude Include="ButtonComponent.h" />

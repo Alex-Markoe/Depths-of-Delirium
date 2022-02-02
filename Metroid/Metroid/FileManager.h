@@ -35,7 +35,7 @@ public:
 	void ToPrevious();
 	void ToNext();
 	bool ReadFile();
-	BossComponent* GetBossData();
+	int GetBossData();
 
 	SDL_Point enter_position;
 	std::string room_file_name; //file to be loaded by the world
@@ -49,7 +49,7 @@ private:
 	bool boss_room;
 	bool next;
 	std::string to_open; //next room file to open
-	BossComponent* boss_data[4];
+	bool* boss_data;
 };
 
 #endif //__FILEMANAGER_H_INCLUDED__
