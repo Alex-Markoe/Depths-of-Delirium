@@ -35,7 +35,7 @@ void FileManager::ReadSave(){
 		std::getline(save_file_read, data);
 		for (unsigned i = 0; i < 4; i++) {
 			if (data[i] == 'T') {
-				//CREATE BOSS DATA
+				boss_data[i] = true;
 			}
 			else {
 				boss_data[i] = false;

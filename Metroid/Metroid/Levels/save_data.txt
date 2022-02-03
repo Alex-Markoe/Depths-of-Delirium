@@ -1,2 +1,2 @@
-Levels/room2.txt
-FFFF
+Levels/room1.txt
+TTTT

@@ -7,9 +7,11 @@ class ObjectTree;
 class PlayerCollisionHandler;
 class TransitionCollisionHandler;
 class GameObject;
+class BossBehavior;
 
 //INCLUDE DEPENDENCIES
 #include "Scene.h"
+#include <vector>
 
 //THE MAIN SCENE
 //LOAD IN LEVELS AND STUFF, ALSO MANAGE
@@ -46,6 +48,7 @@ private:
 	PlayerCollisionHandler* player_collision_handler;
 	TransitionCollisionHandler* to_next_handler;
 	TransitionCollisionHandler* to_previous_handler;
+	std::vector<BossBehavior*> boss_behaviors;
 };
 
 #endif //__MAINSCENE_H_INCLUDED__

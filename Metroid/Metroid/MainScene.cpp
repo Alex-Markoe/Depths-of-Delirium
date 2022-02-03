@@ -19,6 +19,9 @@
 
 #include <fstream>
 
+//BOSS BEHAVIORS
+#include "BossBehavior.h"
+
 //FOR TEST
 #include "ParticleSystemComponent.h" //remove later
 #include "ParticleSystemParams.h" //remove later
@@ -51,6 +54,12 @@ MainScene::MainScene() {
 	player->AddComponent(new PlayerComponent(player->renderer, player->physics, player->animator, player->collider, player));
 	ProjectileManager::instance().GetPlayer(player);
 
+	//CREATE BOSS BEHAVIORS
+	boss_behaviors.push_back(new BossBehavior());
+	boss_behaviors.push_back(new BossBehavior());
+	boss_behaviors.push_back(new BossBehavior());
+	boss_behaviors.push_back(new BossBehavior());
+
 	//INITIALIZE BOSS
 	boss = new GameObject();
 	boss->Init({ 0, 0, 0, 0 }, true);
@@ -75,7 +84,10 @@ MainScene::~MainScene() {
 	delete to_previous_handler;
 	delete[] platforms;
 	delete[] collidables;
-
+	for (int i = 0; i < boss_behaviors.size(); i++) {
+		delete boss_behaviors[i];
+	}
+	boss_behaviors.clear();
 	//delete particles_test;
 }
 //Update all objects in the level
@@ -110,6 +122,8 @@ void MainScene::Render(SDL_Renderer* gRenderer) {
 void MainScene::LoadLevel() {
 	if (FileManager::instance().ReadFile()) {
 		//INITIALIZE BOSS DATA
+		BossComponent* b_c = (BossComponent*)boss->components[0];
+		b_c->SetBehavior(boss_behaviors[FileManager::instance().setting]);
 	}
 	//GET THE PLAYER ENTRY POSITION AND UPDATE THEIR 
 	//POSITION

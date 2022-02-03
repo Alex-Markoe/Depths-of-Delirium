@@ -4,12 +4,9 @@
 //Constructor
 BossComponent::BossComponent(){}
 //Destructor
-BossComponent::~BossComponent() {
-	if (behavior != nullptr) delete behavior;
-}
+BossComponent::~BossComponent() {}
 //Replace the current behavior for the boss
 void BossComponent::SetBehavior(BossBehavior* _behavior) {
-	if (behavior != nullptr) delete behavior;
 	behavior = _behavior;
 }
 
